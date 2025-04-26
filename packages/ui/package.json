@@ -1,5 +1,5 @@
 {
-  "name": "@myapp/ui",
+  "name": "@learn/ui",
   "version": "0.0.0",
   "type": "module",
   "private": true,
@@ -40,8 +40,8 @@
     "zod": "^3.24.3"
   },
   "devDependencies": {
-    "@myapp/eslint-config": "workspace:*",
-    "@myapp/tsconfig": "workspace:*",
+    "@learn/eslint-config": "workspace:*",
+    "@learn/tsconfig": "workspace:*",
     "@tailwindcss/postcss": "^4.1.4",
     "@turbo/gen": "^2.5.2",
     "@types/node": "^22.15.2",
@@ -65,5 +65,5 @@
     "react": "catalog:react19",
     "zod": "catalog:"
   },
-  "prettier": "@myapp/prettier-config"
+  "prettier": "@learn/prettier-config"
 }

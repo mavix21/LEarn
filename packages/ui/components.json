@@ -11,10 +11,10 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@myapp/ui/components",
-    "utils": "@myapp/ui/lib/utils",
-    "hooks": "@myapp/ui/hooks",
-    "lib": "@myapp/ui/lib",
-    "ui": "@myapp/ui/components"
+    "components": "@learn/ui/components",
+    "utils": "@learn/ui/lib/utils",
+    "hooks": "@learn/ui/hooks",
+    "lib": "@learn/ui/lib",
+    "ui": "@learn/ui/components"
   }
 }

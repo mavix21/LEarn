@@ -1,5 +1,5 @@
 {
-  "name": "@myapp/db",
+  "name": "@learn/db",
   "version": "0.1.0",
   "private": true,
   "type": "module",
@@ -43,9 +43,9 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@myapp/eslint-config": "workspace:*",
-    "@myapp/prettier-config": "workspace:*",
-    "@myapp/tsconfig": "workspace:*",
+    "@learn/eslint-config": "workspace:*",
+    "@learn/prettier-config": "workspace:*",
+    "@learn/tsconfig": "workspace:*",
     "@types/node": "^22.15.2",
     "dotenv-cli": "^8.0.0",
     "drizzle-kit": "^0.31.0",
@@ -53,5 +53,5 @@
     "prettier": "catalog:",
     "typescript": "catalog:"
   },
-  "prettier": "@myapp/prettier-config"
+  "prettier": "@learn/prettier-config"
 }

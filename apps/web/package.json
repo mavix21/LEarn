@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@coinbase/onchainkit": "latest",
-    "@myapp/db": "workspace:*",
-    "@myapp/ui": "workspace:*",
+    "@learn/db": "workspace:*",
+    "@learn/ui": "workspace:*",
     "@t3-oss/env-nextjs": "^0.13.0",
     "@tabler/icons-react": "^3.31.0",
     "@tanstack/react-query": "^5.74.4",
@@ -30,8 +30,8 @@
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@myapp/eslint-config": "workspace:*",
-    "@myapp/tsconfig": "workspace:*",
+    "@learn/eslint-config": "workspace:*",
+    "@learn/tsconfig": "workspace:*",
     "@types/node": "^22.15.2",
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
@@ -41,5 +41,5 @@
     "jiti": "^1.21.7",
     "typescript": "catalog:"
   },
-  "prettier": "@myapp/prettier-config"
+  "prettier": "@learn/prettier-config"
 }
