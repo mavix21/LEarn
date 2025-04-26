@@ -1,0 +1,26 @@
+{
+  "name": "@myapp/contracts",
+  "devDependencies": {
+    "@myapp/prettier-config": "workspace:*",
+    "@myapp/tsconfig": "workspace:*",
+    "@nomicfoundation/hardhat-ignition": "^0.15.11",
+    "@nomicfoundation/hardhat-ignition-viem": "^0.15.11",
+    "@nomicfoundation/hardhat-network-helpers": "^1.0.12",
+    "@nomicfoundation/hardhat-toolbox-viem": "^3.0.0",
+    "@nomicfoundation/hardhat-verify": "^2.0.13",
+    "@nomicfoundation/hardhat-viem": "^2.0.6",
+    "@openzeppelin/contracts": "^5.3.0",
+    "@types/chai": "^4.2.0",
+    "@types/chai-as-promised": "^7.1.6",
+    "@types/mocha": "10.0.10",
+    "@types/node": "22.14.1",
+    "chai": "^4.2.0",
+    "hardhat": "^2.23.0",
+    "hardhat-gas-reporter": "^1.0.8",
+    "solidity-coverage": "^0.8.15",
+    "ts-node": "10.9.2",
+    "typescript": "catalog:",
+    "viem": "^2.28.0"
+  },
+  "prettier": "@myapp/prettier-config"
+}

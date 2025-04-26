@@ -1,0 +1,57 @@
+{
+  "name": "@myapp/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./schema": {
+      "types": "./dist/schema/index.d.ts",
+      "default": "./src/schema/index.ts"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "default": "./src/client.ts"
+    }
+  },
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "clean": "git clean -xdf .cache .turbo dist node_modules",
+    "dev": "tsc",
+    "format": "prettier --check . --ignore-path ../../.gitignore",
+    "lint": "eslint",
+    "push": "pnpm with-env drizzle-kit push",
+    "studio": "pnpm with-env drizzle-kit studio",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "with-env": "dotenv -e ../../.env --"
+  },
+  "dependencies": {
+    "@effect/sql": "^0.33.14",
+    "@effect/sql-drizzle": "^0.32.14",
+    "@effect/sql-pg": "^0.34.14",
+    "@effect/experimental": "^0.44.14",
+    "@effect/platform": "^0.80.14",
+    "@vercel/postgres": "^0.10.0",
+    "drizzle-orm": "^0.43.1",
+    "drizzle-zod": "^0.7.1",
+    "effect": "^3.14.14",
+    "pg": "^8.15.6",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@myapp/eslint-config": "workspace:*",
+    "@myapp/prettier-config": "workspace:*",
+    "@myapp/tsconfig": "workspace:*",
+    "@types/node": "^22.15.2",
+    "dotenv-cli": "^8.0.0",
+    "drizzle-kit": "^0.31.0",
+    "eslint": "catalog:",
+    "prettier": "catalog:",
+    "typescript": "catalog:"
+  },
+  "prettier": "@myapp/prettier-config"
+}

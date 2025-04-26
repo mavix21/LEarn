@@ -1,0 +1,12 @@
+{
+  "extends": "@myapp/tsconfig/react-library.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@myapp/ui/*": ["./src/*"]
+    },
+    "lib": ["dom", "DOM.Iterable"]
+  },
+  "include": ["."],
+  "exclude": ["node_modules", "dist"]
+}
