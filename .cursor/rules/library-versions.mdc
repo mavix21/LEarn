@@ -1,7 +1,7 @@
 ---
-description: When a node package needs to be installed
+description: 
 globs: 
-alwaysApply: false
+alwaysApply: true
 ---
 When installing libraries, do not rely on your own training data.
 
@@ -9,10 +9,14 @@ Your training data has a cut-off date. You're probably not aware of all of the l
 
 This means that instead of picking a version manually (via updating the package.json file), you should use a script to install the latest version of a library.
 
+You always have to `cd` first into the app or project where you need the library.
+
+Example:
+
 # pnpm
 
 ```
-pnpm add -D @typescript-eslint/eslint-plugin
+cd apps/web && pnpm add -D @typescript-eslint/eslint-plugin
 ```
 
 This will ensure you're always using the latest version.
