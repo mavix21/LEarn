@@ -14,7 +14,7 @@
     "components": "@/components",
     "hooks": "@/hooks",
     "lib": "@/lib",
-    "utils": "@learn/ui/lib/utils",
-    "ui": "@learn/ui/components"
+    "utils": "@skill-based/ui/lib/utils",
+    "ui": "@skill-based/ui/components"
   }
 }

@@ -1,3 +1,3 @@
-# `@learn/eslint-config`
+# `@skill-based/eslint-config`
 
 Shared eslint configuration for the workspace.

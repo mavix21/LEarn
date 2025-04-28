@@ -11,10 +11,10 @@
   },
   "iconLibrary": "lucide",
   "aliases": {
-    "components": "@learn/ui/components",
-    "utils": "@learn/ui/lib/utils",
-    "hooks": "@learn/ui/hooks",
-    "lib": "@learn/ui/lib",
-    "ui": "@learn/ui/components"
+    "components": "@skill-based/ui/components",
+    "utils": "@skill-based/ui/lib/utils",
+    "hooks": "@skill-based/ui/hooks",
+    "lib": "@skill-based/ui/lib",
+    "ui": "@skill-based/ui/components"
   }
 }

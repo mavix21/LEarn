@@ -4,14 +4,14 @@ import * as React from "react";
 import { IconCheck, IconMoon, IconSun } from "@tabler/icons-react";
 import { useTheme } from "next-themes";
 
-import { Button } from "@learn/ui/components/button";
+import { Button } from "@skill-based/ui/components/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@learn/ui/components/dropdown-menu";
-import { cn } from "@learn/ui/lib/utils";
+} from "@skill-based/ui/components/dropdown-menu";
+import { cn } from "@skill-based/ui/lib/utils";
 
 export function ThemeSwitcher() {
   const { setTheme, theme } = useTheme();

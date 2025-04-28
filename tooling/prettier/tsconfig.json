@@ -1,5 +1,5 @@
 {
-  "extends": "@learn/tsconfig/base.json",
+  "extends": "@skill-based/tsconfig/base.json",
   "include": ["."],
   "exclude": ["node_modules"]
 }

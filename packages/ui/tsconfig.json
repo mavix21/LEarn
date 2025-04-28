@@ -1,9 +1,9 @@
 {
-  "extends": "@learn/tsconfig/react-library.json",
+  "extends": "@skill-based/tsconfig/react-library.json",
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@learn/ui/*": ["./src/*"]
+      "@skill-based/ui/*": ["./src/*"]
     },
     "lib": ["dom", "DOM.Iterable"]
   },

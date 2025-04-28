@@ -6,24 +6,24 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva } from "class-variance-authority";
 import { PanelLeftIcon } from "lucide-react";
 
-import { Button } from "@learn/ui/components/button";
-import { Input } from "@learn/ui/components/input";
-import { Separator } from "@learn/ui/components/separator";
+import { Button } from "@skill-based/ui/components/button";
+import { Input } from "@skill-based/ui/components/input";
+import { Separator } from "@skill-based/ui/components/separator";
 import {
   Sheet,
   SheetContent,
   SheetDescription,
   SheetHeader,
   SheetTitle,
-} from "@learn/ui/components/sheet";
-import { Skeleton } from "@learn/ui/components/skeleton";
+} from "@skill-based/ui/components/sheet";
+import { Skeleton } from "@skill-based/ui/components/skeleton";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@learn/ui/components/tooltip";
-import { cn } from "@learn/ui/lib/utils";
+} from "@skill-based/ui/components/tooltip";
+import { cn } from "@skill-based/ui/lib/utils";
 
 import { useIsMobile } from "../hooks/use-mobile";
 

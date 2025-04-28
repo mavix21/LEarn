@@ -14,7 +14,7 @@ import { XIcon } from "lucide-react";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { createPortal } from "react-dom";
 
-import { cn } from "@learn/ui/lib/utils";
+import { cn } from "@skill-based/ui/lib/utils";
 
 import useClickOutside from "../hooks/useClickOutside";
 

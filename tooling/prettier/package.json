@@ -1,5 +1,5 @@
 {
-  "name": "@learn/prettier-config",
+  "name": "@skill-based/prettier-config",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -17,9 +17,9 @@
     "prettier-plugin-tailwindcss": "^0.6.11"
   },
   "devDependencies": {
-    "@learn/tsconfig": "workspace:*",
+    "@skill-based/tsconfig": "workspace:*",
     "@types/node": "^22.15.2",
     "typescript": "catalog:"
   },
-  "prettier": "@learn/prettier-config"
+  "prettier": "@skill-based/prettier-config"
 }

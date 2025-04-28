@@ -1,1 +1,1 @@
-export { default } from "@learn/ui/postcss.config";
+export { default } from "@skill-based/ui/postcss.config";
