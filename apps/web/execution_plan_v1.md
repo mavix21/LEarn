@@ -34,7 +34,7 @@ This document outlines the detailed steps required to build the MVP of the Web3 
 - **Objective:** Create a page to display a user's basic on-chain and off-chain profile information.
 - **Steps:**
   - `[ ]` **Create Profile Page Structure:**
-    - `[ ]` Implement a dynamic route (e.g., `/profile/[address].tsx`) to display profiles based on wallet address.
+    - `[ ]` Implement a dynamic route to display profiles based on wallet address.
     - `[ ]` Create the main Profile page component structure (e.g., Header, Bio section, Credentials section, etc.).
   - `[ ]` **Display Core On-Chain Identity:**
     - `[ ]` Fetch the profile address from the route parameters.
