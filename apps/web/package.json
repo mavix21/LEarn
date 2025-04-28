@@ -4,7 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "pnpm with-env next dev --turbopack",
+    "dev": "pnpm run /^dev:/",
+    "dev:convex": "pnpm convex dev",
+    "dev:next": "pnpm with-env next dev --turbopack",
     "build": "pnpm with-env next build",
     "start": "next start",
     "format": "prettier --check . --ignore-path ../../.gitignore",
