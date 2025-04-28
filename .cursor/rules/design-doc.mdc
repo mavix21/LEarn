@@ -1,0 +1,183 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Web3 Professional Identity Platform {#web3-professional-identity-platform}
+
+**Link:** [design-doc](mdc:link)  
+**Author(s):** [Me](mdc:mailto:your_email@example.com)  
+**Status:** Draft  
+**Last Updated:** Jul 26, 2024
+
+## Table of Contents
+
+1. [Summary](mdc:#summary)
+2. [Context](mdc:#context)
+3. [Detailed Design](mdc:#detailed-design)
+4. [Testing and Validation](mdc:#testing-and-validation)
+5. [Future Considerations](mdc:#future-considerations)
+
+---
+
+## Summary {#summary}
+
+This document outlines the design for a Minimum Viable Product (MVP) of a Web3 Professional Identity Platform built on the Base blockchain. The platform aims to provide users with a decentralized, verifiable, and user-owned professional profile. Leveraging OnchainKit for rapid frontend development of Web3 components and Convex for backend data storage and functions, the MVP will focus on core features: profile creation/customization centered around Basenames, display of verifiable credentials (SBTs/NFTs), basic user search, display of social links, and a simple off-chain connection mechanism. The goal is to create a functional prototype within approximately 4 weeks, demonstrating the core value proposition of verifiable on-chain identity.
+
+## Context {#context}
+
+Current professional networking platforms (e.g., LinkedIn) centralize user data, rely heavily on self-attested claims, and often require users to share extensive personal information. This model lacks robust verification mechanisms for skills and achievements and locks users into a proprietary ecosystem. The rise of Web3 technologies presents an opportunity to build an alternative centered on user ownership, verifiable credentials, and enhanced privacy.
+
+The core motivations are:
+1.  **User Ownership:** Users should own and control their professional identity, anchored to their wallet.
+2.  **Verifiability:** Credentials (education, skills, contributions) should be verifiable on-chain using standards like Soulbound Tokens (SBTs via EAS) or specific NFTs.
+3.  **Transparency & Privacy:** Leverage blockchain's transparency for verification while allowing users pseudonymity via wallet addresses and Basenames.
+4.  **Empowerment through Learning:** Counteract passive credentialism by providing a platform where *verified* learning and contributions build reputation
+5.  **Rapid Development:** Utilize OnchainKit on Base for its pre-built components (Identity, Wallet, Transaction) and Convex for its ease of use in backend development, making an MVP feasible in a hackathon timeframe.
+
+This project aims to create a foundational platform addressing these points, starting with core identity and credential display features.
+
+## Detailed Design {#detailed-design}
+
+### 1. Technology Stack
+
+- **Blockchain:** Base (Mainnet for launch, Base Sepolia for development/testing).
+- **Frontend:** React (Next.js, compatible with Vercel AI SDK & OnchainKit).
+- **Web3 UI Kit:** OnchainKit (`@coinbase/onchainkit`).
+- **Backend & Database:** Convex (`convex`).
+- **AI (Optional for MVP):** Vercel AI SDK (for potential future suggestion features).
+- **Deployment:** Vercel (integrates well with Next.js, Convex, AI SDK).
+
+### 2. Core Concepts
+
+- **User Identity Anchor:** Wallet Address + Basename (`.base.eth`). Basename is the primary human-readable identifier.
+
+- **Profile Data:** A mix of:
+    - **On-Chain (Immutable/Verifiable):** Basename resolution, Avatar (from Basename/ENS), SBTs/Attestations (via EAS), potentially specific credential NFTs, On-chain activity (future). Data fetched via OnchainKit/RPC calls.
+
+    - **Off-Chain (Mutable/User-Managed):** Bio, Optional Display Name, Manually added Studies/Experiences. Stored in Convex, linked to the user's wallet address.
+
+- **Credentials:** Focus on EAS Attestations (SBTs) using OnchainKit's `<Badge>`/`getAttestations`. Other NFTs (ERC721/1155) representing credentials can be displayed by querying indexers (e.g., CDP API, Reservoir) - simpler display for MVP.
+
+- **Networking:** MVP uses an off-chain model via Convex for connection requests and management.
+
+### 3. MVP Features
+
+#### 3.1. Authentication & Onboarding
+
+- **Wallet Connection:** Use OnchainKit's `<Wallet>` / `<ConnectWallet>` components. Configure `OnchainKitProvider` for Base chain and potentially enable modal display for better wallet selection.
+
+- **Basename Check:**
+    - On connection/profile view, use OnchainKit's `useName` hook (with `chain: base`).
+    - If `useName` returns null or the address itself, prompt the user: "Claim your Basename to build your on-chain identity!" with a link to `https://base.org/names`.
+    - Display Basename prominently when available.
+
+#### 3.2. Profile Viewing
+
+- **Fetch Data:**
+  - **On-chain Identity (OnchainKit):** Use `<Avatar>`, `<Name>`, `<Address>`, `<Socials>` components within an `<Identity>` context or individually. Pass the user's `address` and `chain: base`.
+
+  - **Off-chain Data (Convex):** Query Convex database (`getUserProfile(address)`) for Bio, Display Name, Manual Studies.
+
+  - **Credentials (OnchainKit + APIs):**
+    - *SBTs/Attestations:* Use OnchainKit's `getAttestations` function (in a Convex backend function or frontend hook) to fetch relevant attestations (filter by known educational/skill schema UIDs). Display using `<Badge>` nested within `<Avatar>` or `<Name>`, potentially with tooltips (`badgeTooltip` prop).
+
+    - *NFT Credentials:* Query external NFT indexer APIs for holdings in specific credential contract addresses. Display results in a simple list/grid (custom component).
+
+- **UI Layout:** Combine fetched data. Consider using `<IdentityCard>` as a starting point for the header section. Create sections for Bio, Credentials (Verified On-Chain / Manually Added), Experience/Studies (Manually Added).
+
+#### 3.3. Profile Editing
+
+- **Off-Chain Fields (Bio, Display Name, Manual Studies):**
+  - Standard React forms.
+  - On submit, call Convex mutations (e.g., `updateUserProfile({ bio: '...' })`). Convex handles authentication based on the connected wallet implicitly.
+
+- **On-Chain Fields (Avatar, Socials):** These are managed via Basename/ENS tools. Provide clear instructions and links for users to update these externally (e.g., link to the Basename management interface).
+
+- **Credentials:** Primarily display fetched, verifiable credentials. Allow users to perhaps *add links* to external portfolios or credential platforms (store these links in Convex).
+
+#### 3.4. Basic User Search
+
+- **UI:** Simple search input field (accepts Basename or Address).
+
+- **Logic:**
+
+- On submit, call a Convex query function `searchUser(query)`.
+  - Inside `searchUser`:
+    - If query looks like an address, search Convex DB directly by address.
+        - If query looks like a name (contains '.'), use OnchainKit's `getAddress({ name: query, chain: base })` server-side (within Convex) to resolve the address. Then search DB by address.
+
+    - Return a list of matching profiles (Basename, Avatar snippet, Address).
+
+- **Display:** Show search results as clickable links/cards routing to the respective profile pages.
+
+#### 3.5. Networking (MVP - Off-Chain via Convex)
+
+- **Data Model (Convex):** Need tables for `users` (address, profile data), `connections` (addressA, addressB, status: 'pending' | 'connected' | 'rejected').
+- **UI Actions:**
+    - "Connect" button on profiles.
+    - "My Network" page/section showing Pending Incoming Requests, Pending Outgoing Requests, and Connected Users.
+
+- **Convex Functions (Mutations & Queries):**
+    - `sendConnectionRequest(toAddress)`: Creates a new connection entry with status 'pending'.
+    - `respondToConnectionRequest(requestId, accept: boolean)`: Updates connection status to 'connected' or 'rejected'.
+    - `getPendingIncomingRequests()`: Query connections where `toAddress` is current user and status is 'pending'.
+    - `getPendingOutgoingRequests()`: Query connections where `fromAddress` is current user and status is 'pending'.
+    - `getConnections()`: Query connections where status is 'connected' and includes the current user.
+
+- **Interaction:** Use OnchainKit's `<Transaction>` component *only if* switching to an on-chain smart contract model for connections in the future. For this off-chain MVP, standard button clicks trigger Convex mutations.
+
+#### 3.6. Social Links Display
+
+- **UI:** Integrate OnchainKit's `<Socials>` component within the profile view (e.g., below the Avatar/Name/Address block). Pass the user's `address` and `chain: base`. It will automatically fetch and display icons/links for socials stored in the Basename text records.
+
+---
+
+## Testing and Validation {#testing-and-validation}
+
+The testing strategy will focus on ensuring core functionality and robustness within the hackathon timeframe.
+
+- **Unit Tests:**
+    -   Use Vitest/Jest + React Testing Library for frontend components (UI rendering, basic interactions).
+    -   Test Convex query/mutation functions individually, mocking external dependencies (like OnchainKit functions if used server-side) and database state.
+
+- **Integration Tests:**
+    -   Test the flow of data between frontend components and Convex backend functions (e.g., editing profile bio, sending connection request).
+    -   Verify OnchainKit component integration: Ensure `<Avatar>`, `<Name>`, `<Badge>`, `<Socials>` display correctly with data fetched for Base addresses/Basenames. Test `<Wallet>` connection flow.
+
+- **Manual Testing:**
+    -   Perform thorough end-to-end testing of primary user flows on Base Sepolia testnet: Connect Wallet -> View Profile -> Edit Profile -> Search User -> Send/Accept Connection Request.
+    -   Test with different wallet states: Wallet with Basename, without Basename, with SBTs, without SBTs.
+    -   Cross-browser checks (Chrome, Firefox). Basic mobile responsiveness check.
+
+- **Edge Case Consideration:**
+    - User has no Basename.
+    - User has no Avatar/Socials set up.
+    - Profile not found during search.
+    - Convex function errors / API errors (e.g., EAS indexer down).
+    - Network connection issues.
+
+- **On-chain Interaction Testing:** Primarily focuses on reading data (Basename, SBTs) correctly via OnchainKit/RPC on Base Sepolia. Ensure correct chain (`base`) is passed where needed.
+
+---
+
+## Future Considerations {#future-considerations}
+
+Items deliberately scoped out of the MVP for simplicity and time constraints, but considered for future iterations:
+
+- **On-Chain Connections:** Implementing connection requests/acceptances via a dedicated Smart Contract on Base for greater transparency and composability (would use OnchainKit `<Transaction>`).
+- **Decentralized Storage:** Migrating mutable profile data (Bio, etc.) from Convex to a decentralized solution like Ceramic Network for enhanced user control and censorship resistance.
+- **Advanced AI Features:** Implementing connection suggestions based on shared credentials/interests using Vercel AI SDK or similar. Potentially skill inference from on-chain activity.
+- **Zero-Knowledge Proofs (ZKPs):** Allowing users to prove possession of certain credentials without revealing the specific credential or their full wallet activity.
+- **Broader Credential Support:** More robust integration for various NFT credential standards beyond EAS/SBTs.
+- **DAO Governance:** Introducing community governance for platform features, schema standards, etc.
+- **Enhanced Search/Filtering:** More sophisticated search capabilities beyond basic address/Basename lookup.
+
+**Trade-offs Made for MVP:**
+
+- **Convex vs. Decentralized Storage:** Chose Convex for development speed over full decentralization.
+- **Off-Chain vs. On-Chain Connections:** Chose off-chain for simplicity and lower gas costs initially.
+- **Limited AI:** Deferred complex AI features to focus on core identity and verification.
+- **Reliance on OnchainKit:** Leveraged the kit heavily for speed, accepting potential limitations over building components from scratch.
+
+---
