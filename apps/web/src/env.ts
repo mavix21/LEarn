@@ -26,6 +26,7 @@ export const env = createEnv({
     NEXT_PUBLIC_ONCHAINKIT_PROJECT_NAME: z.string(),
     NEXT_PUBLIC_ONCHAINKIT_API_KEY: z.string(),
     NEXT_PUBLIC_ONCHAINKIT_WALLET_CONFIG: z.string(),
+    NEXT_PUBLIC_CONVEX_URL: z.string(),
   },
   /**
    * Destructure all variables from `process.env` to make sure they aren't tree-shaken away.
@@ -39,6 +40,7 @@ export const env = createEnv({
     NEXT_PUBLIC_ONCHAINKIT_API_KEY: process.env.NEXT_PUBLIC_ONCHAINKIT_API_KEY,
     NEXT_PUBLIC_ONCHAINKIT_WALLET_CONFIG:
       process.env.NEXT_PUBLIC_ONCHAINKIT_WALLET_CONFIG,
+    NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
   },
   skipValidation:
     !!process.env.CI || process.env.npm_lifecycle_event === "lint",
