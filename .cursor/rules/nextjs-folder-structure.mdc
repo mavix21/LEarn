@@ -26,13 +26,36 @@ These top-level folders are called layers. Let's look deeper:
   - 📄 layout.tsx
 - 📂 _pages
   - 📁 home
-  - 📂 article-reader
+    - HomePage.tsx (the actual page)
+    - index.tsx (public api)
+  - 📂 profile
     - 📁 ui
+      - Header.tsx
+      - index.tsx (barrel file)
     - 📁 api
+    - ProfilePage.tsx
+    - index.tsx
   - 📁 settings
 - 📂 _shared
   - 📁 ui
   - 📁 api
+
+> What What makes a good public API?
+A good public API makes using and integrating into other code a slice convenient and reliable. It can be achieved by setting these three goals:
+
+The rest of the application must be protected from structural changes to the slice, like a refactoring
+Significant changes in the behavior of the slice that break the previous expectations should cause changes in the public API
+Only the necessary parts of the slice should be exposed
+The last goal has some important practical implications. It may be tempting to create wildcard re-exports of everything, especially in early development of the slice, because any new objects you export from your files are also automatically exported from the slice:
+
+Bad practice, features/comments/index.ts
+```ts
+// ❌ BAD CODE BELOW, DON'T DO THIS
+export * from "./ui/Comment";  // 👎 don't try this at home
+export * from "./model/comments";  // 💩 this is bad practice
+```
+
+This hurts the discoverability of a slice because you can't easily tell what the interface of this slice is. Not knowing the interface means that you have to dig deep into the code of a slice to understand how to integrate it. Another problem is that you might accidentally expose the module internals, which will make refactoring difficult if someone starts depending on them.
 
 Folders inside 📂 _pages are called slices. They divide the layer by domain (in this case, by pages).
 
@@ -50,7 +73,7 @@ The "Segments" pillar contains three divisions, arranged top to bottom and label
 
 ### Layers
 
-Layers are standardized across all FSD projects. You don't have to use all of the layers, but their names are important. There are currently seven of them (from top to bottom):
+Layers are the first level of organisational hierarchy in Feature-Sliced Design. Their purpose is to separate code based on how much responsibility it needs and how many other modules in the app it depends on. Every layer carries special semantic meaning to help you determine how much responsibility you should allocate to your code.
 
 1. App — everything that makes the app run — routing (app router), entrypoints, global styles, providers.
 2. Pages — full pages or large parts of a page in nested routing.
@@ -59,12 +82,97 @@ Layers are standardized across all FSD projects. You don't have to use all of th
 5. Entities — business entities that the project works with, like user or product.
 6. Shared — reusable functionality, especially when it's detached from the specifics of the project/business, though not necessarily.
 
+Adding new layers is not recommended because their semantics are standardized.
+
 > [!IMPORTANT]  
 > Layers App and Shared, unlike other layers, do not have slices and are divided into segments directly. However, all other layers — Entities, Features, Widgets, and Pages, retain the structure in which you must first create slices, inside which you create the segments.
 
 
 > [!IMPORTANT]  
 > The trick with layers is that modules on one layer can only know about and import from modules from the layers strictly below.
+
+For example, the folder 📁 ~/features/aaa is a slice with the name "aaa". A file inside of it, ~/features/aaa/api/request.ts, cannot import code from any file in 📁 ~/features/bbb, but can import code from 📁 ~/entities and 📁 ~/shared, as well as any sibling code from 📁 ~/features/aaa, for example, ~/features/aaa/lib/cache.ts.
+
+Layers App and Shared are exceptions to this rule — they are both a layer and a slice at the same time. Slices partition code by business domain, and these two layers are exceptions because Shared does not have business domains, and App combines all business domains.
+
+In practice, this means that layers App and Shared are made up of segments, and segments can import each other freely.
+
+Layer definitions:
+
+#### Shared
+
+This layer forms a foundation for the rest of the app. It's a place to create connections with the external world, for example, backends, third-party libraries, the environment. It is also a place to define your own highly contained libraries.
+
+This layer, like the App layer, does not contain slices. Slices are intended to divide the layer into business domains, but business domains do not exist in Shared. This means that all files in Shared can reference and import from each other.
+
+Here are the segments that you can typically find in this layer:
+
+- 📁 api — the API client and potentially also functions to make requests to specific backend endpoints.
+
+- 📁 ui — the application's UI kit.
+  Components on this layer should not contain business logic, but it's okay for them to be business-themed. For example, you can put the company logo and page layout here. Components with UI logic are also allowed (for example, autocomplete or a search bar).
+
+- 📁 lib — a collection of internal libraries.
+  This folder should not be treated as helpers or utilities. Instead, every library in this folder should have one area of focus, for example, dates, colors, text manipulation, etc. That area of focus should be documented in a README file. The developers in your team should know what can and cannot be added to these libraries.
+
+- 📁 config — environment variables, global feature flags and other global configuration for your app.
+- 📁 routes — route constants or patterns for matching routes.
+- 📁 i18n — setup code for translations, global translation strings.
+You are free to add more segments, but make sure that the name of these segments describes the purpose of the content, not its essence. For example, components, hooks, and types are bad segment names because they aren't that helpful when you're looking for code.
+
+#### Entities
+
+Slices on this layer represent concepts from the real world that the project is working with. Commonly, they are the terms that the business uses to describe the product. For example, a social network might work with business entities like User, Post, and Group.
+
+An entity slice might contain the data storage (📁 model), data validation schemas (📁 model), entity-related API request functions (📁 api), as well as the visual representation of this entity in the interface (📁 ui). The visual representation doesn't have to produce a complete UI block — it is primarily meant to reuse the same appearance across several pages in the app, and different business logic may be attached to it through props or slots.
+
+Entity relationships
+Entities in FSD are slices, and by default, slices cannot know about each other. In real life, however, entities often interact with each other, and sometimes one entity owns or contains other entities. Because of that, the business logic of these interactions is preferably kept in higher layers, like Features or Pages.
+
+When one entity's data object contains other data objects, usually it's a good idea to make the connection between the entities explicit and side-step the slice isolation by making a cross-reference API with the @x notation. The reason is that connected entities need to be refactored together, so it's best to make the connection impossible to miss.
+
+For example:
+
+entities/artist/model/artist.ts
+```ts
+import type { Song } from "entities/song/@x/artist";
+
+export interface Artist {
+  name: string;
+  songs: Array<Song>;
+}
+```
+
+entities/song/@x/artist.ts
+```ts
+export type { Song } from "../model/song.ts";
+```
+
+#### Features
+
+This layer is for the main interactions in your app, things that your users care to do. These interactions often involve business entities, because that's what the app is about.
+
+A crucial principle for using the Features layer effectively is: not everything needs to be a feature. A good indicator that something needs to be a feature is the fact that it is reused on several pages.
+
+For example, if the app has several editors, and all of them have comments, then comments are a reused feature. Remember that slices are a mechanism for finding code quickly, and if there are too many features, the important ones are drowned out.
+
+Ideally, when you arrive in a new project, you would discover its functionality by looking through the pages and features. When deciding on what should be a feature, optimize for the experience of a newcomer to the project to quickly discover large important areas of code.
+
+A feature slice might contain the UI to perform the interaction like a form (📁 ui), the API calls needed to make the action (📁 api), validation and internal state (📁 model), feature flags (📁 config).
+
+#### Widgets
+
+The Widgets layer is intended for large self-sufficient blocks of UI. Widgets are most useful when they are reused across multiple pages, or when the page that they belong to has multiple large independent blocks, and this is one of them.
+
+If a block of UI makes up most of the interesting content on a page, and is never reused, it should not be a widget, and instead it should be placed directly inside that page.
+
+#### Pages
+
+Pages are what makes up websites and applications (also known as screens or activities). One page usually corresponds to one slice, however, if there are several very similar pages, they can be grouped into one slice, for example, registration and login forms.
+
+There's no limit to how much code you can place in a page slice as long as your team still finds it easy to navigate. If a UI block on a page is not reused, it's perfectly fine to keep it inside the page slice.
+
+In a page slice you can typically find the page's UI as well as loading states and error boundaries (📁 ui) and the data fetching and mutating requests (📁 api). It's not common for a page to have a dedicated data model, and tiny bits of state can be kept in the components themselves.
 
 ### Segments
 
