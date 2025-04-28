@@ -7,7 +7,7 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "@/app/_shared/ui/theme-provider";
 import { env } from "@/src/env";
 
-import { Providers } from "./providers";
+import { ConvexClientProvider, OnchainKitProvider } from "./_providers";
 
 const fontSans = Geist({
   subsets: ["latin"],
@@ -41,7 +41,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Providers>{children}</Providers>
+          <OnchainKitProvider>
+            <ConvexClientProvider>{children}</ConvexClientProvider>
+          </OnchainKitProvider>
         </ThemeProvider>
       </body>
     </html>
