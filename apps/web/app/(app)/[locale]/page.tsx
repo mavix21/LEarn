@@ -17,9 +17,9 @@ import {
 
 import { ThemeSwitcher } from "@/app/_shared/ui/theme-switcher";
 
-import ArrowSvg from "../_shared/ui/svg/ArrowSvg";
-import ImageSvg from "../_shared/ui/svg/Image";
-import OnchainkitSvg from "../_shared/ui/svg/OnchainKit";
+import ArrowSvg from "../../_shared/ui/svg/ArrowSvg";
+import ImageSvg from "../../_shared/ui/svg/Image";
+import OnchainkitSvg from "../../_shared/ui/svg/OnchainKit";
 
 const components = [
   {
