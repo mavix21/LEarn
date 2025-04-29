@@ -18,7 +18,7 @@ import {
 
 import { ProfileCard } from "@/app/(app)/_pages/feed/ui";
 
-export default function FeedPage() {
+export function FeedPage() {
   return (
     <div className="grid h-svh grid-cols-[1fr_2fr_1fr] grid-rows-[3rem_1fr]">
       {/* <div className="row-start-1 bg-red-500 p-6"></div> */}
