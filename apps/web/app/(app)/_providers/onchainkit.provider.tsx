@@ -14,6 +14,7 @@ export function OnchainKitProvider(props: { children: ReactNode }) {
       config={{
         appearance: {
           mode: "auto",
+          theme: "custom",
         },
       }}
     >
