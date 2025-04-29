@@ -36,7 +36,7 @@ export function Footer() {
                     aria-label="go home"
                     className="mx-auto block size-fit">
                     {/* <Logo /> */}
-                    Logo
+                    SkillBased
                 </Link>
 
                 <div className="my-8 flex flex-wrap justify-center gap-6 text-sm">
@@ -158,7 +158,7 @@ export function Footer() {
                         </svg>
                     </Link>
                 </div>
-                <span className="text-muted-foreground block text-center text-sm"> © {new Date().getFullYear()} Tailark, All rights reserved</span>
+                <span className="text-muted-foreground block text-center text-sm"> © {new Date().getFullYear()} Mint Up Corp, All rights reserved</span>
             </div>
         </footer>
     )

@@ -37,7 +37,7 @@ export const Header = () => {
                         <div className="flex w-full justify-between lg:w-auto">
                             <Link href="/" aria-label="home" className="flex items-center space-x-2">
                                 {/* <Logo /> */}
-                                Logo
+                                SkillBased
                             </Link>
 
                             <button

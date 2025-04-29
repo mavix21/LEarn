@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useTranslations } from 'next-intl'
 import { AnimatedGroup } from './AnimatedGroup'
 import { TextEffect } from './TextEffect'
 import { Button } from '@skill-based/ui/components/button'
@@ -28,6 +29,8 @@ const transitionVariants = {
 }
 
 export function Hero() {
+    const t = useTranslations('landing.hero')
+
     return (
         <>
             <main className="overflow-hidden">
@@ -102,7 +105,7 @@ export function Hero() {
                                     speedSegment={0.3}
                                     as="h1"
                                     className="mt-8 text-balance text-6xl md:text-7xl lg:mt-16 xl:text-[5.25rem]">
-                                    Modern Solutions for Customer Engagement
+                                    {t('title')}
                                 </TextEffect>
                                 <TextEffect
                                     per="line"
@@ -111,7 +114,7 @@ export function Hero() {
                                     delay={0.5}
                                     as="p"
                                     className="mx-auto mt-8 max-w-2xl text-balance text-lg">
-                                    Highly customizable components for building modern websites and applications that look and feel the way you mean it.
+                                    {t('description')}
                                 </TextEffect>
 
                                 <AnimatedGroup
@@ -135,7 +138,7 @@ export function Hero() {
                                             size="lg"
                                             className="rounded-xl px-5 text-base">
                                             <Link href="#link">
-                                                <span className="text-nowrap">Start Building</span>
+                                                <span className="text-nowrap">{t('cta.primary')}</span>
                                             </Link>
                                         </Button>
                                     </div>
@@ -146,7 +149,7 @@ export function Hero() {
                                         variant="ghost"
                                         className="h-10.5 rounded-xl px-5">
                                         <Link href="#link">
-                                            <span className="text-nowrap">Request a demo</span>
+                                            <span className="text-nowrap">{t('cta.secondary')}</span>
                                         </Link>
                                     </Button>
                                 </AnimatedGroup>

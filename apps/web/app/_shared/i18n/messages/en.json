@@ -1,1 +1,42 @@
-{}
+{
+  "landing": {
+    "hero": {
+      "title": "Your Professional Identity on Web3",
+      "description": "Build your verifiable professional profile on the blockchain. Showcase your skills, credentials, and achievements with full ownership and privacy control.",
+      "cta": {
+        "primary": "Create Profile",
+        "secondary": "Learn More"
+      }
+    },
+    "features": {
+      "title": "Your Professional Identity, Reimagined",
+      "description": "Experience the future of professional networking with blockchain-verified credentials, complete data ownership, and enhanced privacy controls.",
+      "items": {
+        "verifiable": {
+          "title": "Verifiable Credentials",
+          "description": "Showcase your skills and achievements with blockchain-verified credentials and SBTs."
+        },
+        "base": {
+          "title": "Base Integration",
+          "description": "Built on Base blockchain for optimal performance and seamless user experience."
+        },
+        "privacy": {
+          "title": "Privacy Control",
+          "description": "Full control over your data with wallet-based authentication and selective disclosure."
+        },
+        "profile": {
+          "title": "Custom Profile",
+          "description": "Personalize your professional identity with Basenames and customizable profile elements."
+        },
+        "networking": {
+          "title": "Smart Networking",
+          "description": "Connect with professionals through decentralized networking features."
+        },
+        "ai": {
+          "title": "AI-Enhanced",
+          "description": "Smart suggestions and insights powered by AI to enhance your professional growth."
+        }
+      }
+    }
+  }
+}
