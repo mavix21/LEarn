@@ -1,11 +1,20 @@
 {
   "landing": {
+    "navigation": {
+      "features": "Características",
+      "solution": "Solución"
+    },
+    "header": {
+      "cta": {
+        "primary": "Empezar"
+      }
+    },
     "hero": {
       "title": "Tu Identidad Profesional en Web3",
       "description": "Construye tu perfil profesional verificable en la blockchain. Muestra tus habilidades, credenciales y logros con total propiedad y control de privacidad.",
       "cta": {
-        "primary": "Crear Perfil",
-        "secondary": "Saber Más"
+        "primary": "Empieza ahora",
+        "secondary": "Saber más"
       }
     },
     "features": {
@@ -14,7 +23,7 @@
       "items": {
         "verifiable": {
           "title": "Credenciales Verificables",
-          "description": "Muestra tus habilidades y logros con credenciales y SBTs verificados en blockchain."
+          "description": "Muestra tus habilidades y logros con credenciales y Soulbound Tokens verificados en blockchain."
         },
         "base": {
           "title": "Integración con Base",
@@ -37,6 +46,9 @@
           "description": "Sugerencias e insights inteligentes impulsados por IA para mejorar tu crecimiento profesional."
         }
       }
+    },
+    "footer": {
+      "copyright": "Mint Up Corp, Todos los derechos reservados"
     }
   }
 }

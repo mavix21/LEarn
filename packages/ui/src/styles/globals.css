@@ -171,6 +171,11 @@
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
   }

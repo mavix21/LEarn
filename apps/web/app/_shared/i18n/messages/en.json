@@ -1,11 +1,20 @@
 {
   "landing": {
+    "navigation": {
+      "features": "Features",
+      "solution": "Solution"
+    },
+    "header": {
+      "cta": {
+        "primary": "Get Started"
+      }
+    },
     "hero": {
       "title": "Your Professional Identity on Web3",
       "description": "Build your verifiable professional profile on the blockchain. Showcase your skills, credentials, and achievements with full ownership and privacy control.",
       "cta": {
-        "primary": "Create Profile",
-        "secondary": "Learn More"
+        "primary": "Start now",
+        "secondary": "Learn more"
       }
     },
     "features": {
@@ -14,7 +23,7 @@
       "items": {
         "verifiable": {
           "title": "Verifiable Credentials",
-          "description": "Showcase your skills and achievements with blockchain-verified credentials and SBTs."
+          "description": "Showcase your skills and achievements with blockchain-verified credentials and Soulbound Tokens."
         },
         "base": {
           "title": "Base Integration",
@@ -37,6 +46,9 @@
           "description": "Smart suggestions and insights powered by AI to enhance your professional growth."
         }
       }
+    },
+    "footer": {
+      "copyright": "Mint Up Corp, All rights reserved"
     }
   }
 }

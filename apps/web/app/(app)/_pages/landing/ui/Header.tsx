@@ -5,15 +5,18 @@ import { Menu, X } from "lucide-react"
 import React from "react"
 import { cn } from "@skill-based/ui/lib/utils"
 import { Button } from "@skill-based/ui/components/button"
+import { useTranslations } from "next-intl"
 
 const menuItems = [
-    { name: "Features", href: "#link" },
-    { name: "Solution", href: "#link" },
-    { name: "Pricing", href: "#link" },
-    { name: "About", href: "#link" },
+    { name: 'features', href: "#features" },
+    { name: 'solution', href: "#solution" },
+    // { name: "Pricing", href: "#link" },
+    // { name: "About", href: "#link" },
 ]
 
-export const Header = () => {
+export function Header() {
+    const t = useTranslations('landing')
+
     const [menuState, setMenuState] = React.useState(false)
     const [isScrolled, setIsScrolled] = React.useState(false)
 
@@ -58,7 +61,7 @@ export const Header = () => {
                                             href={item.href}
                                             className="text-muted-foreground hover:text-accent-foreground block duration-150"
                                         >
-                                            <span>{item.name}</span>
+                                            <span>{t(`navigation.${item.name}`)}</span>
                                         </Link>
                                     </li>
                                 ))}
@@ -74,26 +77,16 @@ export const Header = () => {
                                                 href={item.href}
                                                 className="text-muted-foreground hover:text-accent-foreground block duration-150"
                                             >
-                                                <span>{item.name}</span>
+                                                <span>{t(`navigation.${item.name}`)}</span>
                                             </Link>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
                             <div className="flex w-full flex-col space-y-3 sm:flex-row sm:gap-3 sm:space-y-0 md:w-fit">
-                                <Button asChild variant="outline" size="sm" className={cn(isScrolled && "lg:hidden")}>
+                                <Button asChild size="sm" className={"lg:inline-flex"}>
                                     <Link href="#">
-                                        <span>Login</span>
-                                    </Link>
-                                </Button>
-                                <Button asChild size="sm" className={cn(isScrolled && "lg:hidden")}>
-                                    <Link href="#">
-                                        <span>Sign Up</span>
-                                    </Link>
-                                </Button>
-                                <Button asChild size="sm" className={cn(isScrolled ? "lg:inline-flex" : "hidden")}>
-                                    <Link href="#">
-                                        <span>Get Started</span>
+                                        <span>{t('header.cta.primary')}</span>
                                     </Link>
                                 </Button>
                             </div>
