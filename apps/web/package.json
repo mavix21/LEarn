@@ -17,7 +17,7 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@coinbase/onchainkit": "latest",
+    "@coinbase/onchainkit": "^0.35.2",
     "@skill-based/db": "workspace:*",
     "@skill-based/ui": "workspace:*",
     "@t3-oss/env-nextjs": "^0.13.0",
