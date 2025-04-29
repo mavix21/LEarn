@@ -1,1 +1,1 @@
-export { default as FeedPage } from "./FeedPage";
+export { FeedPage } from "./FeedPage";
