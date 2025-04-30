@@ -8,6 +8,12 @@ import {
   Name,
   Socials,
 } from "@coinbase/onchainkit/identity";
+import {
+  ConnectWallet,
+  Wallet,
+  WalletDropdown,
+  WalletDropdownDisconnect,
+} from "@coinbase/onchainkit/wallet";
 import { base } from "viem/chains";
 import { useAccount } from "wagmi";
 
@@ -21,7 +27,6 @@ const Identity = dynamic(
     ssr: false,
   },
 );
-import { ConnectWallet, Wallet, WalletDropdown, WalletDropdownDisconnect } from '@coinbase/onchainkit/wallet';
 
 export default function ProfileCard({ className }: { className?: string }) {
   const { isConnected, address, isConnecting } = useAccount();
@@ -76,7 +81,7 @@ export default function ProfileCard({ className }: { className?: string }) {
             <Name />
           </ConnectWallet>
           <WalletDropdown>
-            <Identity className="px-4 pt-3 pb-2" hasCopyAddressOnClick>
+            <Identity className="px-4 pb-2 pt-3" hasCopyAddressOnClick>
               <Avatar />
               <Name />
               <Address />
