@@ -4,7 +4,7 @@ globs:
 alwaysApply: true
 ---
 This is a TypeScript monorepo. It consists in one Next.js app inside apps/web. You are only allow to edit the 
-Next.js app in apps/web, and the ui package in packages/ui.
+Next.js app in apps/web, the ui package in packages/ui, and the contracts package in package/contract.
 
 If you need to add a shadcn component that is not already in packages/ui, you must first navigate to apps/web,
 and then use the shadcn cli command from there:
