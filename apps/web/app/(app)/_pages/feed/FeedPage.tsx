@@ -12,30 +12,31 @@ import {
   Settings,
   Triangle,
   User,
-  User2,
-  User2Icon,
 } from "lucide-react";
 
 import { ProfileCard } from "@/app/(app)/_pages/feed/ui";
 
 export function FeedPage() {
   return (
-    <div className="grid h-svh grid-cols-[1fr_2fr_1fr] grid-rows-[3rem_1fr]">
+    <div className="grid h-svh grid-cols-1 grid-rows-[3rem_1fr] lg:grid-cols-[1fr_2fr_1fr]">
       {/* <div className="row-start-1 bg-red-500 p-6"></div> */}
-      <div className="col-span-1 col-start-1 row-start-1 flex items-center justify-center gap-2 border-b">
+      <div className="col-span-1 col-start-1 row-start-1 hidden items-center justify-center gap-2 border-b lg:flex">
         <Asterisk />
         <span className="font-semibold">SkillBased</span>
       </div>
-      <div className="col-span-1 col-start-3 row-start-1 flex items-center justify-center gap-2 border-b">
+
+      <div className="col-span-1 col-start-3 row-start-1 hidden items-center justify-center gap-2 border-b lg:flex">
         <Asterisk />
       </div>
 
-      <ProfileCard className="row-start-2 mx-auto max-w-xs" />
+      <div className="row-start-2 mx-auto hidden max-w-xs lg:block">
+        <ProfileCard />
+      </div>
 
       {/* Main Content */}
-      <div className="col-start-2 row-span-2 row-start-1 h-svh flex-1 overflow-hidden border-x">
+      <div className="col-start-1 row-span-2 row-start-1 flex h-svh flex-1 flex-col-reverse justify-center overflow-hidden border-x lg:col-start-2 lg:flex-col">
         {/* Top Navigation */}
-        <div className="sticky top-0 z-10 flex h-12 items-center justify-center gap-8 border-b p-4 backdrop-blur-sm">
+        <div className="flex h-12 items-center justify-center gap-8 border-t p-4 backdrop-blur-sm lg:border-b">
           <Home />
           <Search />
           <Heart />
@@ -43,7 +44,7 @@ export function FeedPage() {
           <Bookmark />
         </div>
 
-        <div className="h-full overflow-y-auto">
+        <div className="mx-auto h-full max-w-xl overflow-y-auto border-x lg:max-w-full lg:border-x-0">
           {/* Post Creation */}
           <div className="border-b p-4">
             <div className="flex items-start gap-3">
