@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import {
   Heart,
@@ -5,11 +8,28 @@ import {
   MoreHorizontal,
   PaperclipIcon as PaperClip,
   Repeat2,
+  SendHorizonal,
   Triangle,
   User,
 } from "lucide-react";
 
+import { Button } from "@skill-based/ui/components/button";
+import { Textarea } from "@skill-based/ui/components/textarea";
+
 export function FeedPage() {
+  const [post, setPost] = useState("");
+  const [attachments, setAttachments] = useState<File[]>([]);
+
+  const handleSubmit = () => {
+    if (post.trim() || attachments.length > 0) {
+      console.log("Submitting post:", post);
+      console.log("Attachments:", attachments);
+      // Here you would typically send the post to your backend
+      setPost("");
+      setAttachments([]);
+    }
+  };
+
   return (
     <div
       className="bg-muted h-full overflow-y-auto px-4"
@@ -23,14 +43,51 @@ export function FeedPage() {
           <div className="flex items-start gap-3">
             <User className="text-muted-foreground" size={20} />
             <div className="flex-1">
-              <p className="text-muted-foreground">
+              {/* <p className="text-muted-foreground">
                 Share something cool today
-              </p>
+              </p> */}
+              <Textarea
+                value={post}
+                onChange={(e) => {
+                  setPost(e.target.value);
+                  // Auto-resize the textarea
+                  e.target.style.height = "auto";
+                  e.target.style.height = `${e.target.scrollHeight}px`;
+                }}
+                placeholder="Share something cool today"
+                className="max-h-[200px] min-h-[40px] flex-1 resize-none overflow-y-auto border-none py-2 shadow-none focus-visible:ring-0"
+                rows={1}
+                // onFocus={(e) => {
+                //   // Set initial height on focus
+                //   e.target.style.height = "auto";
+                //   e.target.style.height = `${e.target.scrollHeight}px`;
+                // }}
+              />
               <div className="mt-2">
-                <PaperClip className="text-muted-foreground" size={20} />
+                {/* <PaperClip className="text-muted-foreground" size={20} /> */}
+                <label htmlFor="file-upload" className="cursor-pointer">
+                  <PaperClip className="text-muted-foreground hover:text-foreground h-5 w-5 transition-colors" />
+                  <span className="sr-only">Attach files</span>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    multiple
+                    className="hidden"
+                    // onChange={handleAttachment}
+                  />
+                </label>
               </div>
             </div>
-            <Triangle className="text-muted-foreground" size={20} />
+            {/* <SendHorizonal className="text-muted-foreground" size={20} /> */}
+            <Button
+              size="icon"
+              variant="ghost"
+              onClick={handleSubmit}
+              disabled={!post.trim()}
+            >
+              <SendHorizonal className="h-5 w-5" />
+              <span className="sr-only">Send post</span>
+            </Button>
           </div>
         </div>
         {/* Posts */}
