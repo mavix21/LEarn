@@ -10,7 +10,10 @@ import { base } from "wagmi/chains";
 import { getConfig } from "@/app/_shared/config/wagmi";
 import { env } from "@/src/env";
 
-type Props = { children: ReactNode; cookie?: string };
+interface Props {
+  children: ReactNode;
+  cookie?: string | null;
+}
 
 const queryClient = new QueryClient();
 

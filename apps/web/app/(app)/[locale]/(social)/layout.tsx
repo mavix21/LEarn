@@ -10,7 +10,7 @@ export default async function Layout({
   const cookie = (await headers()).get("cookie");
 
   return (
-    <OnchainProviders cookie={cookie ?? undefined}>
+    <OnchainProviders cookie={cookie}>
       <ConvexClientProvider>{children}</ConvexClientProvider>
     </OnchainProviders>
   );
