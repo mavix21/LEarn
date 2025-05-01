@@ -38,7 +38,7 @@ export default function NavBar() {
     <div className="flex h-12 items-center justify-center gap-6 border-t p-4 backdrop-blur-sm lg:border-b lg:border-t-0">
       <AnimatedBackground
         defaultValue={lastPath}
-        className="active-nav-item bg-muted rounded-xl"
+        className="active-nav-item bg-active rounded-xl"
         transition={{
           type: "spring",
           bounce: 0.2,
@@ -50,7 +50,7 @@ export default function NavBar() {
             href={item.href}
             key={item.href}
             data-id={item.href}
-            className="text-muted-foreground/40 hover:text-muted-foreground p-1.5 transition-colors"
+            className="text-muted-foreground hover:text-active-foreground p-1.5 transition-colors"
           >
             <item.icon size={26} />
           </Link>

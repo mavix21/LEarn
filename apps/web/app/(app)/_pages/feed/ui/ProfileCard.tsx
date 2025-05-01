@@ -23,7 +23,7 @@ import { cn } from "@skill-based/ui/lib/utils";
 const Identity = dynamic(
   () => import("@coinbase/onchainkit/identity").then((mod) => mod.Identity),
   {
-    loading: () => <Skeleton className="h-16 w-72" />,
+    loading: () => <Skeleton className="h-16 w-full" />,
     ssr: false,
   },
 );
@@ -34,7 +34,7 @@ export default function ProfileCard({ className }: { className?: string }) {
   console.log("address", address);
 
   return (
-    <div className={cn("p-6", className)}>
+    <div className={cn("w-full p-3", className)}>
       <div className="flex flex-col items-center justify-center gap-2">
         {/* <AvatarWithLoading
           className="size-32"
