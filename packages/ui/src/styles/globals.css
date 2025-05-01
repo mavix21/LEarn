@@ -181,7 +181,7 @@
   }
 
   .active-nav-item + div svg {
-    @apply text-muted-foreground;
+    @apply text-foreground;
   }
 }
 
