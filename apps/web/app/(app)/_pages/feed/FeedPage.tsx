@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import {
+  File,
   Heart,
   MessageCircle,
   MoreHorizontal,
@@ -11,14 +12,27 @@ import {
   SendHorizonal,
   Triangle,
   User,
+  X,
 } from "lucide-react";
 
+import { Badge } from "@skill-based/ui/components/badge";
 import { Button } from "@skill-based/ui/components/button";
 import { Textarea } from "@skill-based/ui/components/textarea";
 
 export function FeedPage() {
   const [post, setPost] = useState("");
   const [attachments, setAttachments] = useState<File[]>([]);
+
+  const handleAttachment = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const newFiles = Array.from(e.target.files);
+      setAttachments((prev) => [...prev, ...newFiles]);
+    }
+  };
+
+  const removeAttachment = (index: number) => {
+    setAttachments((prev) => prev.filter((_, i) => i !== index));
+  };
 
   const handleSubmit = () => {
     if (post.trim() || attachments.length > 0) {
@@ -63,8 +77,46 @@ export function FeedPage() {
                 //   e.target.style.height = `${e.target.scrollHeight}px`;
                 // }}
               />
-              <div className="mt-2">
-                {/* <PaperClip className="text-muted-foreground" size={20} /> */}
+
+              {attachments.length > 0 && (
+                <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
+                  {attachments.map((file, index) => (
+                    <div key={index} className="group relative">
+                      {file.type.startsWith("image/") ? (
+                        <div className="bg-muted relative aspect-square overflow-hidden rounded-md border">
+                          <Image
+                            src={
+                              URL.createObjectURL(file) || "/placeholder.svg"
+                            }
+                            alt={file.name}
+                            className="h-full w-full object-cover"
+                            width={10}
+                            height={10}
+                          />
+                        </div>
+                      ) : (
+                        <div className="bg-muted flex aspect-square flex-col items-center justify-center rounded-md border p-2">
+                          <File className="text-muted-foreground h-8 w-8" />
+                          <span className="mt-1 w-full truncate text-center text-xs">
+                            {file.name}
+                          </span>
+                        </div>
+                      )}
+                      <Button
+                        size="icon"
+                        variant="destructive"
+                        className="absolute -right-2 -top-2 h-6 w-6 opacity-0 transition-opacity group-hover:opacity-100"
+                        onClick={() => removeAttachment(index)}
+                      >
+                        <X className="h-3 w-3" />
+                        <span className="sr-only">Remove attachment</span>
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <div className="mt-6 flex items-center gap-2">
                 <label htmlFor="file-upload" className="cursor-pointer">
                   <PaperClip className="text-muted-foreground hover:text-foreground h-5 w-5 transition-colors" />
                   <span className="sr-only">Attach files</span>
@@ -73,12 +125,20 @@ export function FeedPage() {
                     type="file"
                     multiple
                     className="hidden"
-                    // onChange={handleAttachment}
+                    onChange={handleAttachment}
                   />
                 </label>
+
+                {attachments.length > 0 && (
+                  <Badge variant="secondary" className="text-xs">
+                    {attachments.length}{" "}
+                    {attachments.length === 1 ? "file" : "files"}
+                  </Badge>
+                )}
               </div>
             </div>
             {/* <SendHorizonal className="text-muted-foreground" size={20} /> */}
+
             <Button
               size="icon"
               variant="ghost"
