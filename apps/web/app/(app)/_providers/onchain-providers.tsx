@@ -15,8 +15,6 @@ interface Props {
   cookie?: string | null;
 }
 
-const queryClient = new QueryClient();
-
 export function OnchainProviders({ children, cookie }: Props) {
   const initialState = cookieToInitialState(getConfig(), cookie);
   const [config] = useState(() => getConfig());
