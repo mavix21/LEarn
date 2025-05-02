@@ -50,7 +50,6 @@ export default defineSchema({
     bookmarks: v.optional(v.id("bookmarks")),
     comments: v.optional(v.id("comments")),
     likedNotifications: v.optional(v.id("notifications")),
-    createdAt: v.optional(v.number()), //timestamp en milisegundos
   })
     .index("by_authorAddress", ["authorAddress"])
     .index("by_authorId", ["authorId"]),
@@ -66,7 +65,6 @@ export default defineSchema({
     authorId: v.id("users"),
     authorAddress: v.string(),
     content: v.string(),
-    createdAt: v.number(), //timestamp en milisegundos
   })
     .index("by_post", ["postId"])
     .index("by_authorId", ["authorId"])
@@ -85,7 +83,6 @@ export default defineSchema({
     postId: v.id("posts"),
     userId: v.id("users"),
     userAddress: v.string(),
-    createdAt: v.number(), //timestamp en milisegundos
   })
     .index("by_post", ["postId"])
     .index("by_userId", ["userId"])
@@ -99,7 +96,6 @@ export default defineSchema({
     postId: v.id("posts"),
     type: v.union(v.literal("like"), v.literal("comment"), v.literal("follow")),
     read: v.boolean(),
-    createdAt: v.number(), //timestamp en milisegundos
   })
     .index("by_recipientAddress", ["recipientAddress"])
     .index("by_issuerAddress", ["issuerAddress"])

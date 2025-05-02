@@ -41,6 +41,6 @@ export const createPost = mutation({
 
 export const getPosts = query({
   handler: async (ctx) => {
-    return ctx.db.query("posts").collect();
+    return ctx.db.query("posts").order("desc").collect();
   },
 });
