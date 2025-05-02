@@ -39,12 +39,12 @@ export function FeedPage() {
     setAttachments((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (post.trim() || attachments.length > 0) {
       console.log("Submitting post:", post);
       console.log("Attachments:", attachments);
 
-      createPost({
+      await createPost({
         content: post,
         authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
         authorAddress: "0x4029490B2Dedd37906F2911B444d081caAad8E71",

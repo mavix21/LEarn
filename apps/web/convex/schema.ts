@@ -45,12 +45,12 @@ export default defineSchema({
     content: v.string(),
     authorId: v.id("users"),
     authorAddress: v.string(),
-    attachments: v.id("media"),
-    likes: v.id("likes"),
-    bookmarks: v.id("bookmarks"),
-    comments: v.id("comments"),
-    likedNotifications: v.id("notifications"),
-    createdAt: v.number(), //timestamp en milisegundos
+    attachments: v.optional(v.id("media")),
+    likes: v.optional(v.id("likes")),
+    bookmarks: v.optional(v.id("bookmarks")),
+    comments: v.optional(v.id("comments")),
+    likedNotifications: v.optional(v.id("notifications")),
+    createdAt: v.optional(v.number()), //timestamp en milisegundos
   })
     .index("by_authorAddress", ["authorAddress"])
     .index("by_authorId", ["authorId"]),
