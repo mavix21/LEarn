@@ -28,56 +28,55 @@ import {
 
 export function ProfilePage() {
   return (
-    <div className="container mx-auto h-full max-w-6xl overflow-y-auto">
+    <div className="container mx-auto h-full max-w-6xl space-y-6 overflow-y-auto">
       {/* Profile Header */}
-      <div className="mb-6">
+      <div className="space-y-6">
         {/* Background Image */}
         <div className="relative h-48 w-full rounded-lg">
           <Image
             src="/placeholder.svg"
             alt="Profile background"
             fill
-            className="bg-green-100 object-cover"
+            className="object-cover"
           />
         </div>
 
         {/* Profile Info */}
-        <div className="relative z-10 -mt-16 flex flex-col px-4 md:-mt-20 md:flex-row md:items-end">
-          <Avatar className="h-32 w-32 rounded-full border-4 border-white">
-            <AvatarImage
-              src="/placeholder.svg?height=128&width=128"
-              alt="Assaf Rappaport"
-            />
-            <AvatarFallback>AR</AvatarFallback>
-          </Avatar>
-
-          <div className="mb-2 mt-4 flex-grow md:ml-6 md:mt-0">
-            <h1 className="text-2xl font-bold">Assaf Rappaport</h1>
-            <p className="text-gray-600">VP of Customer Operations</p>
-            <p className="mt-1 text-sm text-gray-500">San Francisco, CA USA</p>
+        <div className="space-y-4 px-4">
+          <div className="relative z-10 -mt-24 flex flex-col gap-4 md:-mt-14 md:flex-row md:items-end">
+            <Avatar className="border-primary size-32 rounded-full border-4">
+              <AvatarImage
+                src="/placeholder.svg?height=128&width=128"
+                alt="Assaf Rappaport"
+              />
+              <AvatarFallback>AR</AvatarFallback>
+            </Avatar>
+            <div className="-mt-4 flex-grow">
+              <h1 className="text-2xl font-bold">Assaf Rappaport</h1>
+              <p className="text-muted-foreground">VP of Customer Operations</p>
+              <p className="text-muted-foreground/50 mt-1 text-sm">
+                San Francisco, CA USA
+              </p>
+            </div>
           </div>
 
-          <div className="mt-4 flex items-center space-x-2 md:mt-0">
+          <div className="flex items-center space-x-2">
             <div className="flex space-x-3">
               <Button variant="ghost" size="icon" className="rounded-full">
-                <Twitter className="h-5 w-5 text-gray-600" />
+                <Twitter className="text-muted-foreground h-5 w-5" />
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full">
-                <Mail className="h-5 w-5 text-gray-600" />
+                <Mail className="text-muted-foreground h-5 w-5" />
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full">
-                <FileText className="h-5 w-5 text-gray-600" />
+                <FileText className="text-muted-foreground h-5 w-5" />
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full">
-                <Globe className="h-5 w-5 text-gray-600" />
+                <Globe className="text-muted-foreground h-5 w-5" />
               </Button>
             </div>
 
-            <Button
-              variant="outline"
-              size="sm"
-              className="rounded-full border-green-200 bg-green-50 text-green-600 hover:bg-green-100"
-            >
+            <Button variant="default" size="sm" className="rounded-full">
               <Edit2 className="mr-1 h-4 w-4" />
               Edit Profile
             </Button>
@@ -85,47 +84,17 @@ export function ProfilePage() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 px-4 md:grid-cols-3">
+      <div className="px-4">
         {/* Main Content */}
-        <div className="md:col-span-2">
+        <div className="w-full">
           <Tabs defaultValue="overview" className="w-full">
-            <TabsList className="mb-6 h-auto w-full justify-start rounded-none border-b bg-transparent p-0">
-              <TabsTrigger
-                value="overview"
-                className="rounded-none border-b-2 border-transparent px-4 py-2 text-gray-600 data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:text-green-600"
-              >
-                Overview
-              </TabsTrigger>
-              <TabsTrigger
-                value="groups"
-                className="rounded-none border-b-2 border-transparent px-4 py-2 text-gray-600 data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:text-green-600"
-              >
-                Groups
-              </TabsTrigger>
-              <TabsTrigger
-                value="posts"
-                className="rounded-none border-b-2 border-transparent px-4 py-2 text-gray-600 data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:text-green-600"
-              >
-                Posts
-              </TabsTrigger>
-              <TabsTrigger
-                value="pages"
-                className="rounded-none border-b-2 border-transparent px-4 py-2 text-gray-600 data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:text-green-600"
-              >
-                Pages
-              </TabsTrigger>
-              <TabsTrigger
-                value="events"
-                className="rounded-none border-b-2 border-transparent px-4 py-2 text-gray-600 data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:text-green-600"
-              >
-                Events
-              </TabsTrigger>
-              <TabsTrigger
-                value="more"
-                className="rounded-none border-b-2 border-transparent px-4 py-2 text-gray-600 data-[state=active]:border-green-500 data-[state=active]:bg-transparent data-[state=active]:text-green-600"
-              >
-                More
-              </TabsTrigger>
+            <TabsList>
+              <TabsTrigger value="overview">Overview</TabsTrigger>
+              <TabsTrigger value="groups">Groups</TabsTrigger>
+              <TabsTrigger value="posts">Posts</TabsTrigger>
+              <TabsTrigger value="pages">Pages</TabsTrigger>
+              <TabsTrigger value="events">Events</TabsTrigger>
+              <TabsTrigger value="more">More</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="mt-0">
@@ -133,15 +102,11 @@ export function ProfilePage() {
               <div className="mb-8">
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="text-xl font-semibold">Summary</h2>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="p-1 text-green-600 hover:text-green-700"
-                  >
+                  <Button variant="ghost" size="sm" className="p-1">
                     <Edit2 className="h-4 w-4" />
                   </Button>
                 </div>
-                <div className="space-y-4 text-gray-700">
+                <div className="space-y-4">
                   <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
