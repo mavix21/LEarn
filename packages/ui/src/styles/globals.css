@@ -59,7 +59,7 @@
     0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
 
-  --ock-bg-default: none;
+  --ock-bg-default: var(--background);
 }
 
 .dark {
@@ -113,6 +113,8 @@
   --shadow-xl:
     0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
   --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+
+  --ock-bg-default: var(--background);
 }
 
 @theme inline {
@@ -173,7 +175,6 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
   }

@@ -1,4 +1,10 @@
-@layer theme, base, onchainkit, components, utilities;
+@layer theme, base, onchainkit, custom, components, utilities;
 
 @import "@coinbase/onchainkit/styles.css" layer(onchainkit);
 @import "@skill-based/ui/globals.css";
+
+@layer custom {
+  * {
+    @apply border-border outline-ring/50;
+  }
+}
