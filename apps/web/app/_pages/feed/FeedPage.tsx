@@ -63,7 +63,7 @@ export function FeedPage() {
         <PostEditor />
 
         {/* Posts */}
-        {posts?.map((post) => <Post key={post._id} content={post.content} />)}
+        {posts?.map((post) => <Post key={post._id} content={post.content} creationTime={post._creationTime}/>)}
         {/* Second Post */}
       </div>
     </div>

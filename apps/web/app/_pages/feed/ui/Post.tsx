@@ -8,11 +8,14 @@ import {
   User,
 } from "lucide-react";
 
+import { formatRelativeDate } from "@skill-based/ui/lib/utils";
+
 interface PostProps {
   content: string;
+  creationTime: number;
 }
 
-export function Post({ content }: PostProps) {
+export function Post({ content, creationTime }: PostProps) {
   return (
     <div className="border-b">
       <div className="p-4">
@@ -24,7 +27,9 @@ export function Post({ content }: PostProps) {
             <div className="flex justify-between">
               <div>
                 <span className="font-medium">aura</span>
-                <span className="text-muted-foreground ml-2 text-sm">2min</span>
+                <span className="text-muted-foreground ml-2 text-sm">
+                  {formatRelativeDate(creationTime)}
+                </span>
               </div>
               <MoreHorizontal size={20} className="text-muted-foreground" />
             </div>
