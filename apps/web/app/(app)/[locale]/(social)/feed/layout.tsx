@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Toaster } from "@skill-based/ui/components/sonner";
 
-import { ProfileCard } from "@/app/(app)/_pages/feed/ui";
+import { ProfileCard } from "@/app/_pages/feed/ui";
 
 import Trending from "../Trending";
 

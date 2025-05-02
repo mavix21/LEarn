@@ -3,8 +3,8 @@ import { Asterisk, Settings } from "lucide-react";
 
 import { ThemeSwitcher } from "@/app/_shared/ui/theme-switcher";
 
-import { ProfileCard } from "../../_pages/feed/ui";
 import { ConvexClientProvider, OnchainProviders } from "../../_providers";
+import { ProfileCard } from "../../../_pages/feed/ui";
 import NavBar from "./NavBar";
 import Trending from "./Trending";
 

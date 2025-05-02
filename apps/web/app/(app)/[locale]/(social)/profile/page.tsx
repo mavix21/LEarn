@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ProfilePage } from "@/app/(app)/_pages/profile/ProfilePage";
+import { ProfilePage } from "@/app/_pages/profile";
 
 export default function Page() {
   return (
