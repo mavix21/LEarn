@@ -16,7 +16,7 @@ import { api } from "@/convex/_generated/api";
 export function PostEditor() {
   const createPost = useMutation(api.posts.createPost);
   const editor = useEditor({
-    immediatelyRender: true,
+    immediatelyRender: false,
     editorProps: {
       attributes: {
         class: "focus:outline-none",
