@@ -45,7 +45,7 @@
     "@skill-based/eslint-config": "workspace:*",
     "@skill-based/prettier-config": "workspace:*",
     "@skill-based/tsconfig": "workspace:*",
-    "@types/node": "^22.15.2",
+    "@types/node": "^22.15.3",
     "dotenv-cli": "^8.0.0",
     "drizzle-kit": "^0.31.0",
     "eslint": "catalog:",

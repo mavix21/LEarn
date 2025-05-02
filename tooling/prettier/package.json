@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@skill-based/tsconfig": "workspace:*",
-    "@types/node": "^22.15.2",
+    "@types/node": "^22.15.3",
     "typescript": "catalog:"
   },
   "prettier": "@skill-based/prettier-config"
