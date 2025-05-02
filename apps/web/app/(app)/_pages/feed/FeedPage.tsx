@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import { useMutation } from "convex/react";
 import {
   File,
   Heart,
@@ -19,9 +20,13 @@ import { Badge } from "@skill-based/ui/components/badge";
 import { Button } from "@skill-based/ui/components/button";
 import { Textarea } from "@skill-based/ui/components/textarea";
 
+import type { Id } from "@/convex/_generated/dataModel";
+import { api } from "@/convex/_generated/api";
+
 export function FeedPage() {
   const [post, setPost] = useState("");
   const [attachments, setAttachments] = useState<File[]>([]);
+  const createPost = useMutation(api.posts.createPost);
 
   const handleAttachment = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -38,6 +43,15 @@ export function FeedPage() {
     if (post.trim() || attachments.length > 0) {
       console.log("Submitting post:", post);
       console.log("Attachments:", attachments);
+
+      createPost({
+        content: post,
+        authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
+        authorAddress: "0x4029490B2Dedd37906F2911B444d081caAad8E71",
+      }).catch((error) => {
+        console.error("Failed to create post:", error);
+      });
+
       // Here you would typically send the post to your backend
       setPost("");
       setAttachments([]);
