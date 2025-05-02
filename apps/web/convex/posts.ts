@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 
 export const createPost = mutation({
   args: {
@@ -36,5 +36,11 @@ export const createPost = mutation({
       // likedNotifications: args.likedNotifications,
       // createdAt: args.createdAt ?? 0,
     });
+  },
+});
+
+export const getPosts = query({
+  handler: async (ctx) => {
+    return ctx.db.query("posts").collect();
   },
 });

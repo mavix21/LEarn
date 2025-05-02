@@ -1,62 +1,54 @@
-"use client";
-
-import { useState } from "react";
 import Image from "next/image";
-import { useMutation } from "convex/react";
+import { useQuery } from "convex/react";
 import {
-  File,
   Heart,
   MessageCircle,
   MoreHorizontal,
-  PaperclipIcon as PaperClip,
   Repeat2,
-  SendHorizonal,
   Triangle,
   User,
-  X,
 } from "lucide-react";
 
-import { Badge } from "@skill-based/ui/components/badge";
-import { Button } from "@skill-based/ui/components/button";
-import { Textarea } from "@skill-based/ui/components/textarea";
-
-import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
+import { PostEditor } from "./ui";
+
 export function FeedPage() {
-  const [post, setPost] = useState("");
-  const [attachments, setAttachments] = useState<File[]>([]);
-  const createPost = useMutation(api.posts.createPost);
+  // const [post, setPost] = useState("");
+  // const [attachments, setAttachments] = useState<File[]>([]);
+  // const createPost = useMutation(api.posts.createPost);
 
-  const handleAttachment = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files);
-      setAttachments((prev) => [...prev, ...newFiles]);
-    }
-  };
+  // const handleAttachment = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files) {
+  //     const newFiles = Array.from(e.target.files);
+  //     setAttachments((prev) => [...prev, ...newFiles]);
+  //   }
+  // };
 
-  const removeAttachment = (index: number) => {
-    setAttachments((prev) => prev.filter((_, i) => i !== index));
-  };
+  // const removeAttachment = (index: number) => {
+  //   setAttachments((prev) => prev.filter((_, i) => i !== index));
+  // };
 
-  const handleSubmit = async () => {
-    if (post.trim() || attachments.length > 0) {
-      console.log("Submitting post:", post);
-      console.log("Attachments:", attachments);
+  // const handleSubmit = async () => {
+  //   if (post.trim() || attachments.length > 0) {
+  //     console.log("Submitting post:", post);
+  //     console.log("Attachments:", attachments);
 
-      await createPost({
-        content: post,
-        authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
-        authorAddress: "0x4029490B2Dedd37906F2911B444d081caAad8E71",
-      }).catch((error) => {
-        console.error("Failed to create post:", error);
-      });
+  //     await createPost({
+  //       content: post,
+  //       authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
+  //       authorAddress: "0x4029490B2Dedd37906F2911B444d081caAad8E71",
+  //     }).catch((error) => {
+  //       console.error("Failed to create post:", error);
+  //     });
 
-      // Here you would typically send the post to your backend
-      setPost("");
-      setAttachments([]);
-    }
-  };
+  //     // Here you would typically send the post to your backend
+  //     setPost("");
+  //     setAttachments([]);
+  //   }
+  // };
+
+  const posts = useQuery(api.posts.getPosts);
 
   return (
     <div
@@ -67,13 +59,12 @@ export function FeedPage() {
     >
       {/* Post Creation */}
       <div className="bg-background mx-auto max-w-xl border-x">
-        <div className="border-b p-4">
+        <PostEditor />
+
+        {/* <div className="border-b p-4">
           <div className="flex items-start gap-3">
             <User className="text-muted-foreground" size={20} />
             <div className="flex-1">
-              {/* <p className="text-muted-foreground">
-                Share something cool today
-              </p> */}
               <Textarea
                 value={post}
                 onChange={(e) => {
@@ -151,7 +142,6 @@ export function FeedPage() {
                 )}
               </div>
             </div>
-            {/* <SendHorizonal className="text-muted-foreground" size={20} /> */}
 
             <Button
               size="icon"
@@ -163,7 +153,8 @@ export function FeedPage() {
               <span className="sr-only">Send post</span>
             </Button>
           </div>
-        </div>
+        </div> */}
+
         {/* Posts */}
         <div className="border-b">
           <div className="p-4">

@@ -1,5 +1,7 @@
 import * as React from "react";
 
+import { Toaster } from "@skill-based/ui/components/sonner";
+
 import { ProfileCard } from "@/app/(app)/_pages/feed/ui";
 
 import Trending from "../Trending";
@@ -21,6 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <div className="col-span-1 col-start-3 row-start-2 hidden max-w-xs p-6 lg:block">
         <Trending />
       </div>
+      <Toaster />
     </React.Fragment>
   );
 }
