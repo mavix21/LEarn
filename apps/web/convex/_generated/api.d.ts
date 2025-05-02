@@ -14,7 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as getUserProfile from "../getUserProfile.js";
-import type * as posts from "../posts.js";
+import type * as posts_createPost from "../posts/createPost.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -26,7 +26,7 @@ import type * as posts from "../posts.js";
  */
 declare const fullApi: ApiFromModules<{
   getUserProfile: typeof getUserProfile;
-  posts: typeof posts;
+  "posts/createPost": typeof posts_createPost;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
