@@ -6,27 +6,31 @@ import { usePathname } from "next/navigation";
 import { Bell, Bookmark, Home, User } from "lucide-react";
 
 import { AnimatedBackground } from "@skill-based/ui/components/animated-background";
+import { AnimatedBellIcon } from "@skill-based/ui/components/animated-bell";
+import { AnimatedHomeIcon } from "@skill-based/ui/components/animated-home";
+import { AnimatedSearchIcon } from "@skill-based/ui/components/animated-search";
+import { AnimatedUserIcon } from "@skill-based/ui/components/animated-user";
 
 const navItems = [
   {
     href: "/feed",
-    icon: Home,
+    icon: AnimatedHomeIcon,
     label: "Home",
   },
   {
     href: "/profile",
-    icon: User,
+    icon: AnimatedUserIcon,
     label: "Profile",
   },
   {
     href: "/notifications",
-    icon: Bell,
+    icon: AnimatedBellIcon,
     label: "Notifications",
   },
   {
-    href: "/bookmarks",
-    icon: Bookmark,
-    label: "Bookmarks",
+    href: "/search",
+    icon: AnimatedSearchIcon,
+    label: "Search",
   },
 ];
 
