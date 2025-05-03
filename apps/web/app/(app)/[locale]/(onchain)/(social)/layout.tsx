@@ -3,7 +3,7 @@ import { Asterisk } from "lucide-react";
 
 import { ThemeSwitcher } from "@/app/_shared/ui/theme-switcher";
 
-import { ConvexClientProvider, OnchainProviders } from "../../_providers";
+import { ConvexClientProvider, OnchainProviders } from "../../../_providers";
 import NavBar from "./NavBar";
 
 export default async function Layout({

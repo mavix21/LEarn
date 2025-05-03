@@ -3,7 +3,6 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell, Bookmark, Home, User } from "lucide-react";
 
 import { AnimatedBackground } from "@skill-based/ui/components/animated-background";
 import { AnimatedBellIcon } from "@skill-based/ui/components/animated-bell";
