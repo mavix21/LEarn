@@ -46,14 +46,19 @@ export const getPosts = query({
 });
 
 export const getHashtagsContent = query({
-  handler: async (ctx) => {
+  args: {},
+  returns: v.array(v.string()),
+  handler: async (ctx, args) => {
+    // Get all posts (optionally, you can use a search index for performance)
     const posts = await ctx.db
       .query("posts")
-      .withSearchIndex("search_post", (q) => q.search("content", "a"))
+      .withSearchIndex("search_post", (q) => q.search("content", "#"))
       .collect();
 
-    // Extraer hashtags en código
-    const hashtags = posts.flatMap((post) => post.content.match(/#\w+/g) ?? []);
+    // Extract hashtags from each post's content
+    const hashtags = posts.flatMap(
+      (post) => post.content.match(/#[\w]+/g) ?? [],
+    );
 
     return hashtags;
   },
