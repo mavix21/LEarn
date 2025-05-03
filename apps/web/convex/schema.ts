@@ -1,15 +1,10 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
+import { authTables } from "./authTables";
+
 export default defineSchema({
-  users: defineTable({
-    address: v.string(), // always store in lowercase
-    displayName: v.optional(v.string()),
-    bio: v.optional(v.string()),
-    manualStudies: v.optional(v.array(v.string())),
-    manualExperience: v.optional(v.array(v.string())),
-    portfolioLinks: v.optional(v.array(v.string())),
-  }).index("by_address", ["address"]),
+  ...authTables,
 
   connections: defineTable({
     requesterAddress: v.string(),

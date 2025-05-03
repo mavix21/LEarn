@@ -17,6 +17,7 @@
     "test": "vitest"
   },
   "dependencies": {
+    "@auth/core": "^0.34.2",
     "@coinbase/onchainkit": "^0.38.10",
     "@reown/appkit": "^1.7.3",
     "@reown/appkit-adapter-wagmi": "^1.7.3",
@@ -32,6 +33,8 @@
     "@tiptap/react": "^2.11.9",
     "@tiptap/starter-kit": "^2.11.9",
     "convex": "^1.24.0",
+    "convex-helpers": "^0.1.83",
+    "jose": "^6.0.10",
     "lucide-react": "^0.507.0",
     "motion": "^12.9.2",
     "next": "15.3.1",

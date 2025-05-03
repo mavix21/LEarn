@@ -8,6 +8,7 @@ import {
   getAddressFromMessage,
   getChainIdFromMessage,
 } from "@reown/appkit-siwe";
+import { importPKCS8, SignJWT } from "jose";
 import { getServerSession } from "next-auth";
 import credentialsProvider from "next-auth/providers/credentials";
 import { createPublicClient, http } from "viem";
@@ -15,10 +16,13 @@ import { createPublicClient, http } from "viem";
 import { env } from "@/src/env";
 
 import type { Id } from "./convex/_generated/dataModel";
+import { ConvexAdapter } from "./src/convexAdapter";
 import { createUser } from "./src/users/create-user.action";
 
 const authSecret = env.NEXTAUTH_SECRET;
 const projectId = env.NEXT_PUBLIC_WC_PROJECT_ID;
+const CONVEX_SITE_URL = env.NEXT_PUBLIC_CONVEX_URL.replace(/.cloud$/, ".site");
+const CONVEX_AUTH_PRIVATE_KEY = env.CONVEX_AUTH_PRIVATE_KEY;
 
 const providers = [
   credentialsProvider({
@@ -87,8 +91,9 @@ export const config = {
   session: {
     strategy: "jwt",
   },
+  adapter: ConvexAdapter,
   callbacks: {
-    session({ user, session, token }) {
+    async session({ user, session, token }) {
       console.log("****************** SESSION ******************", {
         user,
         session,
@@ -104,6 +109,29 @@ export const config = {
         session.chainId = parseInt(chainId, 10);
         session.userId = userId as Id<"users">;
       }
+
+      console.log(
+        "****************** CONVEX_AUTH_PRIVATE_KEY ******************",
+        {
+          CONVEX_AUTH_PRIVATE_KEY,
+        },
+      );
+      const privateKey = await importPKCS8(
+        process.env.CONVEX_AUTH_PRIVATE_KEY!.replace(/\\n/g, "\n"),
+        "RS256",
+      );
+      console.log("all good");
+      const convexToken = await new SignJWT({
+        sub: session.userId,
+      })
+        .setProtectedHeader({ alg: "RS256" })
+        .setIssuedAt()
+        .setIssuer(CONVEX_SITE_URL)
+        .setAudience("convex")
+        .setExpirationTime("1h")
+        .sign(privateKey);
+
+      session.convexToken = convexToken;
 
       return session;
     },

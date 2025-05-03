@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 
 import { auth } from "@/auth";
 
+import ClientAuth from "../example/ClientAuth";
+
 export default async function Protected() {
   const session = await auth();
   console.log("****************** Protected ******************", { session });
@@ -19,6 +21,7 @@ export default async function Protected() {
       <div>{session.chainId}</div>
       <div>{session.userId}</div>
       <Link href="/example">Example</Link>
+      <ClientAuth />
     </div>
   );
 }

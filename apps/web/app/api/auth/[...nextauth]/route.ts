@@ -9,6 +9,7 @@ declare module "next-auth" {
     address: string;
     chainId: number;
     userId: Id<"users">;
+    convexToken: string;
   }
 }
 

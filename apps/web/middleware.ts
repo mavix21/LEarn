@@ -54,11 +54,13 @@ const withAuthMiddleware = withAuth(
 export default withAuthMiddleware;
 
 export const config = {
-  // Match all pathnames except for
-  // - … if they start with `/api`, `/trpc`, `/_next` or `/_vercel`
-  // - … the ones containing a dot (e.g. `favicon.ico`)
   matcher: [
+    // Skip Next.js internals and all static files, unless found in search params
+    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
+
+    // Match all pathnames except for
+    // - … if they start with `/api`, `/trpc`, `/_next` or `/_vercel`
+    // - … the ones containing a dot (e.g. `favicon.ico`)
     "/((?!api|trpc|_next|_vercel|.*\\..*).*)",
-    "/([\\w-]+)?/profile/(.+)",
   ],
 };
