@@ -1,14 +1,13 @@
 "use client";
 
 import { useQuery } from "convex/react";
+
 import {
-  Heart,
-  MessageCircle,
-  MoreHorizontal,
-  Repeat2,
-  Triangle,
-  User,
-} from "lucide-react";
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "@skill-based/ui/components/tabs";
 
 import { api } from "@/convex/_generated/api";
 
@@ -62,8 +61,26 @@ export function FeedPage() {
       <div className="bg-background mx-auto max-w-xl border-x">
         <PostEditor />
 
+        <Tabs defaultValue="for-you">
+          <TabsList>
+            <TabsTrigger value="for-you">For you</TabsTrigger>
+            <TabsTrigger value="following">Following</TabsTrigger>
+          </TabsList>
+          <TabsContent value="for-you">
+            {posts?.map((post) => (
+              <Post
+                key={post._id}
+                content={post.content}
+                creationTime={post._creationTime}
+              />
+            ))}
+          </TabsContent>
+          <TabsContent value="following">
+            Change your password here.
+          </TabsContent>
+        </Tabs>
         {/* Posts */}
-        {posts?.map((post) => <Post key={post._id} content={post.content} creationTime={post._creationTime}/>)}
+
         {/* Second Post */}
       </div>
     </div>

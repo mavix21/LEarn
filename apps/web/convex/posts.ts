@@ -45,6 +45,31 @@ export const getPosts = query({
   },
 });
 
+export const getPostsByAuthorId = query({
+  args: {
+    authorId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("posts")
+      .withIndex("by_authorId", (q) => q.eq("authorId", args.authorId))
+      .order("desc")
+      .collect();
+  },
+});
+
+export const getOtherUsers = query({
+  args: {
+    authorId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("users")
+      .filter((q) => q.neq(q.field("_id"), args.authorId))
+      .collect();
+  },
+});
+
 export const getHashtagsContent = query({
   args: {},
   returns: v.array(v.string()),
