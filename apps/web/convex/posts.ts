@@ -66,7 +66,7 @@ export const getOtherUsers = query({
     return await ctx.db
       .query("users")
       .filter((q) => q.neq(q.field("_id"), args.authorId))
-      .collect();
+      .take(2);
   },
 });
 

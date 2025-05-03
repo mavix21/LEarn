@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { User } from "lucide-react";
 
 import {
@@ -9,40 +10,43 @@ import { Button } from "@skill-based/ui/components/button";
 import { Card, CardContent } from "@skill-based/ui/components/card";
 
 interface UserProps {
-  username: string;
-  handle: string;
+  displayName: string;
   isFollowing: boolean;
   onFollow: () => void;
 }
 
-export function FollowCard({
-  username,
-  handle,
-  isFollowing,
-  onFollow,
-}: UserProps) {
+export function FollowCard({ displayName, isFollowing, onFollow }: UserProps) {
   return (
-    <Card className="w-full max-w-sm border-0 shadow-none">
-      <CardContent className="p-4">
+    <Card className="bg-muted w-full max-w-sm border-0 shadow-none">
+      <CardContent>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Avatar className="bg-background h-10 w-10 border">
-              <AvatarImage src="/placeholder.svg" alt={username} />
-              <AvatarFallback>
-                <User className="text-muted-foreground h-6 w-6" />
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
-              <span className="font-medium">{username}</span>
-              <span className="text-muted-foreground text-sm">{handle}</span>
-            </div>
+            <Link
+              href={`/profile/${displayName}`}
+              className="flex items-center gap-3"
+            >
+              <Avatar className="bg-background h-10 w-10 border">
+                <AvatarImage src="/placeholder.svg" alt={displayName} />
+                <AvatarFallback>
+                  <User className="text-muted-foreground h-6 w-6" />
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <span className="font-medium hover:underline">
+                  {displayName}
+                </span>
+                <span className="text-muted-foreground text-sm">
+                  @{displayName}
+                </span>
+              </div>
+            </Link>
           </div>
           <Button
             variant={isFollowing ? "outline" : "default"}
             className={
               isFollowing
                 ? "hover:bg-destructive/10 hover:text-destructive"
-                : "bg-green-500 hover:bg-green-600"
+                : "bg-primary hover:bg-primary/80"
             }
             onClick={onFollow}
           >

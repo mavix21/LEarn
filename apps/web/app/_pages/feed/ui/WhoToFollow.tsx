@@ -1,24 +1,32 @@
+"use client";
+
+import { useQuery } from "convex/react";
+
+import type { Id } from "@/convex/_generated/dataModel";
+import { api } from "@/convex/_generated/api";
+
+import { FollowCard } from "./FollowCard";
+
 export function WhoToFollow() {
+  const otherUsers = useQuery(api.posts.getOtherUsers, {
+    authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
+  });
+
   return (
     <>
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-xl font-bold">Who to follow</h2>
       </div>
 
-      <div className="space-y-6">
-        <div>
-          <p className="text-muted-foreground text-xs">DESIGN</p>
-          <p className="font-medium">ThreadsDesktop</p>
-          <p className="text-muted-foreground text-xs">123.9k threads</p>
-        </div>
-
-        <div>
-          <p className="text-muted-foreground text-xs">MOVIES AND SERIES</p>
-          <p className="font-medium">Spider-Man: Across the Spider-Verse</p>
-          <p className="text-muted-foreground text-xs">93.4k threads</p>
-        </div>
-
-        <p className="text-sm text-blue-400">see more</p>
+      <div className="mb-6 space-y-6">
+        {otherUsers?.map((user) => (
+          <FollowCard
+            key={user._id}
+            displayName={user.displayName as Id<"users">}
+            isFollowing={false}
+            onFollow={() => {}}
+          />
+        ))}
       </div>
     </>
   );

@@ -146,7 +146,7 @@ export function Hero() {
                       size="lg"
                       className="rounded-xl px-5 text-base"
                     >
-                      <Link href="#link">
+                      <Link href="/feed">
                         <span className="text-nowrap">{t("cta.primary")}</span>
                       </Link>
                     </Button>
