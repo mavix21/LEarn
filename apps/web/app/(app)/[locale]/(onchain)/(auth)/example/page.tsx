@@ -1,9 +1,18 @@
+"use client";
+
 import "@reown/appkit-wallet-button/react";
 
+import Link from "next/link";
+import { useAccount } from "wagmi";
+
 export default function Home() {
+  const { address } = useAccount();
+
   return (
-    <div className="col-start-1 row-span-1 row-start-1 self-center justify-self-center lg:col-start-2 lg:row-start-2">
+    <div className="grid place-content-center gap-6">
       <appkit-button />
+      <div className="text-2xl font-bold">{address}</div>
+      <Link href="/protected">Protected</Link>
     </div>
   );
 }
