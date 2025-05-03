@@ -36,6 +36,8 @@ const withAuthMiddleware = withAuth(
       //   new URL(`/login?from=${encodeURIComponent(from)}`, req.url),
       // );
     }
+
+    return i18nMiddleware(req);
   },
   {
     callbacks: {
