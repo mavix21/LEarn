@@ -18,7 +18,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </div>
 
       {/* Right Sidebar - Trending */}
-      <div className="col-span-1 col-start-3 row-start-2 hidden max-w-xs p-6 lg:block">
+      <div className="col-span-1 col-start-3 row-start-2 h-full w-full overflow-y-auto p-6 lg:block">
         <WhoToFollow />
         <TrendingTopics />
       </div>
