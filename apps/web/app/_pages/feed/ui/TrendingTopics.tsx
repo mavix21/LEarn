@@ -6,8 +6,13 @@ import { Settings } from "lucide-react";
 
 import { api } from "@/convex/_generated/api";
 
+function extractHashtags(content: string) {
+  return content.match(/#\w+/g)?.map((tag) => tag.slice(1)) ?? [];
+}
+
 export function TrendingTopics() {
   const trendingTopics = useQuery(api.posts.getHashtagsContent);
+  console.log(trendingTopics);
 
   return (
     <>
