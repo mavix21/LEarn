@@ -47,16 +47,14 @@ export const getPosts = query({
 
 export const getHashtagsContent = query({
   handler: async (ctx) => {
-    const posts = ctx.db
+    const posts = await ctx.db
       .query("posts")
-      .withSearchIndex("search_post", (q) => q.search("content", " "))
+      .withSearchIndex("search_post", (q) => q.search("content", "a"))
       .collect();
 
     // Extraer hashtags en código
-    const hashtags = (await posts).flatMap(
-      (post) => post.content.match(/#\w+/g) ?? [],
-    );
+    const hashtags = posts.flatMap((post) => post.content.match(/#\w+/g) ?? []);
 
-    return [...new Set(hashtags)]; // opcional: eliminar duplicados
+    return hashtags;
   },
 });
