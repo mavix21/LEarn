@@ -29,6 +29,7 @@ export const wagmiAdapter = new WagmiAdapter({
   projectId,
   ssr: true,
   chains: [base, baseSepolia],
+  multiInjectedProviderDiscovery: false,
   connectors: [
     coinbaseWallet({
       appName: "OnchainKit",
