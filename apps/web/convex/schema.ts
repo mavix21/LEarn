@@ -51,6 +51,9 @@ export default defineSchema({
     comments: v.optional(v.id("comments")),
     likedNotifications: v.optional(v.id("notifications")),
   })
+    .searchIndex("search_post", {
+      searchField: "content",
+    })
     .index("by_authorAddress", ["authorAddress"])
     .index("by_authorId", ["authorId"]),
 

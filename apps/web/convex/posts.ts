@@ -44,3 +44,12 @@ export const getPosts = query({
     return ctx.db.query("posts").order("desc").collect();
   },
 });
+
+export const getHashtagsContent = query({
+  handler: async (ctx) => {
+    return ctx.db
+      .query("posts")
+      .withSearchIndex("search_post", (q) => q.search("content", "#"))
+      .collect();
+  },
+});

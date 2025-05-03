@@ -2,9 +2,7 @@ import * as React from "react";
 
 import { Toaster } from "@skill-based/ui/components/sonner";
 
-import { ProfileCard } from "@/app/_pages/feed/ui";
-
-import Trending from "../Trending";
+import { ProfileCard, TrendingTopics } from "@/app/_pages/feed/ui";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -21,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Right Sidebar - Trending */}
       <div className="col-span-1 col-start-3 row-start-2 hidden max-w-xs p-6 lg:block">
-        <Trending />
+        <TrendingTopics />
       </div>
       <Toaster />
     </React.Fragment>

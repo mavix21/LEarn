@@ -33,7 +33,7 @@ export function Post({ content, creationTime }: PostProps) {
               </div>
               <MoreHorizontal size={20} className="text-muted-foreground" />
             </div>
-            <p className="mt-1">{content}</p>
+            <p className="mt-1 whitespace-pre-line break-words">{content}</p>
             <div className="mt-4 flex gap-4">
               <Heart size={20} className="text-muted-foreground" />
               <MessageCircle size={20} className="text-muted-foreground" />

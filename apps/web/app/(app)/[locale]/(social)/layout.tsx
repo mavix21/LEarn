@@ -1,12 +1,10 @@
 import { headers } from "next/headers";
-import { Asterisk, Settings } from "lucide-react";
+import { Asterisk } from "lucide-react";
 
 import { ThemeSwitcher } from "@/app/_shared/ui/theme-switcher";
 
 import { ConvexClientProvider, OnchainProviders } from "../../_providers";
-import { ProfileCard } from "../../../_pages/feed/ui";
 import NavBar from "./NavBar";
-import Trending from "./Trending";
 
 export default async function Layout({
   children,

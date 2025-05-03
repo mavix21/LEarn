@@ -1,7 +1,14 @@
+"use client";
+
 import React from "react";
+import { useQuery } from "convex/react";
 import { Settings } from "lucide-react";
 
-export default function Trending() {
+import { api } from "@/convex/_generated/api";
+
+export function TrendingTopics() {
+  const trendingTopics = useQuery(api.posts.getHashtagsContent);
+
   return (
     <>
       <div className="mb-4 flex items-center justify-between">
