@@ -1,6 +1,3 @@
-"use client";
-
-import React from "react";
 import { useTranslations } from "next-intl";
 
 import { Card } from "@skill-based/ui/components/card";
