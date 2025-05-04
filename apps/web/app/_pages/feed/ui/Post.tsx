@@ -16,7 +16,7 @@ interface PostProps {
 
 export function Post({ content, creationTime }: PostProps) {
   return (
-    <div className="bg-background rounded-xl p-4 shadow-md">
+    <div className="bg-background mb-2 rounded-xl p-4 shadow-md">
       <div className="flex items-start gap-3">
         <div className="relative">
           <User className="text-muted-foreground" size={20} />
