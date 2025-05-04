@@ -57,10 +57,10 @@ const isProtectedRoute = (pathname: string) => {
 
 const withAuthMiddleware = withAuth(
   async function middleware(req) {
-    console.log("****************** middleware ******************");
     const token = await getToken({ req });
     const isAuth = !!token;
     const { pathname, search } = req.nextUrl;
+    console.log("****************** middleware ******************");
 
     // 1. Auth pages: redirect to /feed if already authenticated
     if (isAuthPage(pathname)) {
@@ -101,12 +101,7 @@ export default withAuthMiddleware;
 
 export const config = {
   matcher: [
-    // Skip Next.js internals and all static files, unless found in search params
-    // "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-
-    // Match all pathnames except for
-    // - … if they start with `/api`, `/trpc`, `/_next` or `/_vercel`
-    // - … the ones containing a dot (e.g. `favicon.ico`)
-    "/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)",
+    // Exclude static, api, _next, _vercel, src, exports, and files with extensions
+    "/((?!api|trpc|_next|_vercel|src|exports|public|assets|static|.*\\..*).*)",
   ],
 };
