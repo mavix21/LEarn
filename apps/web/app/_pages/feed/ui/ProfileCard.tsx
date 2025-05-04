@@ -14,7 +14,7 @@ import {
   WalletDropdown,
   WalletDropdownDisconnect,
 } from "@coinbase/onchainkit/wallet";
-import { Unauthenticated } from "convex/react";
+import { Authenticated, Unauthenticated } from "convex/react";
 import { base } from "viem/chains";
 import { useAccount } from "wagmi";
 
@@ -37,7 +37,7 @@ export default function ProfileCard({ className }: { className?: string }) {
   console.log("address", address);
 
   return (
-    <div className={cn("w-full p-3", className)}>
+    <div className={cn("w-full", className)}>
       <div className="flex flex-col items-center justify-center gap-2">
         {/* <AvatarWithLoading
           className="size-32"
@@ -56,16 +56,18 @@ export default function ProfileCard({ className }: { className?: string }) {
 
         {/* <IdentityCardWithLoading address={address} chain={base} />
         <SocialsWithLoading address={address} chain={base} /> */}
-        {/* {address && (
-          <Identity address={address} chain={base}>
-            <Avatar className="block size-16" />
-            <Name>
-              <Badge />
-            </Name>
-            <Address />
-            <Socials />
-          </Identity>
-        )} */}
+        <Authenticated>
+          {address && (
+            <Identity address={address} chain={base}>
+              <Avatar className="block size-16" />
+              <Name>
+                <Badge tooltip="Coinbase verified account" />
+              </Name>
+              <Address hasCopyAddressOnClick />
+              <Socials />
+            </Identity>
+          )}
+        </Authenticated>
         {/* <h2 className="mt-4 text-xl font-bold">Alisson Rochinski</h2>
         <p className="text-muted-foreground text-sm">arochinski</p>
         <p className="text-muted-foreground mt-1 text-xs">skillbased.net</p>

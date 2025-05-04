@@ -4,11 +4,11 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useMutation } from "convex/react";
-import { SendHorizonal, User } from "lucide-react";
+import { SendHorizonal, SendIcon, User } from "lucide-react";
 
 import { Button } from "@skill-based/ui/components/button";
 
-import "./styles.css";
+import "./post-editor.module.css";
 
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
@@ -37,7 +37,7 @@ export function PostEditor() {
   const input =
     editor?.getText({
       blockSeparator: "\n",
-    }) || "";
+    }) ?? "";
 
   async function onSubmit() {
     await createPost({
@@ -52,26 +52,24 @@ export function PostEditor() {
   }
 
   return (
-    <div className="bg-background rounded-xl p-4 shadow-md">
-      <div className="flex items-start gap-3">
-        <User className="text-muted-foreground" size={20} />
-        <div className="flex-1">
-          {/* <p className="text-muted-foreground">
-                  Share something cool today
-                </p> */}
-          <EditorContent
-            editor={editor}
-            className="bg-background max-h-[20rem] w-full overflow-y-auto"
-          />
+    <div className="bg-background space-y-2 rounded-xl p-4 shadow-md">
+      <div className="flex gap-3">
+        <div className="bg-muted rounded-full p-2">
+          <User className="text-muted-foreground" />
         </div>
-
-        <Button
-          size="icon"
-          variant="ghost"
-          onClick={onSubmit}
-          disabled={!input.trim()}
-        >
-          <SendHorizonal className="h-5 w-5" />
+        <EditorContent
+          editor={editor}
+          className="bg-muted max-h-80 w-full overflow-y-auto rounded-xl p-2"
+        />
+        {/* <div className="flex-1">
+          <p className="text-muted-foreground">
+                  Share something cool today
+                </p>
+        </div> */}
+      </div>
+      <div className="flex justify-end">
+        <Button onClick={onSubmit} disabled={!input.trim()}>
+          <SendHorizonal className="size-4" />
           <span className="sr-only">Send post</span>
         </Button>
       </div>
