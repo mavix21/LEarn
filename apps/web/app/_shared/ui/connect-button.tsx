@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 
 import { Button } from "@skill-based/ui/components/button";
 
-import { useAppKit } from "@/app/_shared/config/wagmi.config";
+import { useAppKit } from "@/reown";
 
 export function ConnectButton() {
   const { open } = useAppKit();
