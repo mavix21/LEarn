@@ -22,7 +22,6 @@ import { createUser } from "./src/users/create-user.action";
 const authSecret = env.NEXTAUTH_SECRET;
 const projectId = env.NEXT_PUBLIC_WC_PROJECT_ID;
 const CONVEX_SITE_URL = env.NEXT_PUBLIC_CONVEX_URL.replace(/.cloud$/, ".site");
-const CONVEX_AUTH_PRIVATE_KEY = env.CONVEX_AUTH_PRIVATE_KEY;
 
 const providers = [
   credentialsProvider({
@@ -94,12 +93,6 @@ export const config = {
   adapter: ConvexAdapter,
   callbacks: {
     async session({ user, session, token }) {
-      console.log("****************** SESSION ******************", {
-        user,
-        session,
-        token,
-      });
-
       if (!token.sub) return session;
 
       const [, chainId, address, userId] = token.sub.split(":");
@@ -114,7 +107,6 @@ export const config = {
         process.env.CONVEX_AUTH_PRIVATE_KEY!.replace(/\\n/g, "\n"),
         "RS256",
       );
-      console.log("all good");
       const convexToken = await new SignJWT({
         sub: session.userId,
       })
