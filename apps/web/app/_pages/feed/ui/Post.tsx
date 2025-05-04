@@ -1,4 +1,3 @@
-import Image from "next/image";
 import {
   Heart,
   MessageCircle,
@@ -8,7 +7,7 @@ import {
   User,
 } from "lucide-react";
 
-import { formatRelativeDate } from "@skill-based/ui/lib/utils";
+import { formatRelativeDate } from "@skill-based/ui/lib/dates";
 
 interface PostProps {
   content: string;

@@ -92,7 +92,7 @@ export const config = {
   },
   adapter: ConvexAdapter,
   callbacks: {
-    async session({ user, session, token }) {
+    async session({ session, token }) {
       if (!token.sub) return session;
 
       const [, chainId, address, userId] = token.sub.split(":");
