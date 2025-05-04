@@ -1,6 +1,20 @@
 import { v } from "convex/values";
 
-import { mutation } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
+
+export const getLikes = query({
+  args: {
+    postId: v.id("posts"),
+    authorId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("likes")
+      .filter((q) => q.eq(q.field("postId"), args.postId))
+      .filter((q) => q.eq(q.field("authorId"), args.authorId))
+      .collect();
+  },
+});
 
 export const createLikePost = mutation({
   args: {
