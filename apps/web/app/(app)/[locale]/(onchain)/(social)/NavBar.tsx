@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { AnimatedBackground } from "@skill-based/ui/components/animated-background";
 import { AnimatedBellIcon } from "@skill-based/ui/components/animated-bell";
 import { AnimatedHomeIcon } from "@skill-based/ui/components/animated-home";
+import { AnimatedMessageCircleMoreIcon } from "@skill-based/ui/components/animated-message-circle-more";
 import { AnimatedSearchIcon } from "@skill-based/ui/components/animated-search";
 import { AnimatedUserIcon } from "@skill-based/ui/components/animated-user";
 
@@ -31,6 +32,11 @@ const navItems = [
     icon: AnimatedSearchIcon,
     label: "Search",
   },
+  {
+    href: "/chat",
+    icon: AnimatedMessageCircleMoreIcon,
+    label: "Chat",
+  },
 ];
 
 export default function NavBar() {
@@ -38,7 +44,7 @@ export default function NavBar() {
   const lastPath = `/${pathname.split("/").pop()}`;
 
   return (
-    <div className="flex h-12 items-center justify-center gap-6 border-t p-4 backdrop-blur-sm lg:border-b lg:border-t-0">
+    <div className="flex h-12 items-center justify-center gap-6 border-t p-4 backdrop-blur-sm lg:border-t-0 lg:border-b">
       <AnimatedBackground
         defaultValue={lastPath}
         className="active-nav-item bg-active rounded-xl"
