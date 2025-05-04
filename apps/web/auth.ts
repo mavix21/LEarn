@@ -110,12 +110,6 @@ export const config = {
         session.userId = userId as Id<"users">;
       }
 
-      console.log(
-        "****************** CONVEX_AUTH_PRIVATE_KEY ******************",
-        {
-          CONVEX_AUTH_PRIVATE_KEY,
-        },
-      );
       const privateKey = await importPKCS8(
         process.env.CONVEX_AUTH_PRIVATE_KEY!.replace(/\\n/g, "\n"),
         "RS256",
