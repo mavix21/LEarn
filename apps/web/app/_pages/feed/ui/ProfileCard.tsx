@@ -14,11 +14,14 @@ import {
   WalletDropdown,
   WalletDropdownDisconnect,
 } from "@coinbase/onchainkit/wallet";
+import { Unauthenticated } from "convex/react";
 import { base } from "viem/chains";
 import { useAccount } from "wagmi";
 
 import { Skeleton } from "@skill-based/ui/components/skeleton";
 import { cn } from "@skill-based/ui/lib/utils";
+
+import ConnectCard from "./ConnectCard";
 
 const Identity = dynamic(
   () => import("@coinbase/onchainkit/identity").then((mod) => mod.Identity),
@@ -53,7 +56,7 @@ export default function ProfileCard({ className }: { className?: string }) {
 
         {/* <IdentityCardWithLoading address={address} chain={base} />
         <SocialsWithLoading address={address} chain={base} /> */}
-        {address && (
+        {/* {address && (
           <Identity address={address} chain={base}>
             <Avatar className="block size-16" />
             <Name>
@@ -62,7 +65,7 @@ export default function ProfileCard({ className }: { className?: string }) {
             <Address />
             <Socials />
           </Identity>
-        )}
+        )} */}
         {/* <h2 className="mt-4 text-xl font-bold">Alisson Rochinski</h2>
         <p className="text-muted-foreground text-sm">arochinski</p>
         <p className="text-muted-foreground mt-1 text-xs">skillbased.net</p>
@@ -75,7 +78,7 @@ export default function ProfileCard({ className }: { className?: string }) {
         </p> */}
         {/* <Wallet />
         <Socials address={address} /> */}
-        <Wallet>
+        {/* <Wallet>
           <ConnectWallet>
             <Avatar className="h-6 w-6" />
             <Name />
@@ -88,7 +91,11 @@ export default function ProfileCard({ className }: { className?: string }) {
             </Identity>
             <WalletDropdownDisconnect />
           </WalletDropdown>
-        </Wallet>
+        </Wallet> */}
+
+        <Unauthenticated>
+          <ConnectCard />
+        </Unauthenticated>
       </div>
     </div>
   );

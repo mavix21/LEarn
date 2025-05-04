@@ -9,7 +9,7 @@ import { AppKitNetwork } from "@reown/appkit/networks";
 import { getCsrfToken, getSession, signIn, signOut } from "next-auth/react";
 import { getAddress } from "viem";
 
-import { chains } from "./wagmi.config";
+import { chains } from "./chains";
 
 const normalizeAddress = (address: string) => {
   try {
