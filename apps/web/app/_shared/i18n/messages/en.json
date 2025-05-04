@@ -49,6 +49,13 @@
     },
     "footer": {
       "copyright": "Mint Up Corp, All rights reserved"
+    },
+    "onboarding": {
+      "title": "Sign in or create your SkillBased profile",
+      "description": " Connect your wallet to start your verifiable professional journey.",
+      "connect": "Continue with Wallet",
+      "altLogin": "Sign in with username",
+      "cta": "Get Started"
     }
   }
 }

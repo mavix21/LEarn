@@ -50,5 +50,12 @@
     "footer": {
       "copyright": "Mint Up Corp, Todos los derechos reservados"
     }
+  },
+  "onboarding": {
+    "title": "Inicia sesión o crea tu perfil en SkillBased",
+    "description": "Conecta tu wallet para comenzar tu viaje profesional verificable.",
+    "connect": "Continuar con Wallet",
+    "altLogin": "Iniciar sesión con nombre de usuario",
+    "cta": "Empieza ahora"
   }
 }
