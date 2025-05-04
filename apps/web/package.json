@@ -22,7 +22,6 @@
     "@reown/appkit": "^1.7.3",
     "@reown/appkit-adapter-wagmi": "^1.7.3",
     "@reown/appkit-siwe": "^1.7.3",
-    "@reown/appkit-wallet-button": "^1.7.3",
     "@skill-based/db": "workspace:*",
     "@skill-based/ui": "workspace:*",
     "@t3-oss/env-nextjs": "^0.13.4",
