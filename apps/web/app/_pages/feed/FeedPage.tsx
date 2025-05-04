@@ -100,10 +100,10 @@ export function FeedPage() {
         <Tabs defaultValue="for-you">
           <div className="bg-background rounded-xl p-1 shadow-md">
             <TabsList className="bg-background w-full">
-              <TabsTrigger value="for-you" className="rounded-lg">
+              <TabsTrigger value="for-you" className="rounded-lg border-0">
                 For you
               </TabsTrigger>
-              <TabsTrigger value="following" className="rounded-lg">
+              <TabsTrigger value="following" className="rounded-lg border-0">
                 Following
               </TabsTrigger>
             </TabsList>
