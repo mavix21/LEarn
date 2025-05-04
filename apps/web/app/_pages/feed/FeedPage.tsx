@@ -1,6 +1,5 @@
 "use client";
 
-import { Suspense } from "react";
 import { useQuery } from "convex/react";
 
 import {
@@ -15,40 +14,6 @@ import { api } from "@/convex/_generated/api";
 import { Post, PostEditor } from "./ui";
 
 export function FeedPage() {
-  // const [post, setPost] = useState("");
-  // const [attachments, setAttachments] = useState<File[]>([]);
-  // const createPost = useMutation(api.posts.createPost);
-
-  // const handleAttachment = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files) {
-  //     const newFiles = Array.from(e.target.files);
-  //     setAttachments((prev) => [...prev, ...newFiles]);
-  //   }
-  // };
-
-  // const removeAttachment = (index: number) => {
-  //   setAttachments((prev) => prev.filter((_, i) => i !== index));
-  // };
-
-  // const handleSubmit = async () => {
-  //   if (post.trim() || attachments.length > 0) {
-  //     console.log("Submitting post:", post);
-  //     console.log("Attachments:", attachments);
-
-  //     await createPost({
-  //       content: post,
-  //       authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
-  //       authorAddress: "0x4029490B2Dedd37906F2911B444d081caAad8E71",
-  //     }).catch((error) => {
-  //       console.error("Failed to create post:", error);
-  //     });
-
-  //     // Here you would typically send the post to your backend
-  //     setPost("");
-  //     setAttachments([]);
-  //   }
-  // };
-
   const posts = useQuery(api.posts.getPosts);
   const isLoading = posts === undefined;
 
@@ -121,9 +86,6 @@ export function FeedPage() {
             Change your password here.
           </TabsContent>
         </Tabs>
-        {/* Posts */}
-
-        {/* Second Post */}
       </div>
     </div>
   );
