@@ -8,12 +8,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <React.Fragment>
       <div className="col-start-1 row-start-2 hidden w-full lg:block">
-        <div className="mx-auto w-full max-w-xs">
+        <div className="mx-auto w-full max-w-xs p-4">
           <ProfileCard />
         </div>
       </div>
 
-      <div className="col-start-1 h-full flex-1 overflow-hidden lg:col-start-2">
+      <div className="col-start-1 h-full flex-1 overflow-hidden border-x lg:col-start-2">
         {children}
       </div>
 
