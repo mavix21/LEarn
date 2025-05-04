@@ -13,7 +13,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </div>
 
-      <div className="col-start-1 h-full flex-1 overflow-hidden border-x lg:col-start-2">
+      <div className="col-start-1 h-full flex-1 overflow-hidden lg:col-start-2">
         {children}
       </div>
 

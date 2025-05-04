@@ -94,16 +94,22 @@ export function FeedPage() {
       }}
     >
       {/* Post Creation */}
-      <div className="bg-background mx-auto max-w-xl border-x">
+      <div className="mx-auto mt-4 max-w-xl space-y-4">
         <PostEditor />
 
         <Tabs defaultValue="for-you">
-          <TabsList>
-            <TabsTrigger value="for-you">For you</TabsTrigger>
-            <TabsTrigger value="following">Following</TabsTrigger>
-          </TabsList>
+          <div className="bg-background rounded-xl p-1 shadow-md">
+            <TabsList className="bg-background w-full">
+              <TabsTrigger value="for-you" className="rounded-lg">
+                For you
+              </TabsTrigger>
+              <TabsTrigger value="following" className="rounded-lg">
+                Following
+              </TabsTrigger>
+            </TabsList>
+          </div>
           <TabsContent value="for-you">
-            {posts?.map((post) => (
+            {posts.map((post) => (
               <Post
                 key={post._id}
                 content={post.content}

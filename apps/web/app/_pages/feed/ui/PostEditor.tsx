@@ -52,7 +52,7 @@ export function PostEditor() {
   }
 
   return (
-    <div className="border-b p-4">
+    <div className="bg-background rounded-xl p-4 shadow-md">
       <div className="flex items-start gap-3">
         <User className="text-muted-foreground" size={20} />
         <div className="flex-1">
