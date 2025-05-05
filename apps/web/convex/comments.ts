@@ -8,7 +8,11 @@ export const getComments = query({
     postId: v.id("posts"),
   },
   handler: async (ctx, args) => {
-    const comments = await ctx.db.query("comments").order("desc").collect();
+    const comments = await ctx.db
+      .query("comments")
+      .filter((q) => q.eq(q.field("postId"), args.postId))
+      .order("desc")
+      .collect();
 
     return Promise.all(
       comments.map(async (comment) => {
