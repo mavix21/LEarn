@@ -1,16 +1,21 @@
 import { v } from "convex/values";
 
+import type { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 
 export const createPost = mutation({
   args: {
     content: v.string(),
-    authorId: v.id("users"),
   },
   handler: async (ctx, args) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
+
     await ctx.db.insert("posts", {
       content: args.content,
-      authorId: args.authorId,
+      authorId: id.subject as Id<"users">,
     });
   },
 });

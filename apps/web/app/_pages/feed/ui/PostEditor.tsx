@@ -42,8 +42,6 @@ export function PostEditor() {
   async function onSubmit() {
     await createPost({
       content: input,
-      authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
-      authorAddress: "0x4029490B2Dedd37906F2911B444d081caAad8E71",
     }).catch((error) => {
       console.error("Failed to create post:", error);
     });
