@@ -6,13 +6,11 @@ export const createPost = mutation({
   args: {
     content: v.string(),
     authorId: v.id("users"),
-    authorAddress: v.string(),
   },
   handler: async (ctx, args) => {
     await ctx.db.insert("posts", {
       content: args.content,
       authorId: args.authorId,
-      authorAddress: args.authorAddress,
     });
   },
 });

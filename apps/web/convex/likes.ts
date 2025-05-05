@@ -18,13 +18,11 @@ export const getLikes = query({
 
 export const createLikePost = mutation({
   args: {
-    authorAddress: v.string(),
     authorId: v.id("users"),
     postId: v.id("posts"),
   },
   handler: async (ctx, args) => {
     await ctx.db.insert("likes", {
-      authorAddress: args.authorAddress,
       authorId: args.authorId,
       postId: args.postId,
     });
