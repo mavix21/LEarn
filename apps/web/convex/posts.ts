@@ -6,17 +6,26 @@ import { mutation, query } from "./_generated/server";
 export const createPost = mutation({
   args: {
     content: v.string(),
+    attachments: v.optional(v.array(v.string())),
   },
   handler: async (ctx, args) => {
     const id = await ctx.auth.getUserIdentity();
     if (!id) {
       throw new Error("Unauthorized");
     }
-
-    await ctx.db.insert("posts", {
+    const postId = await ctx.db.insert("posts", {
       content: args.content,
       authorId: id.subject as Id<"users">,
     });
+    if (args.attachments && args.attachments.length > 0) {
+      for (const url of args.attachments) {
+        await ctx.db.insert("media", {
+          postId,
+          url,
+          type: "image",
+        });
+      }
+    }
   },
 });
 
@@ -79,5 +88,36 @@ export const getHashtagsContent = query({
     );
 
     return hashtags;
+  },
+});
+
+export const generateUploadUrl = mutation({
+  handler: async (ctx) => {
+    return await ctx.storage.generateUploadUrl();
+  },
+});
+
+export const addMediaToPost = mutation({
+  args: {
+    postId: v.id("posts"),
+    media: v.array(
+      v.object({
+        url: v.string(),
+        type: v.union(v.literal("image"), v.literal("video")),
+      }),
+    ),
+  },
+  handler: async (ctx, args) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
+    for (const file of args.media) {
+      await ctx.db.insert("media", {
+        postId: args.postId,
+        url: file.url,
+        type: file.type,
+      });
+    }
   },
 });
