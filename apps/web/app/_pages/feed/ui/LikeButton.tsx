@@ -15,7 +15,6 @@ export function LikeButton({ postId }: LikeButtonProps) {
   const createLike = useMutation(api.likes.createLikePost);
   const deleteLike = useMutation(api.likes.deleteLikePost);
   const getLikes = useQuery(api.likes.getLikes, {
-    authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
     postId: postId as Id<"posts">,
   });
 
@@ -27,8 +26,6 @@ export function LikeButton({ postId }: LikeButtonProps) {
       setIsLiked(true);
       createLike({
         postId: postId as Id<"posts">,
-        authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
-        authorAddress: "0x4029490B2Dedd37906F2911B444d081caAad8E71",
       }).catch((error) => {
         setIsLiked(false);
         console.error("Failed to create like:", error);
@@ -37,7 +34,6 @@ export function LikeButton({ postId }: LikeButtonProps) {
       setIsLiked(false);
       deleteLike({
         postId: postId as Id<"posts">,
-        authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
       }).catch((error) => {
         setIsLiked(true);
         console.error("Failed to delete like:", error);
@@ -59,9 +55,8 @@ export function LikeButton({ postId }: LikeButtonProps) {
     >
       <Heart
         size={20}
-        className={`${
-          isLiked ? "fill-red-500 text-red-500" : "text-muted-foreground"
-        }`}
+        className={`${isLiked ? "fill-red-500 text-red-500" : "text-muted-foreground"
+          }`}
       />
     </button>
   );
