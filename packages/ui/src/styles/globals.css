@@ -176,7 +176,7 @@
 @layer base {
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
+    scrollbar-color: var(--muted-foreground) transparent;
   }
 
   html {

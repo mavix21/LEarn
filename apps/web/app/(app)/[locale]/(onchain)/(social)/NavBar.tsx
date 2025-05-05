@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Authenticated, Unauthenticated } from "convex/react";
+import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
 import { AnimatedBackground } from "@skill-based/ui/components/animated-background";
@@ -14,40 +15,44 @@ import { AnimatedUserIcon } from "@skill-based/ui/components/animated-user";
 
 import { AuthGateDialog } from "@/app/_shared/ui/auth-gate-dialog";
 
-const navItems = [
-  {
-    href: "/feed",
-    icon: AnimatedHomeIcon,
-    gate: false,
-    label: "Home",
-  },
-  {
-    href: "/profile",
-    icon: AnimatedUserIcon,
-    gate: true,
-    dialogKey: "profile",
-    label: "Profile",
-  },
-  {
-    href: "/notifications",
-    icon: AnimatedBellIcon,
-    gate: true,
-    dialogKey: "notifications",
-    label: "Notifications",
-  },
-  {
-    href: "/search",
-    icon: AnimatedSearchIcon,
-    gate: false,
-    label: "Search",
-  },
-];
-
 export default function NavBar() {
+  const { data: session } = useSession();
+  const userId = session?.userId;
+
   const pathname = usePathname();
   const router = useRouter();
   const [dialogKey, setDialogKey] = React.useState<string | null>(null);
   const t = useTranslations("onboarding");
+
+  // Dynamically set navItems so Profile href uses userId if available
+  const navItems = [
+    {
+      href: "/feed",
+      icon: AnimatedHomeIcon,
+      gate: false,
+      label: "Home",
+    },
+    {
+      href: userId ? `/profile/${userId}` : "/profile",
+      icon: AnimatedUserIcon,
+      gate: true,
+      dialogKey: "profile",
+      label: "Profile",
+    },
+    {
+      href: "/notifications",
+      icon: AnimatedBellIcon,
+      gate: true,
+      dialogKey: "notifications",
+      label: "Notifications",
+    },
+    {
+      href: "/search",
+      icon: AnimatedSearchIcon,
+      gate: false,
+      label: "Search",
+    },
+  ];
 
   // Handler for nav item clicks
   const handleNavClick = (
@@ -60,7 +65,8 @@ export default function NavBar() {
     }
   };
 
-  const lastPath = `/${pathname.split("/").pop()}`;
+  const lastPath = pathname;
+  console.log(lastPath);
 
   // i18n modal messages
   const dialogMessages: Record<string, { title: string; description: string }> =
