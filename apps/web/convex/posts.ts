@@ -43,9 +43,23 @@ export const getPosts = query({
     return Promise.all(
       posts.map(async (post) => {
         const user = await ctx.db.get(post.authorId);
+        let attachmentsUrls: string[] = [];
+        if (
+          post.attachments &&
+          Array.isArray(post.attachments) &&
+          post.attachments.length > 0
+        ) {
+          const mediaDocs = await Promise.all(
+            post.attachments.map((mediaId) => ctx.db.get(mediaId)),
+          );
+          attachmentsUrls = mediaDocs
+            .filter(Boolean)
+            .map((media) => media!.url);
+        }
         return {
           ...post,
           authorName: user?.displayName ?? "Anonymous",
+          attachmentsUrls,
         };
       }),
     );

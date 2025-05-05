@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { MoreHorizontal, Repeat2, Triangle, User } from "lucide-react";
+import Image from "next/image";
 
 import { formatRelativeDate } from "@skill-based/ui/lib/dates";
 
@@ -19,9 +20,10 @@ interface PostProps {
   authorName: string;
   content: string;
   creationTime: number;
+  attachmentsUrls?: string[];
 }
 
-export function Post({ postId, authorName, content, creationTime }: PostProps) {
+export function Post({ postId, authorName, content, creationTime, attachmentsUrls = [] }: PostProps) {
   const [showInput, setShowInput] = useState(false);
 
   const createComment = useMutation(api.comments.createComment);
@@ -54,6 +56,32 @@ export function Post({ postId, authorName, content, creationTime }: PostProps) {
             <MoreHorizontal size={20} className="text-muted-foreground" />
           </div>
           <p className="mt-1 whitespace-pre-line break-words">{content}</p>
+          {/* Images display */}
+          {attachmentsUrls.length === 1 && (
+            <div className="flex justify-center my-4">
+              <Image
+                src={attachmentsUrls[0] ?? ""}
+                alt="Post attachment"
+                width={320}
+                height={320}
+                className="rounded object-cover max-h-80"
+              />
+            </div>
+          )}
+          {attachmentsUrls.length === 2 && (
+            <div className="grid grid-cols-2 gap-2 my-4">
+              {attachmentsUrls.map((url, idx) => (
+                <Image
+                  key={idx}
+                  src={url}
+                  alt={`Post attachment ${idx + 1}`}
+                  width={200}
+                  height={200}
+                  className="rounded object-cover max-h-80 w-full"
+                />
+              ))}
+            </div>
+          )}
           <div className="mt-4 flex items-center gap-4">
             <LikeButton postId={postId} />
             <CommentSection
@@ -62,7 +90,7 @@ export function Post({ postId, authorName, content, creationTime }: PostProps) {
               handleInput={setShowInput}
             />
             <Repeat2 size={20} className="text-muted-foreground" />
-            <Triangle size={20} className="text-muted-foreground" />
+            {/* <Triangle size={20} className="text-muted-foreground" /> */}
           </div>
           {showInput && (
             <CommentInput
@@ -72,7 +100,7 @@ export function Post({ postId, authorName, content, creationTime }: PostProps) {
           )}
           {comments && <CommentsList postId={postId} />}
           <div className="text-muted-foreground mt-2 flex items-center text-sm">
-            <span>7 respostas · 59 curtidas</span>
+            <span>7 Me gusta · 59 comentarios</span>
           </div>
         </div>
       </div>
