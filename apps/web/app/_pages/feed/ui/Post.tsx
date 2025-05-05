@@ -34,7 +34,6 @@ export function Post({ postId, authorName, content, creationTime }: PostProps) {
     await createComment({
       postId: postId as Id<"posts">,
       content: value,
-      authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
     });
   }
 

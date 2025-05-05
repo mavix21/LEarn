@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 
+import type { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 
 export const getComments = query({
@@ -24,14 +25,18 @@ export const getComments = query({
 export const createComment = mutation({
   args: {
     postId: v.id("posts"),
-    authorId: v.id("users"),
     content: v.string(),
   },
   handler: async (ctx, args) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
+
     await ctx.db.insert("comments", {
       postId: args.postId,
-      authorId: args.authorId,
       content: args.content,
+      authorId: id.subject as Id<"users">,
     });
   },
 });
