@@ -79,6 +79,7 @@ export function FeedPage() {
             </TabsList>
           </div>
           <TabsContent value="for-you">
+            {/* attachmentsUrls are generated from storage IDs using ctx.storage.getUrl on the backend */}
             {posts.map((post) => (
               <Post
                 key={post._id}

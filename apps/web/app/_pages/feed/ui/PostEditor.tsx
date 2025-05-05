@@ -1,13 +1,13 @@
 "use client";
 
+import { useCallback, useRef, useState } from "react";
+import Image from "next/image";
 import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useMutation } from "convex/react";
-import { SendHorizonal, User, Paperclip } from "lucide-react";
-import { useRef, useState, useCallback } from "react";
+import { Paperclip, SendHorizonal, User } from "lucide-react";
 import { useDropzone } from "react-dropzone";
-import Image from "next/image";
 
 import { Button } from "@skill-based/ui/components/button";
 
@@ -21,8 +21,6 @@ export function PostEditor() {
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
-
 
   const editor = useEditor({
     immediatelyRender: false,
@@ -48,13 +46,16 @@ export function PostEditor() {
       blockSeparator: "\n",
     }) ?? "";
 
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    if (selectedImages.length + acceptedFiles.length > 2) {
-      alert("You can only attach up to 2 images.");
-      return;
-    }
-    setSelectedImages((prev) => [...prev, ...acceptedFiles].slice(0, 2));
-  }, [selectedImages]);
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (selectedImages.length + acceptedFiles.length > 2) {
+        alert("You can only attach up to 2 images.");
+        return;
+      }
+      setSelectedImages((prev) => [...prev, ...acceptedFiles].slice(0, 2));
+    },
+    [selectedImages],
+  );
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -84,20 +85,20 @@ export function PostEditor() {
       body: file,
     });
     const { storageId } = await res.json();
-    // Get the public URL for the image
-    return `/api/storage/${storageId}`;
+    // Return the storage ID (not a URL)
+    return storageId;
   }
 
   async function onSubmit() {
     setUploading(true);
-    let imageUrls: string[] = [];
+    let storageIds: string[] = [];
     try {
       if (selectedImages.length > 0) {
-        imageUrls = await Promise.all(selectedImages.map(uploadImage));
+        storageIds = await Promise.all(selectedImages.map(uploadImage));
       }
       await createPost({
         content: input,
-        attachments: imageUrls,
+        attachments: storageIds, // <-- send storage IDs, not URLs
       });
       editor?.commands.clearContent();
       setSelectedImages([]);
@@ -111,7 +112,7 @@ export function PostEditor() {
   return (
     <div className="bg-background space-y-2 rounded-xl p-4 shadow-md">
       <div className="flex gap-3">
-        <div className="bg-muted rounded-full p-2 h-10">
+        <div className="bg-muted h-10 rounded-full p-2">
           <User className="text-muted-foreground" />
         </div>
         <div className="flex-1" {...getRootProps()}>
@@ -134,7 +135,7 @@ export function PostEditor() {
                   type="button"
                   variant="destructive"
                   size="icon"
-                  className="absolute -top-2 -right-2"
+                  className="absolute -right-2 -top-2"
                   onClick={() => removeImage(idx)}
                 >
                   ×
@@ -162,7 +163,7 @@ export function PostEditor() {
             />
           </div>
           {isDragActive && (
-            <div className="mt-2 rounded border-2 border-dashed border-primary p-4 text-center text-primary">
+            <div className="border-primary text-primary mt-2 rounded border-2 border-dashed p-4 text-center">
               Drop images here
             </div>
           )}
@@ -175,7 +176,7 @@ export function PostEditor() {
               type="button"
               variant="outline"
               onClick={() => fileInputRef.current?.click()}
-              className="h-10 w-10 flex items-center justify-center"
+              className="flex h-10 w-10 items-center justify-center"
             >
               <Paperclip className="size-5" />
               <span className="sr-only">Attach image</span>

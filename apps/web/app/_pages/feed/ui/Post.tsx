@@ -64,23 +64,11 @@ export function Post({
             <MoreHorizontal size={20} className="text-muted-foreground" />
           </div>
           <p className="mt-1 whitespace-pre-line break-words">{content}</p>
-          <Image
-            src={attachmentsUrls[0] ?? ""}
-            alt="Post attachment"
-            width={320}
-            height={320}
-            className="max-h-80 rounded object-cover"
-            onError={(e) => {
-              if (!attachmentsUrls[0]) {
-                e.currentTarget.style.display = "none";
-              }
-            }}
-          />
           {/* Images display */}
-          {attachmentsUrls.length === 1 && (
+          {attachmentsUrls.length === 1 && attachmentsUrls[0] && (
             <div className="my-4 flex justify-center">
               <Image
-                src={attachmentsUrls[0] ?? ""}
+                src={attachmentsUrls[0]}
                 alt="Post attachment"
                 width={320}
                 height={320}
@@ -88,20 +76,21 @@ export function Post({
               />
             </div>
           )}
-          {attachmentsUrls.length === 2 && (
-            <div className="my-4 grid grid-cols-2 gap-2">
-              {attachmentsUrls.map((url, idx) => (
-                <Image
-                  key={idx}
-                  src={url}
-                  alt={`Post attachment ${idx + 1}`}
-                  width={200}
-                  height={200}
-                  className="max-h-80 w-full rounded object-cover"
-                />
-              ))}
-            </div>
-          )}
+          {attachmentsUrls.length === 2 &&
+            attachmentsUrls.every((url) => !!url) && (
+              <div className="my-4 grid grid-cols-2 gap-2">
+                {attachmentsUrls.map((url, idx) => (
+                  <Image
+                    key={idx}
+                    src={url}
+                    alt={`Post attachment ${idx + 1}`}
+                    width={200}
+                    height={200}
+                    className="max-h-80 w-full rounded object-cover"
+                  />
+                ))}
+              </div>
+            )}
           <div className="mt-4 flex items-center gap-4">
             <LikeButton postId={postId} />
             <CommentSection
