@@ -7,10 +7,17 @@ export const getComments = query({
     postId: v.id("posts"),
   },
   handler: async (ctx, args) => {
-    return await ctx.db
-      .query("comments")
-      .filter((q) => q.eq(q.field("postId"), args.postId))
-      .collect();
+    const comments = await ctx.db.query("comments").order("desc").collect();
+
+    return Promise.all(
+      comments.map(async (comment) => {
+        const user = await ctx.db.get(comment.authorId);
+        return {
+          ...comment,
+          authorName: user?.displayName ?? "Anonymous",
+        };
+      }),
+    );
   },
 });
 

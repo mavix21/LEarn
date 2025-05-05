@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useMutation } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { MoreHorizontal, Repeat2, Triangle, User } from "lucide-react";
 
 import { formatRelativeDate } from "@skill-based/ui/lib/dates";
@@ -11,6 +11,7 @@ import { api } from "@/convex/_generated/api";
 
 import { CommentInput } from "./CommentInput";
 import { CommentSection } from "./CommentSection";
+import { CommentsList } from "./CommentsList";
 import { LikeButton } from "./LikeButton";
 
 interface PostProps {
@@ -24,6 +25,10 @@ export function Post({ postId, authorName, content, creationTime }: PostProps) {
   const [showInput, setShowInput] = useState(false);
 
   const createComment = useMutation(api.comments.createComment);
+
+  const comments = useQuery(api.comments.getComments, {
+    postId: postId as Id<"posts">,
+  });
 
   async function onSend(value: string, postId: string) {
     await createComment({
@@ -67,6 +72,7 @@ export function Post({ postId, authorName, content, creationTime }: PostProps) {
               postId={postId}
             />
           )}
+          {comments && <CommentsList postId={postId} />}
           <div className="text-muted-foreground mt-2 flex items-center text-sm">
             <span>7 respostas · 59 curtidas</span>
           </div>
