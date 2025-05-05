@@ -41,7 +41,7 @@ export default defineSchema({
     .index("by_authorId", ["authorId"]),
 
   media: defineTable({
-    postId: v.id("posts"),
+    postId: v.optional(v.id("posts")),
     url: v.string(),
     type: v.union(v.literal("image"), v.literal("video")),
   }),
