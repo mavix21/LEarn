@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { fetchQuery } from "convex/nextjs";
 import {
   Check,
   ChevronDown,
@@ -8,7 +9,6 @@ import {
   Globe,
   Mail,
   MoreHorizontal,
-  Twitter,
   Users,
 } from "lucide-react";
 
@@ -26,9 +26,28 @@ import {
   TabsTrigger,
 } from "@skill-based/ui/components/tabs";
 
-export function ProfilePage() {
+import type { Id } from "@/convex/_generated/dataModel";
+import X from "@/app/_shared/ui/svg/X";
+import { auth } from "@/auth";
+import { api } from "@/convex/_generated/api";
+
+export async function ProfilePage({ userId }: { userId: string }) {
+  const data = await auth();
+  const user = await fetchQuery(
+    api.users.getUser,
+    {
+      userId: userId as Id<"users">,
+    },
+    { token: data?.convexToken },
+  );
+  console.log("user", user);
+
+  if (!user) {
+    return <div>User not found</div>;
+  }
+
   return (
-    <div className="container mx-auto h-full max-w-6xl space-y-6 overflow-y-auto">
+    <div className="bg-background container mx-auto h-full max-w-6xl space-y-6 overflow-y-auto">
       {/* Profile Header */}
       <div className="space-y-6">
         {/* Background Image */}
@@ -61,9 +80,9 @@ export function ProfilePage() {
           </div>
 
           <div className="flex items-center space-x-2">
-            <div className="flex space-x-3">
+            <div className="flex items-center justify-center gap-3">
               <Button variant="ghost" size="icon" className="rounded-full">
-                <Twitter className="text-muted-foreground h-5 w-5" />
+                <X className="text-muted-foreground h-5 w-5" />
               </Button>
               <Button variant="ghost" size="icon" className="rounded-full">
                 <Mail className="text-muted-foreground h-5 w-5" />
@@ -87,8 +106,8 @@ export function ProfilePage() {
       <div className="px-4">
         {/* Main Content */}
         <div className="w-full">
-          <Tabs defaultValue="overview" className="w-full">
-            <TabsList>
+          <Tabs defaultValue="overview" className="w-full space-y-8">
+            <TabsList className="w-full">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="groups">Groups</TabsTrigger>
               <TabsTrigger value="posts">Posts</TabsTrigger>
@@ -97,16 +116,16 @@ export function ProfilePage() {
               <TabsTrigger value="more">More</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="overview" className="mt-0">
+            <TabsContent value="overview" className="space-y-8">
               {/* Summary Section */}
-              <div className="mb-8">
+              <div className="space-y-8">
                 <div className="mb-4 flex items-center justify-between">
-                  <h2 className="text-xl font-semibold">Summary</h2>
+                  <h2 className="text-2xl font-semibold">Bio</h2>
                   <Button variant="ghost" size="sm" className="p-1">
                     <Edit2 className="h-4 w-4" />
                   </Button>
                 </div>
-                <div className="space-y-4">
+                <div className="text-muted-foreground space-y-2">
                   <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
                     do eiusmod tempor incididunt ut labore et dolore magna
@@ -128,9 +147,7 @@ export function ProfilePage() {
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="flex items-center text-xl font-semibold">
                     Ask Me About
-                    <Badge className="ml-2 bg-gray-200 text-gray-700 hover:bg-gray-300">
-                      8
-                    </Badge>
+                    <Badge className="bg-muted ml-2 hover:bg-gray-300">8</Badge>
                   </h2>
                   <Button
                     variant="ghost"
@@ -144,83 +161,65 @@ export function ProfilePage() {
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
                   <div className="flex items-center border-b py-2">
                     <Check className="mr-2 h-5 w-5 text-green-500" />
-                    <span className="flex-grow text-gray-800">
+                    <span className="flex-grow">
                       A Very Long Example Text Here
                     </span>
-                    <Badge className="bg-gray-200 text-gray-700">+2</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4 text-gray-400" />
+                    <Badge className="bg-muted">+2</Badge>
+                    <ChevronDown className="ml-2 h-4 w-4" />
                   </div>
 
                   <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow text-gray-800">
-                      A Very Long Example
-                    </span>
-                    <Badge className="bg-gray-200 text-gray-700">+3</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4 text-gray-400" />
+                    <span className="ml-7 flex-grow">A Very Long Example</span>
+                    <Badge className="bg-muted">+3</Badge>
+                    <ChevronDown className="ml-2 h-4 w-4" />
                   </div>
 
                   <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow text-gray-800">
-                      Example
-                    </span>
-                    <Badge className="bg-gray-200 text-gray-700">+5</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4 text-gray-400" />
+                    <span className="ml-7 flex-grow">Example</span>
+                    <Badge className="bg-muted">+5</Badge>
+                    <ChevronDown className="ml-2 h-4 w-4" />
                   </div>
 
                   <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow text-gray-800">
-                      Human Resources
-                    </span>
-                    <Badge className="bg-gray-200 text-gray-700">+3</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4 text-gray-400" />
+                    <span className="ml-7 flex-grow">Human Resources</span>
+                    <Badge className="bg-muted">+3</Badge>
+                    <ChevronDown className="ml-2 h-4 w-4" />
                   </div>
 
                   <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow text-gray-800">
-                      Medium Length
-                    </span>
-                    <Badge className="bg-gray-200 text-gray-700">+1</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4 text-gray-400" />
+                    <span className="ml-7 flex-grow">Medium Length</span>
+                    <Badge className="bg-muted">+1</Badge>
+                    <ChevronDown className="ml-2 h-4 w-4" />
                   </div>
 
                   <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow text-gray-800">
-                      Lost Text
-                    </span>
-                    <Badge className="bg-gray-200 text-gray-700">+2</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4 text-gray-400" />
+                    <span className="ml-7 flex-grow">Lost Text</span>
+                    <Badge className="bg-muted">+2</Badge>
+                    <ChevronDown className="ml-2 h-4 w-4" />
                   </div>
 
                   <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow text-gray-800">
-                      Analytics
-                    </span>
-                    <Badge className="bg-gray-200 text-gray-700">+4</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4 text-gray-400" />
+                    <span className="ml-7 flex-grow">Analytics</span>
+                    <Badge className="bg-muted">+4</Badge>
+                    <ChevronDown className="ml-2 h-4 w-4" />
                   </div>
 
                   <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow text-gray-800">
-                      Interaction Design
-                    </span>
-                    <Badge className="bg-gray-200 text-gray-700">+3</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4 text-gray-400" />
+                    <span className="ml-7 flex-grow">Interaction Design</span>
+                    <Badge className="bg-muted">+3</Badge>
+                    <ChevronDown className="ml-2 h-4 w-4" />
                   </div>
 
                   <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow text-gray-800">
-                      Example
-                    </span>
-                    <Badge className="bg-gray-200 text-gray-700">+3</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4 text-gray-400" />
+                    <span className="ml-7 flex-grow">Example</span>
+                    <Badge className="bg-muted">+3</Badge>
+                    <ChevronDown className="ml-2 h-4 w-4" />
                   </div>
 
                   <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow text-gray-800">
-                      Interface Design
-                    </span>
-                    <Badge className="bg-gray-200 text-gray-700">+5</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4 text-gray-400" />
+                    <span className="ml-7 flex-grow">Interface Design</span>
+                    <Badge className="bg-muted">+5</Badge>
+                    <ChevronDown className="ml-2 h-4 w-4" />
                   </div>
                 </div>
               </div>
@@ -298,49 +297,23 @@ export function ProfilePage() {
               <div className="mb-8">
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="text-xl font-semibold">Hobbies</h2>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="p-1 text-green-600 hover:text-green-700"
-                  >
-                    <Edit2 className="h-4 w-4" />
+                  <Button variant="ghost" size="sm" className="p-1">
+                    <Edit2 className="size-4" />
                   </Button>
                 </div>
 
                 <div className="flex flex-wrap gap-2">
-                  <Badge className="bg-gray-100 px-3 py-1 text-gray-800 hover:bg-gray-200">
-                    Dogs
-                  </Badge>
-                  <Badge className="bg-gray-100 px-3 py-1 text-gray-800 hover:bg-gray-200">
-                    Football
-                  </Badge>
-                  <Badge className="bg-gray-100 px-3 py-1 text-gray-800 hover:bg-gray-200">
-                    Basketball
-                  </Badge>
-                  <Badge className="bg-gray-100 px-3 py-1 text-gray-800 hover:bg-gray-200">
-                    The Witcher
-                  </Badge>
-                  <Badge className="bg-gray-100 px-3 py-1 text-gray-800 hover:bg-gray-200">
-                    Ice Skating
-                  </Badge>
-                  <Badge className="bg-gray-100 px-3 py-1 text-gray-800 hover:bg-gray-200">
-                    Traveling
-                  </Badge>
-                  <Badge className="bg-gray-100 px-3 py-1 text-gray-800 hover:bg-gray-200">
-                    Trains
-                  </Badge>
-                  <Badge className="bg-gray-100 px-3 py-1 text-gray-800 hover:bg-gray-200">
-                    Rock Climbing
-                  </Badge>
-                  <Badge className="bg-gray-100 px-3 py-1 text-gray-800 hover:bg-gray-200">
-                    Debate
-                  </Badge>
-                  <Badge className="bg-gray-100 px-3 py-1 text-gray-800 hover:bg-gray-200">
-                    Auto Detailing
-                  </Badge>
-                  <Badge className="bg-gray-100 px-3 py-1 text-gray-800 hover:bg-gray-200">
-                    Table Tennis
-                  </Badge>
+                  <Badge>Dogs</Badge>
+                  <Badge>Football</Badge>
+                  <Badge>Basketball</Badge>
+                  <Badge>The Witcher</Badge>
+                  <Badge>Ice Skating</Badge>
+                  <Badge>Traveling</Badge>
+                  <Badge>Trains</Badge>
+                  <Badge>Rock Climbing</Badge>
+                  <Badge>Debate</Badge>
+                  <Badge>Auto Detailing</Badge>
+                  <Badge>Table Tennis</Badge>
                 </div>
               </div>
 
@@ -374,9 +347,7 @@ export function ProfilePage() {
                         Spotify $10 Evergreen Referral Incentive is Live!
                       </h3>
                       <p className="text-sm text-gray-500">James Harrison</p>
-                      <p className="text-xs text-gray-400">
-                        Posted on February 1, 2021
-                      </p>
+                      <p className="text-xs">Posted on February 1, 2021</p>
                     </div>
                     <div className="h-20 w-20 flex-shrink-0 rounded-lg bg-yellow-100">
                       <Image
@@ -395,9 +366,7 @@ export function ProfilePage() {
                         Spotify $10 Evergreen Referral Incentive is Live!
                       </h3>
                       <p className="text-sm text-gray-500">Judith Nguyen</p>
-                      <p className="text-xs text-gray-400">
-                        Posted on February 1, 2021
-                      </p>
+                      <p className="text-xs">Posted on February 1, 2021</p>
                     </div>
                     <div className="h-20 w-20 flex-shrink-0 rounded-lg bg-pink-100">
                       <Image
@@ -416,9 +385,7 @@ export function ProfilePage() {
                         Spotify $10 Evergreen Referral Incentive is Live!
                       </h3>
                       <p className="text-sm text-gray-500">Aaron Cooper</p>
-                      <p className="text-xs text-gray-400">
-                        Posted on February 1, 2021
-                      </p>
+                      <p className="text-xs">Posted on February 1, 2021</p>
                     </div>
                     <div className="h-20 w-20 flex-shrink-0 rounded-lg bg-blue-100">
                       <Image
@@ -458,7 +425,7 @@ export function ProfilePage() {
 
                 <div className="space-y-4">
                   <div className="flex items-center py-2">
-                    <div className="mr-3 bg-gray-200 p-2">
+                    <div className="bg-muted mr-3 p-2">
                       <FileText className="h-5 w-5 text-gray-600" />
                     </div>
                     <div>
@@ -468,7 +435,7 @@ export function ProfilePage() {
                   </div>
 
                   <div className="flex items-center py-2">
-                    <div className="mr-3 bg-gray-200 p-2">
+                    <div className="bg-muted mr-3 p-2">
                       <FileText className="h-5 w-5 text-gray-600" />
                     </div>
                     <div>
@@ -478,7 +445,7 @@ export function ProfilePage() {
                   </div>
 
                   <div className="flex items-center py-2">
-                    <div className="mr-3 bg-gray-200 p-2">
+                    <div className="bg-muted mr-3 p-2">
                       <FileText className="h-5 w-5 text-gray-600" />
                     </div>
                     <div>
@@ -488,7 +455,7 @@ export function ProfilePage() {
                   </div>
 
                   <div className="flex items-center py-2">
-                    <div className="mr-3 bg-gray-200 p-2">
+                    <div className="bg-muted mr-3 p-2">
                       <FileText className="h-5 w-5 text-gray-600" />
                     </div>
                     <div>
