@@ -8,7 +8,7 @@ export function formatRelativeDate(fromMilliseconds: number) {
     (currentDate.getTime() - fromDate.getTime()) / 1000,
   );
 
-  if (differenceInSeconds < 5) {
+  if (differenceInSeconds < 59) {
     // Consideramos "recién creado" si la diferencia es menor a 5 segundos
     return "now";
   } else if (currentDate.getTime() - fromDate.getTime() < 24 * 60 * 60 * 1000) {
