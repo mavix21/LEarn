@@ -13,18 +13,26 @@ export const createPost = mutation({
     if (!id) {
       throw new Error("Unauthorized");
     }
-    const postId = await ctx.db.insert("posts", {
-      content: args.content,
-      authorId: id.subject as Id<"users">,
-    });
+    const mediaIds: Id<"media">[] = [];
     if (args.attachments && args.attachments.length > 0) {
       for (const url of args.attachments) {
-        await ctx.db.insert("media", {
-          postId,
+        const mediaId = await ctx.db.insert("media", {
+          // postId will be set after post is created
+          postId: undefined as unknown as Id<"posts">,
           url,
           type: "image",
         });
+        mediaIds.push(mediaId);
       }
+    }
+    const postId = await ctx.db.insert("posts", {
+      content: args.content,
+      authorId: id.subject as Id<"users">,
+      attachments: mediaIds.length > 0 ? mediaIds : undefined,
+    });
+    // Patch media records with the correct postId
+    for (const mediaId of mediaIds) {
+      await ctx.db.patch(mediaId, { postId });
     }
   },
 });

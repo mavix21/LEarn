@@ -29,7 +29,7 @@ export default defineSchema({
   posts: defineTable({
     content: v.string(),
     authorId: v.id("users"),
-    attachments: v.optional(v.id("media")),
+    attachments: v.optional(v.array(v.id("media"))),
     likes: v.optional(v.id("likes")),
     bookmarks: v.optional(v.id("bookmarks")),
     comments: v.optional(v.id("comments")),
