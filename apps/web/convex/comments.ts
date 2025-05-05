@@ -12,7 +12,7 @@ export const getComments = query({
       .query("comments")
       .filter((q) => q.eq(q.field("postId"), args.postId))
       .order("desc")
-      .collect();
+      .take(5);
 
     return Promise.all(
       comments.map(async (comment) => {
