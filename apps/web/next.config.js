@@ -27,6 +27,17 @@ const config = {
     ];
   },
 
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "grateful-cow-997.convex.cloud",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
+
   /** We already do linting and typechecking as separate tasks in CI */
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
