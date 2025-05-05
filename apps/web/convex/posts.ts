@@ -141,7 +141,7 @@ export const addMediaToPost = mutation({
     postId: v.id("posts"),
     media: v.array(
       v.object({
-        url: v.string(),
+        storageId: v.string(),
         type: v.union(v.literal("image"), v.literal("video")),
       }),
     ),
@@ -154,7 +154,7 @@ export const addMediaToPost = mutation({
     for (const file of args.media) {
       await ctx.db.insert("media", {
         postId: args.postId,
-        storageId: file.url,
+        storageId: file.storageId,
         type: file.type,
       });
     }
