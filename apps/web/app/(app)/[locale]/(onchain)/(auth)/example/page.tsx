@@ -1,7 +1,5 @@
 "use client";
 
-import "@reown/appkit-wallet-button/react";
-
 import Link from "next/link";
 import { useAccount } from "wagmi";
 
