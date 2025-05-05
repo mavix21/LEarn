@@ -29,6 +29,7 @@ export function LikeButton({ postId }: LikeButtonProps) {
     } else {
       deleteLike({
         postId: postId as Id<"posts">,
+        authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
       }).catch((error) => {
         console.error("Failed to delete like:", error);
       });
@@ -37,7 +38,8 @@ export function LikeButton({ postId }: LikeButtonProps) {
 
   return (
     <button
-      onClick={() => console.log("like or dislike")}
+      // onClick={() => console.log("like or dislike")}
+      onClick={handleLike}
       className="flex items-center transition-colors hover:text-red-500"
     >
       <Heart

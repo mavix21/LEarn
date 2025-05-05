@@ -34,8 +34,16 @@ export const createLikePost = mutation({
 export const deleteLikePost = mutation({
   args: {
     postId: v.id("posts"),
+    authorId: v.id("users"),
   },
   handler: async (ctx, args) => {
-    await ctx.db.delete(args.postId);
+    const like = await ctx.db
+      .query("likes")
+      .filter((q) => q.eq(q.field("postId"), args.postId))
+      .filter((q) => q.eq(q.field("authorId"), args.authorId))
+      .unique();
+    if (like) {
+      await ctx.db.delete(like._id);
+    }
   },
 });
