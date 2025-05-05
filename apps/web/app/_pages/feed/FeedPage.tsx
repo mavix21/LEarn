@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "convex/react";
+import { Authenticated, useConvexAuth, useQuery } from "convex/react";
 
 import {
   Tabs,
@@ -14,6 +14,7 @@ import { api } from "@/convex/_generated/api";
 import { Post, PostEditor } from "./ui";
 
 export function FeedPage() {
+  const { isAuthenticated } = useConvexAuth();
   const posts = useQuery(api.posts.getPosts);
   const isLoading = posts === undefined;
 
@@ -68,7 +69,11 @@ export function FeedPage() {
               <TabsTrigger value="for-you" className="rounded-lg border-0">
                 For you
               </TabsTrigger>
-              <TabsTrigger value="following" className="rounded-lg border-0">
+              <TabsTrigger
+                value="following"
+                disabled={!isAuthenticated}
+                className="rounded-lg border-0"
+              >
                 Following
               </TabsTrigger>
             </TabsList>
@@ -86,7 +91,9 @@ export function FeedPage() {
             ))}
           </TabsContent>
           <TabsContent value="following">
-            Change your password here.
+            <Authenticated>
+              <div>authenticated content</div>
+            </Authenticated>
           </TabsContent>
         </Tabs>
       </div>
