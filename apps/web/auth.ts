@@ -69,7 +69,10 @@ const providers = [
           signature: signature as `0x${string}`,
         });
 
-        if (!isValid) return null;
+        if (!isValid) {
+          console.log("Invalid signature");
+          return null;
+        }
 
         const userId = await createUser(address);
 

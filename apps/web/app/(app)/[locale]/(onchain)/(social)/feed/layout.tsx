@@ -2,7 +2,8 @@ import * as React from "react";
 
 import { Toaster } from "@skill-based/ui/components/sonner";
 
-import { ProfileCard, TrendingTopics, WhoToFollow } from "@/app/_pages/feed/ui";
+import { ProfileCard } from "@/app/_pages/feed/ui";
+import { RightSidebar } from "@/app/_pages/feed/ui/RightSidebar";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,8 +20,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
       {/* Right Sidebar - Trending */}
       <div className="col-span-1 col-start-3 row-start-2 h-full w-full overflow-y-auto p-6 lg:block">
-        <WhoToFollow />
-        <TrendingTopics />
+        <RightSidebar />
       </div>
       <Toaster />
     </React.Fragment>
