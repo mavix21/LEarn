@@ -4,7 +4,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useMutation } from "convex/react";
-import { SendHorizonal, User } from "lucide-react";
+import { SendHorizonal, User, Paperclip } from "lucide-react";
 import { useRef, useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 import Image from "next/image";
@@ -109,7 +109,7 @@ export function PostEditor() {
   return (
     <div className="bg-background space-y-2 rounded-xl p-4 shadow-md">
       <div className="flex gap-3">
-        <div className="bg-muted rounded-full p-2">
+        <div className="bg-muted rounded-full p-2 h-10">
           <User className="text-muted-foreground" />
         </div>
         <div className="flex-1" {...getRootProps()}>
@@ -139,7 +139,7 @@ export function PostEditor() {
                 </Button>
               </div>
             ))}
-            {selectedImages.length < 2 && (
+            {/* {selectedImages.length < 2 && (
               <Button
                 type="button"
                 variant="outline"
@@ -148,7 +148,7 @@ export function PostEditor() {
               >
                 +
               </Button>
-            )}
+            )} */}
             <input
               type="file"
               accept="image/*"
@@ -167,10 +167,23 @@ export function PostEditor() {
         </div>
       </div>
       <div className="flex justify-end">
-        <Button onClick={onSubmit} disabled={!input.trim() || uploading}>
-          <SendHorizonal className="size-4" />
-          <span className="sr-only">Send post</span>
-        </Button>
+        <div className="flex items-center gap-2">
+          {selectedImages.length < 2 && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => fileInputRef.current?.click()}
+              className="h-10 w-10 flex items-center justify-center"
+            >
+              <Paperclip className="size-5" />
+              <span className="sr-only">Attach image</span>
+            </Button>
+          )}
+          <Button onClick={onSubmit} disabled={!input.trim() || uploading}>
+            <SendHorizonal className="size-4" />
+            <span className="sr-only">Send post</span>
+          </Button>
+        </div>
       </div>
     </div>
   );
