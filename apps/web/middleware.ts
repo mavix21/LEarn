@@ -3,7 +3,8 @@ import { getToken } from "next-auth/jwt";
 import { withAuth } from "next-auth/middleware";
 import createMiddleware from "next-intl/middleware";
 
-import { locales, routing } from "./i18n/routing";
+import { locales } from "./app/_shared/i18n/locales";
+import { routing } from "./i18n/routing";
 
 const PUBLIC_PATHS = [
   "/landing",

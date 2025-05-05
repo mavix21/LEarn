@@ -13,6 +13,7 @@ import { AnimatedHomeIcon } from "@skill-based/ui/components/animated-home";
 import { AnimatedSearchIcon } from "@skill-based/ui/components/animated-search";
 import { AnimatedUserIcon } from "@skill-based/ui/components/animated-user";
 
+import { normalizePath } from "@/app/_shared/lib/normalizePath";
 import { AuthGateDialog } from "@/app/_shared/ui/auth-gate-dialog";
 
 export default function NavBar() {
@@ -65,8 +66,7 @@ export default function NavBar() {
     }
   };
 
-  const lastPath = pathname;
-  console.log(lastPath);
+  const lastPath = normalizePath(pathname);
 
   // i18n modal messages
   const dialogMessages: Record<string, { title: string; description: string }> =
