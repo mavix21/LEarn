@@ -28,7 +28,7 @@ export function CommentsList({ postId }: CommentsListProps) {
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-medium">{comment.authorAddress}</span>
+              <span className="font-medium">{comment.authorName}</span>
               <span className="text-muted-foreground text-sm">
                 {formatRelativeDate(comment._creationTime)}
               </span>
