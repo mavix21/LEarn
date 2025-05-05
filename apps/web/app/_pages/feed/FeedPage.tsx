@@ -77,6 +77,7 @@ export function FeedPage() {
             {posts.map((post) => (
               <Post
                 key={post._id}
+                authorName={post.authorName}
                 content={post.content}
                 creationTime={post._creationTime}
               />

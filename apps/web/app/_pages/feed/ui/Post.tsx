@@ -10,11 +10,12 @@ import {
 import { formatRelativeDate } from "@skill-based/ui/lib/dates";
 
 interface PostProps {
+  authorName: string;
   content: string;
   creationTime: number;
 }
 
-export function Post({ content, creationTime }: PostProps) {
+export function Post({ authorName, content, creationTime }: PostProps) {
   return (
     <div className="bg-background mb-2 rounded-xl p-4 shadow-md">
       <div className="flex items-start gap-3">
@@ -24,7 +25,7 @@ export function Post({ content, creationTime }: PostProps) {
         <div className="flex-1">
           <div className="flex justify-between">
             <div>
-              <span className="font-medium">aura</span>
+              <span className="font-medium">{authorName}</span>
               <span className="text-muted-foreground ml-2 text-sm">
                 {formatRelativeDate(creationTime)}
               </span>
