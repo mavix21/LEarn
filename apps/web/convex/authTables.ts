@@ -6,13 +6,13 @@ export const userSchema = {
   address: v.string(),
   displayName: v.optional(v.string()),
   bio: v.optional(v.string()),
-  manualStudies: v.optional(v.array(v.string())),
-  manualExperience: v.optional(v.array(v.string())),
-  portfolioLinks: v.optional(v.array(v.string())),
   email: v.optional(v.string()),
   name: v.optional(v.string()),
   emailVerified: v.optional(v.number()),
   image: v.optional(v.string()),
+  title: v.optional(v.string()),
+  location: v.optional(v.string()),
+  avatarUrl: v.optional(v.string()),
 };
 
 export const sessionSchema = {
