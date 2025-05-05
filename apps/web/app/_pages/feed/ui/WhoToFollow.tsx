@@ -8,9 +8,7 @@ import { api } from "@/convex/_generated/api";
 import { FollowCard } from "./FollowCard";
 
 export function WhoToFollow() {
-  const otherUsers = useQuery(api.posts.getOtherUsers, {
-    authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
-  });
+  const otherUsers = useQuery(api.posts.getOtherUsers);
 
   return (
     <>
@@ -24,7 +22,7 @@ export function WhoToFollow() {
             key={user._id}
             displayName={user.displayName as Id<"users">}
             isFollowing={false}
-            onFollow={() => {}}
+            onFollow={() => { }}
           />
         ))}
       </div>

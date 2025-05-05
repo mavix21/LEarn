@@ -49,13 +49,16 @@ export const getPostsByAuthorId = query({
 });
 
 export const getOtherUsers = query({
-  args: {
-    authorId: v.id("users"),
-  },
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
+
     return await ctx.db
       .query("users")
-      .filter((q) => q.neq(q.field("_id"), args.authorId))
+      .filter((q) => q.neq(q.field("_id"), id.subject as Id<"users">))
+      .order("desc")
       .take(2);
   },
 });
