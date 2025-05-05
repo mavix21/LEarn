@@ -9,13 +9,16 @@ import {
 
 import { formatRelativeDate } from "@skill-based/ui/lib/dates";
 
+import { LikeButton } from "./LikeButton";
+
 interface PostProps {
+  postId: string;
   authorName: string;
   content: string;
   creationTime: number;
 }
 
-export function Post({ authorName, content, creationTime }: PostProps) {
+export function Post({ postId, authorName, content, creationTime }: PostProps) {
   return (
     <div className="bg-background mb-2 rounded-xl p-4 shadow-md">
       <div className="flex items-start gap-3">
@@ -34,7 +37,7 @@ export function Post({ authorName, content, creationTime }: PostProps) {
           </div>
           <p className="mt-1 whitespace-pre-line break-words">{content}</p>
           <div className="mt-4 flex gap-4">
-            <Heart size={20} className="text-muted-foreground" />
+            <LikeButton postId={postId} />
             <MessageCircle size={20} className="text-muted-foreground" />
             <Repeat2 size={20} className="text-muted-foreground" />
             <Triangle size={20} className="text-muted-foreground" />
