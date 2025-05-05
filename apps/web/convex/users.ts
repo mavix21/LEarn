@@ -52,8 +52,37 @@ export const getUser = query({
     }
 
     return {
-      ...user,
+      name: user.name ?? user.displayName ?? user.address,
+      title: user.title ?? "",
+      location: user.location ?? "",
+      avatarUrl: user.avatarUrl ?? user.image ?? "",
+      bio: user.bio ?? "",
       isMe: user._id === id.subject,
+    };
+  },
+});
+
+export const getUserProfile = query({
+  args: {
+    userId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db.get(args.userId);
+    const userTopics = await ctx.db
+      .query("user_topics")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .collect();
+
+    return {
+      name: user?.name ?? user?.displayName ?? user?.address ?? "",
+      title: user?.title ?? "",
+      location: user?.location ?? "",
+      avatarUrl: user?.avatarUrl ?? user?.image ?? "",
+      bio: user?.bio ?? "",
+      topics: userTopics.map(({ endorsements, topic }) => ({
+        topic,
+        endorsements: endorsements ?? 0,
+      })),
     };
   },
 });

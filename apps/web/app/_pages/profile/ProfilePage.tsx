@@ -34,7 +34,7 @@ import { api } from "@/convex/_generated/api";
 export async function ProfilePage({ userId }: { userId: string }) {
   const data = await auth();
   const user = await fetchQuery(
-    api.users.getUser,
+    api.users.getUserProfile,
     {
       userId: userId as Id<"users">,
     },
@@ -61,20 +61,22 @@ export async function ProfilePage({ userId }: { userId: string }) {
         </div>
 
         {/* Profile Info */}
-        <div className="space-y-4 px-4">
+        <div className="space-y-4 px-5">
           <div className="relative z-10 -mt-24 flex flex-col gap-4 md:-mt-14 md:flex-row md:items-end">
             <Avatar className="border-primary size-32 rounded-full border-4">
               <AvatarImage
-                src="/placeholder.svg?height=128&width=128"
-                alt="Assaf Rappaport"
+                src={user.avatarUrl || "/placeholder.svg?height=128&width=128"}
+                alt={user.name}
               />
-              <AvatarFallback>AR</AvatarFallback>
+              <AvatarFallback>{user.name[0]}</AvatarFallback>
             </Avatar>
-            <div className="-mt-4 flex-grow">
-              <h1 className="text-2xl font-bold">Assaf Rappaport</h1>
-              <p className="text-muted-foreground">VP of Customer Operations</p>
+            <div className="-mt-4 flex flex-grow flex-col items-start">
+              <h1 className="text-2xl font-bold">{user.name}</h1>
+              <p className="text-muted-foreground">
+                {user.title || "No title"}
+              </p>
               <p className="text-muted-foreground/50 mt-1 text-sm">
-                San Francisco, CA USA
+                {user.location || "No location"}
               </p>
             </div>
           </div>
@@ -103,7 +105,7 @@ export async function ProfilePage({ userId }: { userId: string }) {
         </div>
       </div>
 
-      <div className="px-4">
+      <div className="px-5">
         {/* Main Content */}
         <div className="w-full">
           <Tabs defaultValue="overview" className="w-full space-y-8">
@@ -126,19 +128,11 @@ export async function ProfilePage({ userId }: { userId: string }) {
                   </Button>
                 </div>
                 <div className="text-muted-foreground space-y-2">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </p>
-                  <p>
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                    laboris nisi ut aliquip ex ea commodo consequat.
-                  </p>
-                  <p>
-                    Duis aute irure dolor in reprehenderit in voluptate velit
-                    esse cillum dolore eu fugiat nulla pariatur.
-                  </p>
+                  {user.bio ? (
+                    <p>{user.bio}</p>
+                  ) : (
+                    <p className="italic text-gray-400">No bio provided.</p>
+                  )}
                 </div>
               </div>
 
@@ -147,7 +141,9 @@ export async function ProfilePage({ userId }: { userId: string }) {
                 <div className="mb-4 flex items-center justify-between">
                   <h2 className="flex items-center text-xl font-semibold">
                     Ask Me About
-                    <Badge className="bg-muted ml-2 hover:bg-gray-300">8</Badge>
+                    <Badge className="bg-muted ml-2 hover:bg-gray-300">
+                      {user.topics.length}
+                    </Badge>
                   </h2>
                   <Button
                     variant="ghost"
@@ -159,68 +155,25 @@ export async function ProfilePage({ userId }: { userId: string }) {
                 </div>
 
                 <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
-                  <div className="flex items-center border-b py-2">
-                    <Check className="mr-2 h-5 w-5 text-green-500" />
-                    <span className="flex-grow">
-                      A Very Long Example Text Here
-                    </span>
-                    <Badge className="bg-muted">+2</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </div>
-
-                  <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow">A Very Long Example</span>
-                    <Badge className="bg-muted">+3</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </div>
-
-                  <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow">Example</span>
-                    <Badge className="bg-muted">+5</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </div>
-
-                  <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow">Human Resources</span>
-                    <Badge className="bg-muted">+3</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </div>
-
-                  <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow">Medium Length</span>
-                    <Badge className="bg-muted">+1</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </div>
-
-                  <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow">Lost Text</span>
-                    <Badge className="bg-muted">+2</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </div>
-
-                  <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow">Analytics</span>
-                    <Badge className="bg-muted">+4</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </div>
-
-                  <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow">Interaction Design</span>
-                    <Badge className="bg-muted">+3</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </div>
-
-                  <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow">Example</span>
-                    <Badge className="bg-muted">+3</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </div>
-
-                  <div className="flex items-center border-b py-2">
-                    <span className="ml-7 flex-grow">Interface Design</span>
-                    <Badge className="bg-muted">+5</Badge>
-                    <ChevronDown className="ml-2 h-4 w-4" />
-                  </div>
+                  {user.topics.length > 0 ? (
+                    user.topics.map(({ topic, endorsements }, idx: number) => (
+                      <div
+                        key={topic || idx}
+                        className="flex items-center border-b py-2"
+                      >
+                        <Check className="mr-2 h-5 w-5 text-green-500" />
+                        <span className="flex-grow">{topic}</span>
+                        {typeof endorsements === "number" && (
+                          <Badge className="bg-muted">+{endorsements}</Badge>
+                        )}
+                        <ChevronDown className="ml-2 h-4 w-4" />
+                      </div>
+                    ))
+                  ) : (
+                    <div className="italic text-gray-400">
+                      No topics added yet.
+                    </div>
+                  )}
                 </div>
               </div>
 

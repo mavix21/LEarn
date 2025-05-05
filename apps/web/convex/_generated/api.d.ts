@@ -21,6 +21,7 @@ import type * as getUserProfile from "../getUserProfile.js";
 import type * as http from "../http.js";
 import type * as likes from "../likes.js";
 import type * as posts from "../posts.js";
+import type * as userTopics from "../userTopics.js";
 import type * as users from "../users.js";
 
 /**
@@ -40,6 +41,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   likes: typeof likes;
   posts: typeof posts;
+  userTopics: typeof userTopics;
   users: typeof users;
 }>;
 export declare const api: FilterApi<
