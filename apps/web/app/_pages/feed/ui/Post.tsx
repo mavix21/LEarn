@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useMutation, useQuery } from "convex/react";
-import { MoreHorizontal, Repeat2, Triangle, User } from "lucide-react";
+import { MoreHorizontal, Repeat2, User } from "lucide-react";
 import Image from "next/image";
 
 import { formatRelativeDate } from "@skill-based/ui/lib/dates";
@@ -39,6 +39,8 @@ export function Post({ postId, authorName, content, creationTime, attachmentsUrl
     });
   }
 
+  console.log("attachmentsUrls", attachmentsUrls);
+
   return (
     <div className="bg-background mb-2 rounded-xl p-4 shadow-md">
       <div className="flex items-start gap-3">
@@ -56,6 +58,18 @@ export function Post({ postId, authorName, content, creationTime, attachmentsUrl
             <MoreHorizontal size={20} className="text-muted-foreground" />
           </div>
           <p className="mt-1 whitespace-pre-line break-words">{content}</p>
+          <Image
+            src={attachmentsUrls[0] ?? ""}
+            alt="Post attachment"
+            width={320}
+            height={320}
+            className="rounded object-cover max-h-80"
+            onError={(e) => {
+              if (!attachmentsUrls[0]) {
+                e.currentTarget.style.display = 'none';
+              }
+            }}
+          />
           {/* Images display */}
           {attachmentsUrls.length === 1 && (
             <div className="flex justify-center my-4">

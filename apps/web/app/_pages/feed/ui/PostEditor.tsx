@@ -22,6 +22,8 @@ export function PostEditor() {
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+
+
   const editor = useEditor({
     immediatelyRender: false,
     editorProps: {

@@ -12,7 +12,6 @@ function extractHashtags(content: string) {
 
 export function TrendingTopics() {
   const trendingTopics = useQuery(api.posts.getHashtagsContent);
-  console.log(trendingTopics);
 
   return (
     <>

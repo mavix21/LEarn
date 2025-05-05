@@ -81,6 +81,7 @@ export function FeedPage() {
                 authorName={post.authorName}
                 content={post.content}
                 creationTime={post._creationTime}
+                attachmentsUrls={post.attachmentsUrls}
               />
             ))}
           </TabsContent>

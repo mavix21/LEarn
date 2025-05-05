@@ -42,7 +42,7 @@ export default defineSchema({
 
   media: defineTable({
     postId: v.optional(v.id("posts")),
-    url: v.string(),
+    storageId: v.string(),
     type: v.union(v.literal("image"), v.literal("video")),
   }),
 

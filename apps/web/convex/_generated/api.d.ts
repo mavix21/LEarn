@@ -19,6 +19,7 @@ import type * as comments from "../comments.js";
 import type * as dummy from "../dummy.js";
 import type * as http from "../http.js";
 import type * as likes from "../likes.js";
+import type * as messages from "../messages.js";
 import type * as posts from "../posts.js";
 import type * as userTopics from "../userTopics.js";
 import type * as users from "../users.js";
@@ -38,6 +39,7 @@ declare const fullApi: ApiFromModules<{
   dummy: typeof dummy;
   http: typeof http;
   likes: typeof likes;
+  messages: typeof messages;
   posts: typeof posts;
   userTopics: typeof userTopics;
   users: typeof users;

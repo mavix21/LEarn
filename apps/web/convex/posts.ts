@@ -15,11 +15,10 @@ export const createPost = mutation({
     }
     const mediaIds: Id<"media">[] = [];
     if (args.attachments && args.attachments.length > 0) {
-      for (const url of args.attachments) {
+      for (const storageId of args.attachments) {
         const mediaId = await ctx.db.insert("media", {
-          // postId will be set after post is created
           postId: undefined as unknown as Id<"posts">,
-          url,
+          storageId,
           type: "image",
         });
         mediaIds.push(mediaId);
@@ -52,9 +51,27 @@ export const getPosts = query({
           const mediaDocs = await Promise.all(
             post.attachments.map((mediaId) => ctx.db.get(mediaId)),
           );
-          attachmentsUrls = mediaDocs
-            .filter(Boolean)
-            .map((media) => media!.url);
+          attachmentsUrls = (
+            await Promise.all(
+              mediaDocs
+                .filter(
+                  (
+                    media,
+                  ): media is {
+                    _id: Id<"media">;
+                    _creationTime: number;
+                    postId?: Id<"posts">;
+                    type: "image" | "video";
+                    storageId: string;
+                  } => Boolean(media) && typeof media?.storageId === "string",
+                )
+                .map(
+                  async (media) => await ctx.storage.getUrl(media.storageId),
+                ),
+            )
+          ).filter(
+            (url): url is string => typeof url === "string" && url.length > 0,
+          );
         }
         return {
           ...post,
@@ -137,7 +154,7 @@ export const addMediaToPost = mutation({
     for (const file of args.media) {
       await ctx.db.insert("media", {
         postId: args.postId,
-        url: file.url,
+        storageId: file.url,
         type: file.type,
       });
     }
