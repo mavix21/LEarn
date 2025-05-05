@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { useMutation, useQuery } from "convex/react";
 import { MoreHorizontal, Repeat2, User } from "lucide-react";
-import Image from "next/image";
 
 import { formatRelativeDate } from "@skill-based/ui/lib/dates";
 
@@ -23,7 +23,13 @@ interface PostProps {
   attachmentsUrls?: string[];
 }
 
-export function Post({ postId, authorName, content, creationTime, attachmentsUrls = [] }: PostProps) {
+export function Post({
+  postId,
+  authorName,
+  content,
+  creationTime,
+  attachmentsUrls = [],
+}: PostProps) {
   const [showInput, setShowInput] = useState(false);
 
   const createComment = useMutation(api.comments.createComment);
@@ -63,27 +69,27 @@ export function Post({ postId, authorName, content, creationTime, attachmentsUrl
             alt="Post attachment"
             width={320}
             height={320}
-            className="rounded object-cover max-h-80"
+            className="max-h-80 rounded object-cover"
             onError={(e) => {
               if (!attachmentsUrls[0]) {
-                e.currentTarget.style.display = 'none';
+                e.currentTarget.style.display = "none";
               }
             }}
           />
           {/* Images display */}
           {attachmentsUrls.length === 1 && (
-            <div className="flex justify-center my-4">
+            <div className="my-4 flex justify-center">
               <Image
                 src={attachmentsUrls[0] ?? ""}
                 alt="Post attachment"
                 width={320}
                 height={320}
-                className="rounded object-cover max-h-80"
+                className="max-h-80 rounded object-cover"
               />
             </div>
           )}
           {attachmentsUrls.length === 2 && (
-            <div className="grid grid-cols-2 gap-2 my-4">
+            <div className="my-4 grid grid-cols-2 gap-2">
               {attachmentsUrls.map((url, idx) => (
                 <Image
                   key={idx}
@@ -91,7 +97,7 @@ export function Post({ postId, authorName, content, creationTime, attachmentsUrl
                   alt={`Post attachment ${idx + 1}`}
                   width={200}
                   height={200}
-                  className="rounded object-cover max-h-80 w-full"
+                  className="max-h-80 w-full rounded object-cover"
                 />
               ))}
             </div>
