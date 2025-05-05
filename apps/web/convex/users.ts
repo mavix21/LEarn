@@ -35,3 +35,25 @@ export const exists = query({
     return !!user;
   },
 });
+
+export const getUser = query({
+  args: {
+    userId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
+
+    const user = await ctx.db.get(args.userId);
+    if (!user) {
+      return null;
+    }
+
+    return {
+      ...user,
+      isMe: user._id === id.subject,
+    };
+  },
+});
