@@ -1,11 +1,16 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation } from "convex/react";
 import { MoreHorizontal, Repeat2, Triangle, User } from "lucide-react";
 
 import { formatRelativeDate } from "@skill-based/ui/lib/dates";
 
-import { CommentInput, CommentSection } from "./CommentSection";
+import type { Id } from "@/convex/_generated/dataModel";
+import { api } from "@/convex/_generated/api";
+
+import { CommentInput } from "./CommentInput";
+import { CommentSection } from "./CommentSection";
 import { LikeButton } from "./LikeButton";
 
 interface PostProps {
@@ -17,6 +22,18 @@ interface PostProps {
 
 export function Post({ postId, authorName, content, creationTime }: PostProps) {
   const [showInput, setShowInput] = useState(false);
+
+  const createComment = useMutation(api.comments.createComment);
+
+  async function onSend(value: string, postId: string) {
+    await createComment({
+      postId: postId as Id<"posts">,
+      content: value,
+      authorId: "j97f00n7t41er945tbhn0ddw057f466f" as Id<"users">,
+      authorAddress: "0x4029490B2Dedd37906F2911B444d081caAad8E71",
+    });
+  }
+
   return (
     <div className="bg-background mb-2 rounded-xl p-4 shadow-md">
       <div className="flex items-start gap-3">
@@ -39,12 +56,17 @@ export function Post({ postId, authorName, content, creationTime }: PostProps) {
             <CommentSection
               postId={postId}
               showInput={showInput}
-              setShowInput={setShowInput}
+              handleInput={setShowInput}
             />
             <Repeat2 size={20} className="text-muted-foreground" />
             <Triangle size={20} className="text-muted-foreground" />
           </div>
-          {showInput && <CommentInput />}
+          {showInput && (
+            <CommentInput
+              onSend={(value) => onSend(value, postId)}
+              postId={postId}
+            />
+          )}
           <div className="text-muted-foreground mt-2 flex items-center text-sm">
             <span>7 respostas · 59 curtidas</span>
           </div>
