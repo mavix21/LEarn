@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Authenticated, Unauthenticated } from "convex/react";
@@ -22,7 +22,8 @@ export default function NavBar() {
 
   const pathname = usePathname();
   const router = useRouter();
-  const [dialogKey, setDialogKey] = React.useState<string | null>(null);
+  const [dialogKey, setDialogKey] = useState<string | null>(null);
+  const [openAuthDialog, setOpenAuthDialog] = useState(false);
   const t = useTranslations("onboarding");
 
   // Dynamically set navItems so Profile href uses userId if available
@@ -61,6 +62,7 @@ export default function NavBar() {
     item: (typeof navItems)[number],
   ) => {
     if (item.gate && item.dialogKey) {
+      setOpenAuthDialog(true);
       setDialogKey(item.dialogKey);
       e.preventDefault();
     }
@@ -119,10 +121,9 @@ export default function NavBar() {
             </button>
           ))}
         </AnimatedBackground>
-
         <AuthGateDialog
-          open={!!dialogKey}
-          onOpenChange={(open) => (open ? undefined : setDialogKey(null))}
+          open={openAuthDialog}
+          onOpenChange={setOpenAuthDialog}
           title={
             dialogKey && dialogMessages[dialogKey]
               ? dialogMessages[dialogKey].title
