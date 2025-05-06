@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
 
+import { AuthGateDialogProvider } from "@/app/_shared/ui/auth-gate-dialog-context";
 import { auth } from "@/auth";
 
 import { ConvexClientProvider, OnchainProviders } from "../../_providers";
@@ -14,7 +15,9 @@ export default async function Layout({
 
   return (
     <OnchainProviders cookie={cookie}>
-      <ConvexClientProvider session={session}>{children}</ConvexClientProvider>
+      <ConvexClientProvider session={session}>
+        <AuthGateDialogProvider>{children}</AuthGateDialogProvider>
+      </ConvexClientProvider>
     </OnchainProviders>
   );
 }

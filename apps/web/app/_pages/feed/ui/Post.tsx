@@ -4,12 +4,11 @@ import { useState } from "react";
 import Image from "next/image";
 import { useConvexAuth, useMutation, useQuery } from "convex/react";
 import { Heart, MoreHorizontal, Repeat2, User } from "lucide-react";
-import { useTranslations } from "next-intl";
 
 import { formatRelativeDate } from "@skill-based/ui/lib/dates";
 
 import type { Id } from "@/convex/_generated/dataModel";
-import { AuthGateDialog } from "@/app/_shared/ui/auth-gate-dialog";
+import { useAuthGateDialog } from "@/app/_shared/ui/auth-gate-dialog-context";
 import { api } from "@/convex/_generated/api";
 
 import { CommentInput } from "./CommentInput";
@@ -33,23 +32,8 @@ export function Post({
   attachmentsUrls = [],
 }: PostProps) {
   const { isAuthenticated } = useConvexAuth();
-  const [openAuthDialog, setOpenAuthDialog] = useState(false);
   const [showInput, setShowInput] = useState(false);
-  const [dialogKey, setDialogKey] =
-    useState<keyof typeof dialogMessages>("like");
-
-  const t = useTranslations("onboarding");
-
-  const dialogMessages = {
-    like: {
-      title: t("like.title"),
-      description: t("like.description"),
-    },
-    comment: {
-      title: t("comment.title"),
-      description: t("comment.description"),
-    },
-  } as const;
+  const { open } = useAuthGateDialog();
 
   const createComment = useMutation(api.comments.createComment);
 
@@ -123,8 +107,7 @@ export function Post({
               <button
                 className="flex items-center transition-colors hover:text-red-500"
                 onClick={() => {
-                  setOpenAuthDialog(true);
-                  setDialogKey("like");
+                  open({ key: "like" });
                 }}
               >
                 <Heart
@@ -140,8 +123,7 @@ export function Post({
                 if (isAuthenticated) {
                   setShowInput(e);
                 } else {
-                  setOpenAuthDialog(true);
-                  setDialogKey("comment");
+                  open({ key: "comment" });
                 }
               }}
             />
@@ -157,17 +139,11 @@ export function Post({
           {comments && <CommentsList postId={postId} />}
           <div className="text-muted-foreground mt-2 flex items-center text-sm">
             <span>
-              {likesCount !== undefined ? likesCount : "-"} Me gusta · {commentsCount !== undefined ? commentsCount : "-"} comentarios
+              {likesCount ?? "-"} Me gusta · {commentsCount ?? "-"} comentarios
             </span>
           </div>
         </div>
       </div>
-      <AuthGateDialog
-        open={openAuthDialog}
-        onOpenChange={setOpenAuthDialog}
-        title={dialogMessages[dialogKey].title}
-        description={dialogMessages[dialogKey].description}
-      />
     </div>
   );
 }
