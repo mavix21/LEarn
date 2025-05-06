@@ -86,3 +86,20 @@ export const getUserProfile = query({
     };
   },
 });
+
+export const updateDisplayName = mutation({
+  args: {
+    userId: v.id("users"),
+    displayName: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db.get(args.userId);
+    if (!user) {
+      return;
+    }
+
+    await ctx.db.patch(args.userId, {
+      displayName: args.displayName,
+    });
+  },
+});

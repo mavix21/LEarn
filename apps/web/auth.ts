@@ -4,6 +4,7 @@ import type {
   NextApiResponse,
 } from "next";
 import type { NextAuthOptions } from "next-auth";
+import { getName } from "@coinbase/onchainkit/identity";
 import {
   getAddressFromMessage,
   getChainIdFromMessage,
@@ -12,12 +13,14 @@ import { importPKCS8, SignJWT } from "jose";
 import { getServerSession } from "next-auth";
 import credentialsProvider from "next-auth/providers/credentials";
 import { createPublicClient, http } from "viem";
+import { base, mainnet } from "viem/chains";
 
 import { env } from "@/src/env";
 
 import type { Id } from "./convex/_generated/dataModel";
 import { ConvexAdapter } from "./src/convexAdapter";
 import { createUser } from "./src/users/create-user.action";
+import { updateDisplayName } from "./src/users/update-display-name.action";
 
 const authSecret = env.NEXTAUTH_SECRET;
 const projectId = env.NEXT_PUBLIC_WC_PROJECT_ID;
@@ -47,7 +50,7 @@ const providers = [
         const message = credentials.message;
         const signature = credentials.signature;
 
-        const address = getAddressFromMessage(message);
+        const address = getAddressFromMessage(message) as `0x${string}`;
         const chainId = getChainIdFromMessage(message);
 
         // const isValid = await verifySignature({
@@ -65,7 +68,7 @@ const providers = [
         });
         const isValid = await publicClient.verifyMessage({
           message,
-          address: address as `0x${string}`,
+          address: address,
           signature: signature as `0x${string}`,
         });
 
@@ -75,6 +78,25 @@ const providers = [
         }
 
         const userId = await createUser(address);
+        try {
+          const [baseName, ensName] = await Promise.all([
+            getName({ address, chain: base }),
+            getName({ address, chain: mainnet }),
+          ]);
+          if (baseName) {
+            await updateDisplayName({
+              userId,
+              displayName: baseName,
+            });
+          } else if (ensName) {
+            await updateDisplayName({
+              userId,
+              displayName: ensName,
+            });
+          }
+        } catch (error) {
+          console.error("Error getting ens name", error);
+        }
 
         return {
           id: `${chainId}:${address}:${userId}`,
