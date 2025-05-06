@@ -55,8 +55,9 @@ export function LikeButton({ postId }: LikeButtonProps) {
     >
       <Heart
         size={20}
-        className={`${isLiked ? "fill-red-500 text-red-500" : "text-muted-foreground"
-          }`}
+        className={`${
+          isLiked ? "fill-red-500 text-red-500" : "text-muted-foreground"
+        }`}
       />
     </button>
   );

@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useMutation, useQuery } from "convex/react";
-import { MoreHorizontal, Repeat2, User } from "lucide-react";
+import { useConvexAuth, useMutation, useQuery } from "convex/react";
+import { Heart, MoreHorizontal, Repeat2, User } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import { formatRelativeDate } from "@skill-based/ui/lib/dates";
 
 import type { Id } from "@/convex/_generated/dataModel";
+import { AuthGateDialog } from "@/app/_shared/ui/auth-gate-dialog";
 import { api } from "@/convex/_generated/api";
 
 import { CommentInput } from "./CommentInput";
@@ -30,7 +32,24 @@ export function Post({
   creationTime,
   attachmentsUrls = [],
 }: PostProps) {
+  const { isAuthenticated } = useConvexAuth();
+  const [openAuthDialog, setOpenAuthDialog] = useState(false);
   const [showInput, setShowInput] = useState(false);
+  const [dialogKey, setDialogKey] =
+    useState<keyof typeof dialogMessages>("like");
+
+  const t = useTranslations("onboarding");
+
+  const dialogMessages = {
+    like: {
+      title: t("like.title"),
+      description: t("like.description"),
+    },
+    comment: {
+      title: t("comment.title"),
+      description: t("comment.description"),
+    },
+  } as const;
 
   const createComment = useMutation(api.comments.createComment);
 
@@ -44,8 +63,6 @@ export function Post({
       content: value,
     });
   }
-
-  console.log("attachmentsUrls", attachmentsUrls);
 
   return (
     <div className="bg-background mb-2 rounded-xl p-4 shadow-md">
@@ -92,11 +109,33 @@ export function Post({
               </div>
             )}
           <div className="mt-4 flex items-center gap-4">
-            <LikeButton postId={postId} />
+            {isAuthenticated ? (
+              <LikeButton postId={postId} />
+            ) : (
+              <button
+                className="flex items-center transition-colors hover:text-red-500"
+                onClick={() => {
+                  setOpenAuthDialog(true);
+                  setDialogKey("like");
+                }}
+              >
+                <Heart
+                  size={20}
+                  className="text-muted-foreground transition-transform duration-300 hover:scale-105"
+                />
+              </button>
+            )}
             <CommentSection
               postId={postId}
               showInput={showInput}
-              handleInput={setShowInput}
+              handleInput={(e) => {
+                if (isAuthenticated) {
+                  setShowInput(e);
+                } else {
+                  setOpenAuthDialog(true);
+                  setDialogKey("comment");
+                }
+              }}
             />
             <Repeat2 size={20} className="text-muted-foreground" />
             {/* <Triangle size={20} className="text-muted-foreground" /> */}
@@ -113,6 +152,12 @@ export function Post({
           </div>
         </div>
       </div>
+      <AuthGateDialog
+        open={openAuthDialog}
+        onOpenChange={setOpenAuthDialog}
+        title={dialogMessages[dialogKey].title}
+        description={dialogMessages[dialogKey].description}
+      />
     </div>
   );
 }

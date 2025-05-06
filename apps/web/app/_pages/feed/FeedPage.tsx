@@ -19,7 +19,7 @@ export function FeedPage() {
   const isLoading = posts === undefined;
 
   const PostSkeleton = () => (
-    <div className="bg-background animate-pulse border-b p-4">
+    <div className="bg-background animate-pulse rounded-xl border-b p-4">
       <div className="flex items-center space-x-4">
         <div className="bg-muted h-12 w-12 rounded-full"></div>
         <div className="flex-1 space-y-2">
@@ -38,12 +38,12 @@ export function FeedPage() {
   if (isLoading) {
     return (
       <div
-        className="bg-muted h-full overflow-y-auto px-4"
+        className="bg-muted h-full overflow-y-auto rounded-xl p-4"
         style={{
           scrollbarGutter: "stable both-edges",
         }}
       >
-        <div className="bg-background mx-auto max-w-xl border-x">
+        <div className="bg-background mx-auto max-w-xl space-y-4 rounded-xl border-x">
           {[...Array(7)].map((_, i) => (
             <PostSkeleton key={i} />
           ))}
@@ -61,7 +61,9 @@ export function FeedPage() {
     >
       {/* Post Creation */}
       <div className="mx-auto mt-4 max-w-xl space-y-4">
-        <PostEditor />
+        <Authenticated>
+          <PostEditor />
+        </Authenticated>
 
         <Tabs defaultValue="for-you">
           <div className="bg-background rounded-xl p-1 shadow-md">

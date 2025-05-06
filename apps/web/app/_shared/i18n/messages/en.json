@@ -56,14 +56,22 @@
     "description": " Connect your wallet to start your verifiable professional journey.",
     "connect": "Continue with Wallet",
     "altLogin": "Sign in with username",
-    "cta": "Get Started",
+    "cta": "Get Started 🚀",
     "profile": {
-      "title": "Build your profile with SkillBased",
+      "title": "Build your profile 📝",
       "description": "Join SkillShare to create your professional identity, showcase your skills, and connect with others on-chain."
     },
     "notifications": {
-      "title": "Stay up to date",
+      "title": "Stay up to date 📰",
       "description": "Sign in to SkillShare to receive notifications about your network and activity."
+    },
+    "like": {
+      "title": "Show your support 🥰",
+      "description": "Sign in to SkillShare to like a post."
+    },
+    "comment": {
+      "title": "Join the conversation 💬",
+      "description": "Sign in to SkillShare to comment on a post."
     }
   }
 }

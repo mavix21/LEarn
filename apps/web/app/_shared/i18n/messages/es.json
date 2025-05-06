@@ -56,14 +56,22 @@
     "description": "Conecta tu wallet para comenzar tu viaje profesional verificable.",
     "connect": "Continuar con Wallet",
     "altLogin": "Iniciar sesión con nombre de usuario",
-    "cta": "Empieza ahora",
+    "cta": "Empieza ahora 🚀",
     "profile": {
-      "title": "Crea tu perfil con SkillBased",
+      "title": "Crea tu perfil 📝",
       "description": "Únete a SkillShare para crear tu identidad profesional, mostrar tus habilidades y conectar con otros en la blockchain."
     },
     "notifications": {
-      "title": "Mantente al día",
+      "title": "Mantente al día 📰",
       "description": "Inicia sesión en SkillShare para recibir notificaciones sobre tu red y actividad."
+    },
+    "like": {
+      "title": "Muestra tu apoyo 🥰",
+      "description": "Inicia sesión en SkillShare para dar me gusta a un post."
+    },
+    "comment": {
+      "title": "Únete a la conversación 💬",
+      "description": "Inicia sesión en SkillShare para comentar en un post."
     }
   }
 }
