@@ -72,6 +72,10 @@
     "comment": {
       "title": "Join the conversation 💬",
       "description": "Sign in to SkillShare to comment on a post."
+    },
+    "default": {
+      "title": "Build your profile with SkillBased",
+      "description": "Join SkillShare to create your professional identity, showcase your skills, and connect with others on-chain."
     }
   }
 }

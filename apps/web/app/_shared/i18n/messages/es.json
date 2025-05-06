@@ -72,6 +72,10 @@
     "comment": {
       "title": "Únete a la conversación 💬",
       "description": "Inicia sesión en SkillShare para comentar en un post."
+    },
+    "default": {
+      "title": "Crea tu perfil en SkillBased 📝",
+      "description": "Únete a SkillShare para crear tu identidad profesional, mostrar tus habilidades y conectar con otros en la blockchain."
     }
   }
 }
