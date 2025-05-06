@@ -18,8 +18,12 @@ import { Authenticated, Unauthenticated } from "convex/react";
 import { base } from "viem/chains";
 import { useAccount } from "wagmi";
 
+import { Button } from "@skill-based/ui/components/button";
+import { Card, CardAction, CardContent } from "@skill-based/ui/components/card";
 import { Skeleton } from "@skill-based/ui/components/skeleton";
 import { cn } from "@skill-based/ui/lib/utils";
+
+import { useAppKit } from "@/reown";
 
 import ConnectCard from "./ConnectCard";
 
@@ -33,6 +37,7 @@ const Identity = dynamic(
 
 export default function ProfileCard({ className }: { className?: string }) {
   const { isConnected, address, isConnecting } = useAccount();
+  const { open } = useAppKit();
 
   console.log("address", address);
 
@@ -58,14 +63,25 @@ export default function ProfileCard({ className }: { className?: string }) {
         <SocialsWithLoading address={address} chain={base} /> */}
         <Authenticated>
           {address && (
-            <Identity address={address} chain={base}>
-              <Avatar className="block size-16" />
-              <Name>
-                <Badge tooltip="Coinbase verified account" />
-              </Name>
-              <Address hasCopyAddressOnClick />
-              <Socials />
-            </Identity>
+            <Card
+              className="hover:!bg-muted group w-full cursor-pointer transition-colors"
+              onClick={() => open({ view: "Account" })}
+            >
+              <CardContent>
+                <Identity
+                  address={address}
+                  chain={base}
+                  className="group-hover:bg-muted transition-colors"
+                >
+                  <Avatar className="block size-16" />
+                  <Name>
+                    <Badge tooltip="Coinbase verified account" />
+                  </Name>
+                  <Address hasCopyAddressOnClick />
+                  <Socials />
+                </Identity>
+              </CardContent>
+            </Card>
           )}
         </Authenticated>
         {/* <h2 className="mt-4 text-xl font-bold">Alisson Rochinski</h2>
