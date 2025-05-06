@@ -23,13 +23,13 @@ export function AuthGateDialog({
 }: AuthGateDialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="w-fit p-8">
         <DialogHeader>
-          <DialogTitle className="mx-auto max-w-[15ch] text-center text-4xl font-bold">
+          <DialogTitle className="mx-auto max-w-fit text-center text-4xl font-bold">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-muted-foreground grid justify-center gap-8 text-sm">
-            <span className="block max-w-[45ch] text-center">
+          <DialogDescription className="text-muted-foreground text-md mt-2 grid gap-8">
+            <span className="mx-auto block max-w-[30ch] text-center">
               {description}
             </span>
             <ConnectButton />
