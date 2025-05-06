@@ -58,3 +58,17 @@ export const deleteLikePost = mutation({
     }
   },
 });
+
+export const getLikesCount = query({
+  args: {
+    postId: v.id("posts"),
+  },
+  returns: v.number(),
+  handler: async (ctx, args) => {
+    const count = await ctx.db
+      .query("likes")
+      .filter((q) => q.eq(q.field("postId"), args.postId))
+      .collect();
+    return count.length;
+  },
+});

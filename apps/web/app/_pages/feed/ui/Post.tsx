@@ -57,6 +57,14 @@ export function Post({
     postId: postId as Id<"posts">,
   });
 
+  // Fetch like and comment counts
+  const likesCount = useQuery(api.likes.getLikesCount, {
+    postId: postId as Id<"posts">,
+  });
+  const commentsCount = useQuery(api.comments.getCommentsCount, {
+    postId: postId as Id<"posts">,
+  });
+
   async function onSend(value: string, postId: string) {
     await createComment({
       postId: postId as Id<"posts">,
@@ -148,7 +156,9 @@ export function Post({
           )}
           {comments && <CommentsList postId={postId} />}
           <div className="text-muted-foreground mt-2 flex items-center text-sm">
-            <span>7 Me gusta · 59 comentarios</span>
+            <span>
+              {likesCount !== undefined ? likesCount : "-"} Me gusta · {commentsCount !== undefined ? commentsCount : "-"} comentarios
+            </span>
           </div>
         </div>
       </div>

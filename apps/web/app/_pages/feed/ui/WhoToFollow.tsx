@@ -5,7 +5,7 @@ import { useQuery } from "convex/react";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
-import { FollowCard } from "./FollowCard";
+import { FollowCard, FollowCardSkeleton } from "./FollowCard";
 
 export function WhoToFollow() {
   const otherUsers = useQuery(api.posts.getOtherUsers);
@@ -17,14 +17,21 @@ export function WhoToFollow() {
       </div>
 
       <div className="mb-6 space-y-6">
-        {otherUsers?.map((user) => (
-          <FollowCard
-            key={user._id}
-            displayName={user.displayName as Id<"users">}
-            isFollowing={false}
-            onFollow={() => { }}
-          />
-        ))}
+        {otherUsers === undefined ? (
+          <>
+            <FollowCardSkeleton />
+            <FollowCardSkeleton />
+          </>
+        ) : (
+          otherUsers.map((user) => (
+            <FollowCard
+              key={user._id}
+              displayName={user.displayName as Id<"users">}
+              isFollowing={false}
+              onFollow={() => { }}
+            />
+          ))
+        )}
       </div>
     </>
   );

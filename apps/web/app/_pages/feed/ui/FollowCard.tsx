@@ -8,6 +8,7 @@ import {
 } from "@skill-based/ui/components/avatar";
 import { Button } from "@skill-based/ui/components/button";
 import { Card, CardContent } from "@skill-based/ui/components/card";
+import { Skeleton } from "@skill-based/ui/components/skeleton";
 
 interface UserProps {
   displayName: string;
@@ -52,6 +53,27 @@ export function FollowCard({ displayName, isFollowing, onFollow }: UserProps) {
           >
             {isFollowing ? "Following" : "Follow"}
           </Button>
+        </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+export function FollowCardSkeleton() {
+  return (
+    <Card className="bg-muted w-full max-w-sm border-0 shadow-none">
+      <CardContent>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3">
+              <Skeleton className="bg-background h-10 w-10 rounded-full border" />
+              <div className="flex flex-col">
+                <Skeleton className="h-4 w-24 mb-1" />
+                <Skeleton className="h-3 w-16" />
+              </div>
+            </div>
+          </div>
+          <Skeleton className="h-8 w-20 rounded-md" />
         </div>
       </CardContent>
     </Card>

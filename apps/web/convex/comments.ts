@@ -44,3 +44,17 @@ export const createComment = mutation({
     });
   },
 });
+
+export const getCommentsCount = query({
+  args: {
+    postId: v.id("posts"),
+  },
+  returns: v.number(),
+  handler: async (ctx, args) => {
+    const count = await ctx.db
+      .query("comments")
+      .filter((q) => q.eq(q.field("postId"), args.postId))
+      .collect();
+    return count.length;
+  },
+});
