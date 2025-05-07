@@ -113,8 +113,8 @@ export const siweConfig = createSIWEConfig({
 
 export const metadata = {
   name: "SkillBased",
-  description: "SIWE Example",
-  url: "http://localhost:3000", // origin must match your domain & subdomain
+  description: "Build your verified skills",
+  url: "https://skill-based-web.vercel.app", // origin must match your domain & subdomain
   icons: ["https://avatars.githubusercontent.com/u/179229932"],
 };
 
