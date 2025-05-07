@@ -8,18 +8,24 @@ catalog:
   prettier: ^3.5.3
   typescript: ^5.8.3
   zod: ^3.24.3
-  "@tanstack/react-query": ^5.69.0
-  "@trpc/client": ^11.1.0
-  "@trpc/tanstack-react-query": ^11.1.0
-  "@trpc/server": ^11.1.0
+  '@tanstack/react-query': ^5.69.0
+  '@trpc/client': ^11.1.0
+  '@trpc/tanstack-react-query': ^11.1.0
+  '@trpc/server': ^11.1.0
 
 catalogs:
   react19:
     react: 19.1.0
     react-dom: 19.1.0
-    "@types/react": ^19.1.2
-    "@types/react-dom": ^19.1.2
+    '@types/react': ^19.1.2
+    '@types/react-dom': ^19.1.2
 
 onlyBuiltDependencies:
+  - bufferutil
+  - core-js-pure
+  - esbuild
+  - keccak
+  - secp256k1
   - sharp
+  - unrs-resolver
   - utf-8-validate
