@@ -33,7 +33,7 @@
   "devDependencies": {
     "@skill-based/prettier-config": "workspace:*",
     "@skill-based/tsconfig": "workspace:*",
-    "@types/node": "^22.15.14",
+    "@types/node": "catalog:",
     "eslint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:"

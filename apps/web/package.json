@@ -25,7 +25,7 @@
     "@skill-based/ui": "workspace:*",
     "@t3-oss/env-nextjs": "^0.13.4",
     "@tabler/icons-react": "^3.31.0",
-    "@tanstack/react-query": "^5.75.5",
+    "@tanstack/react-query": "catalog:",
     "@tiptap/extension-placeholder": "^2.12.0",
     "@tiptap/pm": "^2.12.0",
     "@tiptap/react": "^2.12.0",
@@ -49,11 +49,11 @@
   "devDependencies": {
     "@skill-based/eslint-config": "workspace:*",
     "@skill-based/tsconfig": "workspace:*",
-    "@types/node": "^22.15.14",
+    "@types/node": "catalog:",
     "@types/react": "catalog:react19",
     "@types/react-dom": "catalog:react19",
     "dotenv-cli": "^8.0.0",
-    "eslint": "^9.26.0",
+    "eslint": "catalog:",
     "eslint-config-next": "15.3.2",
     "jiti": "^1.21.7",
     "typescript": "catalog:"
