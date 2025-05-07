@@ -50,6 +50,7 @@
     "NEXTAUTH_SECRET",
     "CONVEX_AUTH_ADAPTER_SECRET",
     "CONVEX_AUTH_PRIVATE_KEY",
+    "CONVEX_DEPLOY_KEY",
     "PORT"
   ],
   "globalPassThroughEnv": [
