@@ -433,6 +433,8 @@ importers:
         specifier: 'catalog:'
         version: 5.8.3
 
+  tooling/github: {}
+
   tooling/prettier:
     dependencies:
       '@ianvs/prettier-plugin-sort-imports':
