@@ -13,7 +13,6 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
-
 import type * as authAdapter from "../authAdapter.js";
 import type * as authTables from "../authTables.js";
 import type * as comments from "../comments.js";
@@ -22,8 +21,8 @@ import type * as http from "../http.js";
 import type * as likes from "../likes.js";
 import type * as messages from "../messages.js";
 import type * as posts from "../posts.js";
-import type * as users from "../users.js";
 import type * as userTopics from "../userTopics.js";
+import type * as users from "../users.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
