@@ -35,6 +35,12 @@ const config = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "tidy-mule-549.convex.cloud",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
 
