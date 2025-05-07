@@ -28,7 +28,7 @@ export function WhoToFollow() {
               key={user._id}
               displayName={user.displayName as Id<"users">}
               isFollowing={false}
-              onFollow={() => { }}
+              onFollow={() => {}}
             />
           ))
         )}
