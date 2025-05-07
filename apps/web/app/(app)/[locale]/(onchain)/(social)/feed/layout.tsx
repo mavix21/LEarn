@@ -14,12 +14,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </div>
 
-      <div className="col-start-1 h-full flex-1 overflow-hidden border-x lg:col-start-2">
+      <div className="col-span-1 col-start-1 h-full flex-1 overflow-hidden border-x lg:col-start-2">
         {children}
       </div>
 
       {/* Right Sidebar - Trending */}
-      <div className="col-span-1 col-start-3 row-start-2 h-full w-full overflow-y-auto p-6 lg:block">
+      <div className="col-span-1 col-start-3 row-start-2 hidden h-full w-full overflow-y-auto p-6 lg:block">
         <RightSidebar />
       </div>
       <Toaster />
