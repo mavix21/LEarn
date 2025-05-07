@@ -20,7 +20,7 @@
     "solidity-coverage": "^0.8.15",
     "ts-node": "10.9.2",
     "typescript": "catalog:",
-    "viem": "^2.28.0"
+    "viem": "^2.29.0"
   },
   "prettier": "@skill-based/prettier-config"
 }
