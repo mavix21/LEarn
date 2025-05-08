@@ -34,7 +34,7 @@
     "convex-helpers": "^0.1.85",
     "jose": "^6.0.11",
     "lucide-react": "^0.508.0",
-    "motion": "^12.9.2",
+    "motion": "^12.10.1",
     "next": "15.3.2",
     "next-auth": "^4.24.11",
     "next-intl": "^4.1.0",
