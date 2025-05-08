@@ -31,7 +31,7 @@
     "motion": "^12.9.2",
     "next-themes": "^0.4.6",
     "react-day-picker": "9.6.7",
-    "react-hook-form": "^7.56.2",
+    "react-hook-form": "^7.56.3",
     "react-use-measure": "^2.1.7",
     "recharts": "^2.15.3",
     "sonner": "^2.0.3",
@@ -42,7 +42,7 @@
   "devDependencies": {
     "@skill-based/eslint-config": "workspace:*",
     "@skill-based/tsconfig": "workspace:*",
-    "@tailwindcss/postcss": "^4.1.4",
+    "@tailwindcss/postcss": "^4.1.5",
     "@turbo/gen": "^2.5.3",
     "@types/node": "catalog:",
     "@types/react": "catalog:react19",
@@ -50,7 +50,7 @@
     "eslint": "catalog:",
     "prettier": "catalog:",
     "react": "catalog:react19",
-    "tailwindcss": "^4.1.4",
+    "tailwindcss": "^4.1.5",
     "typescript": "catalog:",
     "typescript-eslint": "^8.32.0"
   },
