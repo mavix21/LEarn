@@ -3,11 +3,13 @@
 import React from "react";
 import Link from "next/link";
 //import { Logo } from "./logo"
-import { Menu, X } from "lucide-react";
+import { Asterisk, Menu, X } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@skill-based/ui/components/button";
 import { cn } from "@skill-based/ui/lib/utils";
+import { ThemeSwitcher } from "@/app/_shared/ui/theme-switcher";
+import { LanguageSwitcher } from "@/app/_shared/ui/language-switcher";
 
 const menuItems = [
   { name: "features", href: "#features" },
@@ -39,7 +41,7 @@ export function Header() {
           className={cn(
             "mx-auto mt-2 max-w-6xl px-6 transition-all duration-300 lg:px-12",
             isScrolled &&
-              "bg-background/50 max-w-4xl rounded-2xl border backdrop-blur-lg lg:px-5",
+            "bg-background/50 max-w-4xl rounded-2xl border backdrop-blur-lg lg:px-5",
           )}
         >
           <div className="relative flex flex-wrap items-center justify-between gap-6 py-3 lg:gap-0 lg:py-4">
@@ -50,7 +52,10 @@ export function Header() {
                 className="flex items-center space-x-2"
               >
                 {/* <Logo /> */}
-                SkillBased
+                <div className="col-span-1 col-start-1 row-start-1 hidden items-center justify-center gap-2 lg:flex">
+                  <Asterisk />
+                  <span className="font-semibold">SkillBased</span>
+                </div>
               </Link>
 
               <button
@@ -99,6 +104,10 @@ export function Header() {
                     <span>{t("header.cta.primary")}</span>
                   </Link>
                 </Button>
+                <div className="flex items-center gap-2">
+                  <LanguageSwitcher />
+                  <ThemeSwitcher />
+                </div>
               </div>
             </div>
           </div>

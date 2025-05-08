@@ -38,7 +38,7 @@ const useAuthGateDialogMessages = () => {
           }),
           description: t("default.description", {
             default:
-              "Join SkillShare to create your professional identity, showcase your skills, and connect with others on-chain.",
+              "Join SkillBased to create your professional identity, showcase your skills, and connect with others on-chain.",
           }),
         },
         profile: {
@@ -47,26 +47,26 @@ const useAuthGateDialogMessages = () => {
           }),
           description: t("profile.description", {
             default:
-              "Join SkillShare to create your professional identity, showcase your skills, and connect with others on-chain.",
+              "Join SkillBased to create your professional identity, showcase your skills, and connect with others on-chain.",
           }),
         },
         notifications: {
           title: t("notifications.title", { default: "Stay up to date" }),
           description: t("notifications.description", {
             default:
-              "Sign in to SkillShare to receive notifications about your network and activity.",
+              "Sign in to SkillBased to receive notifications about your network and activity.",
           }),
         },
         like: {
           title: t("like.title", { default: "Show your support" }),
           description: t("like.description", {
-            default: "Sign in to SkillShare to give a like to a post.",
+            default: "Sign in to SkillBased to give a like to a post.",
           }),
         },
         comment: {
           title: t("comment.title", { default: "Join the conversation" }),
           description: t("comment.description", {
-            default: "Sign in to SkillShare to comment on a post.",
+            default: "Sign in to SkillBased to comment on a post.",
           }),
         },
       }) as const,
@@ -81,7 +81,7 @@ interface OpenOptions {
 const AuthGateDialogContext = createContext<{
   open: (options?: OpenOptions) => void;
 }>({
-  open: () => {},
+  open: () => { },
 });
 
 function AuthGateDialog({

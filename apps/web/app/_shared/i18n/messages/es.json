@@ -59,23 +59,23 @@
     "cta": "Empieza ahora 🚀",
     "profile": {
       "title": "Crea tu perfil 📝",
-      "description": "Únete a SkillShare para crear tu identidad profesional, mostrar tus habilidades y conectar con otros en la blockchain."
+      "description": "Únete a SkillBased para crear tu identidad profesional, mostrar tus habilidades y conectar con otros en la blockchain."
     },
     "notifications": {
       "title": "Mantente al día 📰",
-      "description": "Inicia sesión en SkillShare para recibir notificaciones sobre tu red y actividad."
+      "description": "Inicia sesión en SkillBased para recibir notificaciones sobre tu red y actividad."
     },
     "like": {
       "title": "Muestra tu apoyo 🥰",
-      "description": "Inicia sesión en SkillShare para dar me gusta a un post."
+      "description": "Inicia sesión en SkillBased para dar me gusta a un post."
     },
     "comment": {
       "title": "Únete a la conversación 💬",
-      "description": "Inicia sesión en SkillShare para comentar en un post."
+      "description": "Inicia sesión en SkillBased para comentar en un post."
     },
     "default": {
       "title": "Crea tu perfil en SkillBased 📝",
-      "description": "Únete a SkillShare para crear tu identidad profesional, mostrar tus habilidades y conectar con otros en la blockchain."
+      "description": "Únete a SkillBased para crear tu identidad profesional, mostrar tus habilidades y conectar con otros en la blockchain."
     }
   }
 }

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SendHorizonal } from "lucide-react";
 
 import { Button } from "@skill-based/ui/components/button";
-import { Input } from "@skill-based/ui/components/input";
+import { Textarea } from "@skill-based/ui/components/textarea";
 
 export function CommentInput({
   onSend,
@@ -23,7 +23,7 @@ export function CommentInput({
         setValue("");
       }}
     >
-      <Input
+      <Textarea
         placeholder="Escribe un comentario..."
         className="flex-1"
         value={value}

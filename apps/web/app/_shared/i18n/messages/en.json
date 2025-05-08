@@ -59,23 +59,23 @@
     "cta": "Get Started 🚀",
     "profile": {
       "title": "Build your profile 📝",
-      "description": "Join SkillShare to create your professional identity, showcase your skills, and connect with others on-chain."
+      "description": "Join SkillBased to create your professional identity, showcase your skills, and connect with others on-chain."
     },
     "notifications": {
       "title": "Stay up to date 📰",
-      "description": "Sign in to SkillShare to receive notifications about your network and activity."
+      "description": "Sign in to SkillBased to receive notifications about your network and activity."
     },
     "like": {
       "title": "Show your support 🥰",
-      "description": "Sign in to SkillShare to like a post."
+      "description": "Sign in to SkillBased to like a post."
     },
     "comment": {
       "title": "Join the conversation 💬",
-      "description": "Sign in to SkillShare to comment on a post."
+      "description": "Sign in to SkillBased to comment on a post."
     },
     "default": {
       "title": "Build your profile with SkillBased",
-      "description": "Join SkillShare to create your professional identity, showcase your skills, and connect with others on-chain."
+      "description": "Join SkillBased to create your professional identity, showcase your skills, and connect with others on-chain."
     }
   }
 }
