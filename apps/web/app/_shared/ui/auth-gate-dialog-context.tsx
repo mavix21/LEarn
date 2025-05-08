@@ -81,7 +81,7 @@ interface OpenOptions {
 const AuthGateDialogContext = createContext<{
   open: (options?: OpenOptions) => void;
 }>({
-  open: () => { },
+  open: () => {},
 });
 
 function AuthGateDialog({

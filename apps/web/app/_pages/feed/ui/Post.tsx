@@ -139,7 +139,8 @@ export function Post({
           {comments && <CommentsList postId={postId} />}
           <div className="text-muted-foreground mt-2 flex items-center text-sm">
             <span>
-              {likesCount ?? "-"} Me gusta · {commentsCount ?? "-"} {commentsCount === 1 ? "comentario" : "comentarios"}
+              {likesCount ?? "-"} Me gusta · {commentsCount ?? "-"}{" "}
+              {commentsCount === 1 ? "comentario" : "comentarios"}
             </span>
           </div>
         </div>
