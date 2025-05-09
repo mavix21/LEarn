@@ -63,6 +63,12 @@ const useAuthGateDialogMessages = () => {
             default: "Sign in to SkillBased to comment on a post.",
           }),
         },
+        chat: {
+          title: t("chat.title", { default: "Start chatting" }),
+          description: t("chat.description", {
+            default: "Sign in to SkillBased to chat with others.",
+          }),
+        },
       }) as const,
     [t],
   );

@@ -73,6 +73,10 @@
       "title": "Únete a la conversación 💬",
       "description": "Inicia sesión en SkillBased para comentar en un post."
     },
+    "chat": {
+      "title": "Comienza a chatear 💬",
+      "description": "Inicia sesión en SkillBased para chatear con otros."
+    },
     "default": {
       "title": "Crea tu perfil en SkillBased 📝",
       "description": "Únete a SkillBased para crear tu identidad profesional, mostrar tus habilidades y conectar con otros en la blockchain."

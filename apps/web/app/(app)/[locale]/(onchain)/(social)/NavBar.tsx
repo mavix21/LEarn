@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { AnimatedBackground } from "@skill-based/ui/components/animated-background";
 import { AnimatedBellIcon } from "@skill-based/ui/components/animated-bell";
 import { AnimatedHomeIcon } from "@skill-based/ui/components/animated-home";
+import { AnimatedMessageCircleMoreIcon } from "@skill-based/ui/components/animated-message-circle-more";
 import { AnimatedSearchIcon } from "@skill-based/ui/components/animated-search";
 import { AnimatedUserIcon } from "@skill-based/ui/components/animated-user";
 
@@ -49,6 +50,13 @@ export default function NavBar() {
       icon: AnimatedSearchIcon,
       gate: false,
       label: "Search",
+    },
+    {
+      href: "/chat",
+      icon: AnimatedMessageCircleMoreIcon,
+      gate: true,
+      dialogKey: "chat",
+      label: "Chat",
     },
   ] as const;
 
