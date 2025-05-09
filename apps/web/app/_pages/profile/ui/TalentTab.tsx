@@ -15,10 +15,8 @@ export function TalentTab() {
   // Group credentials by category
   const credentialsByCategory = data?.reduce(
     (acc, credential) => {
-      if (!acc[credential.category]) {
-        acc[credential.category] = [];
-      }
-      acc[credential.category]!.push(credential);
+      acc[credential.category] ??= [];
+      acc[credential.category]?.push(credential);
       return acc;
     },
     {} as Record<string, typeof data>,
@@ -42,7 +40,7 @@ export function TalentTab() {
                       {talent.category} Skills
                     </h3>
                     <div className="space-y-6">
-                      {credentialsByCategory![talent.category].map(
+                      {credentialsByCategory?.[talent.category]?.map(
                         (credential, index) => (
                           <div
                             key={index}
