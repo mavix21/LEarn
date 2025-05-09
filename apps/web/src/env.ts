@@ -18,6 +18,7 @@ export const env = createEnv({
     NEXTAUTH_SECRET: z.string(),
     CONVEX_AUTH_ADAPTER_SECRET: z.string(),
     CONVEX_AUTH_PRIVATE_KEY: z.string(),
+    TALENT_API_KEY: z.string(),
   },
 
   /**

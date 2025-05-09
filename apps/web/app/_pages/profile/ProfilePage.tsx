@@ -31,6 +31,8 @@ import X from "@/app/_shared/ui/svg/X";
 import { auth } from "@/auth";
 import { api } from "@/convex/_generated/api";
 
+import { TalentTab } from "./ui/TalentTab";
+
 export async function ProfilePage({ userId }: { userId: string }) {
   const data = await auth();
   const user = await fetchQuery(
@@ -111,7 +113,7 @@ export async function ProfilePage({ userId }: { userId: string }) {
           <Tabs defaultValue="overview" className="w-full space-y-8">
             <TabsList className="w-full">
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="groups">Groups</TabsTrigger>
+              <TabsTrigger value="talent">Talent</TabsTrigger>
               <TabsTrigger value="posts">Posts</TabsTrigger>
               <TabsTrigger value="pages">Pages</TabsTrigger>
               <TabsTrigger value="events">Events</TabsTrigger>
@@ -520,10 +522,8 @@ export async function ProfilePage({ userId }: { userId: string }) {
               </div>
             </TabsContent>
 
-            <TabsContent value="groups" className="mt-0">
-              <div className="p-4 text-center text-gray-500">
-                Groups content will appear here
-              </div>
+            <TabsContent value="talent" className="mt-0">
+              <TalentTab />
             </TabsContent>
 
             <TabsContent value="posts" className="mt-0">

@@ -19,7 +19,6 @@
   "dependencies": {
     "@auth/core": "^0.34.2",
     "@coinbase/onchainkit": "^0.38.13",
-    "@radix-ui/react-progress": "^1.1.6",
     "@reown/appkit": "^1.7.4",
     "@reown/appkit-adapter-wagmi": "^1.7.4",
     "@reown/appkit-siwe": "^1.7.4",
