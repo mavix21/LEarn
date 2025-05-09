@@ -70,8 +70,12 @@
       "description": "Sign in to SkillBased to like a post."
     },
     "comment": {
-      "title": "Join the conversation 💬",
+      "title": "Join the conversation 🗣️",
       "description": "Sign in to SkillBased to comment on a post."
+    },
+    "chat": {
+      "title": "Start chatting 💬",
+      "description": "Sign in to SkillBased to chat with others."
     },
     "default": {
       "title": "Build your profile with SkillBased",
