@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useCallback,
-  useContext,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, use, useCallback, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import {
@@ -125,7 +119,7 @@ export const AuthGateDialogProvider = ({
   }, []);
 
   return (
-    <AuthGateDialogContext.Provider value={{ open }}>
+    <AuthGateDialogContext value={{ open }}>
       {children}
       <AuthGateDialog
         open={_open}
@@ -133,12 +127,12 @@ export const AuthGateDialogProvider = ({
         title={dialogMessages[dialogKey].title}
         description={dialogMessages[dialogKey].description}
       />
-    </AuthGateDialogContext.Provider>
+    </AuthGateDialogContext>
   );
 };
 
 export const useAuthGateDialog = () => {
-  const context = useContext(AuthGateDialogContext);
+  const context = use(AuthGateDialogContext);
 
   if (!context) {
     throw new Error(
