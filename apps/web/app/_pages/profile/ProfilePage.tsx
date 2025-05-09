@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Image from "next/image";
 import { fetchQuery } from "convex/nextjs";
 import {
@@ -6,17 +7,11 @@ import {
   ChevronRight,
   Edit2,
   FileText,
-  Globe,
-  Mail,
   MoreHorizontal,
   Users,
 } from "lucide-react";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@skill-based/ui/components/avatar";
+import { Avatar, AvatarFallback } from "@skill-based/ui/components/avatar";
 import { Badge } from "@skill-based/ui/components/badge";
 import { Button } from "@skill-based/ui/components/button";
 import {
@@ -27,11 +22,12 @@ import {
 } from "@skill-based/ui/components/tabs";
 
 import type { Id } from "@/convex/_generated/dataModel";
-import X from "@/app/_shared/ui/svg/X";
 import { auth } from "@/auth";
 import { api } from "@/convex/_generated/api";
 
+import { ProfileHeader } from "./ui/ProfileHeader";
 import { TalentTab } from "./ui/TalentTab";
+import { TalentTabSkeleton } from "./ui/TalentTabSkeleton";
 
 export async function ProfilePage({ userId }: { userId: string }) {
   const data = await auth();
@@ -50,62 +46,12 @@ export async function ProfilePage({ userId }: { userId: string }) {
 
   return (
     <div className="bg-background container mx-auto h-full max-w-6xl space-y-6 overflow-y-auto">
-      {/* Profile Header */}
-      <div className="space-y-6">
-        {/* Background Image */}
-        <div className="relative h-48 w-full rounded-lg">
-          <Image
-            src="/placeholder.svg"
-            alt="Profile background"
-            fill
-            className="object-cover"
-          />
-        </div>
-
-        {/* Profile Info */}
-        <div className="space-y-4 px-5">
-          <div className="relative z-10 -mt-24 flex flex-col gap-4 md:-mt-14 md:flex-row md:items-end">
-            <Avatar className="border-primary size-32 rounded-full border-4">
-              <AvatarImage
-                src={user.avatarUrl || "/placeholder.svg?height=128&width=128"}
-                alt={user.name}
-              />
-              <AvatarFallback>{user.name[0]}</AvatarFallback>
-            </Avatar>
-            <div className="-mt-4 flex flex-grow flex-col items-start">
-              <h1 className="text-2xl font-bold">{user.name}</h1>
-              <p className="text-muted-foreground">
-                {user.title || "No title"}
-              </p>
-              <p className="text-muted-foreground/50 mt-1 text-sm">
-                {user.location || "No location"}
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-center space-x-2">
-            <div className="flex items-center justify-center gap-3">
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <X className="text-muted-foreground h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <Mail className="text-muted-foreground h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <FileText className="text-muted-foreground h-5 w-5" />
-              </Button>
-              <Button variant="ghost" size="icon" className="rounded-full">
-                <Globe className="text-muted-foreground h-5 w-5" />
-              </Button>
-            </div>
-
-            <Button variant="default" size="sm" className="rounded-full">
-              <Edit2 className="mr-1 h-4 w-4" />
-              Edit Profile
-            </Button>
-          </div>
-        </div>
-      </div>
+      <ProfileHeader
+        name={user.name}
+        title={user.title}
+        location={user.location}
+        avatarUrl={user.avatarUrl}
+      />
 
       <div className="px-5">
         {/* Main Content */}
@@ -523,7 +469,9 @@ export async function ProfilePage({ userId }: { userId: string }) {
             </TabsContent>
 
             <TabsContent value="talent" className="mt-0">
-              <TalentTab />
+              <Suspense fallback={<TalentTabSkeleton />}>
+                <TalentTab />
+              </Suspense>
             </TabsContent>
 
             <TabsContent value="posts" className="mt-0">
