@@ -43,7 +43,7 @@ export function FeedPage() {
           scrollbarGutter: "stable both-edges",
         }}
       >
-        <div className="bg-background mx-auto max-w-xl space-y-4 rounded-xl border-x">
+        <div className="mx-auto max-w-xl space-y-2 rounded-xl">
           {[...Array(7)].map((_, i) => (
             <PostSkeleton key={i} />
           ))}
