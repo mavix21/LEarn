@@ -5,7 +5,7 @@ import { Button } from "@skill-based/ui/components/button";
 
 export default function AdditionalDetails() {
   return (
-    <div className="bg-background rounded-xl p-4 shadow-md">
+    <div className="bg-card rounded-xl border p-4">
       <div className="mb-4 flex items-center justify-between">
         <h2 className="text-lg font-semibold">Additional Details</h2>
         <Button

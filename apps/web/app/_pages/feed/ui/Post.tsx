@@ -57,7 +57,7 @@ export function Post({
   }
 
   return (
-    <div className="bg-background mb-2 rounded-xl p-4 shadow-md">
+    <div className="bg-card mb-2 rounded-xl border p-4">
       <div className="flex items-start gap-3">
         <div className="relative">
           <User className="text-muted-foreground" size={20} />

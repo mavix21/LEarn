@@ -45,7 +45,7 @@ export async function ProfilePage({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="bg-background container mx-auto h-full max-w-6xl space-y-6 overflow-y-auto">
+    <div className="bg-card container mx-auto h-full max-w-6xl space-y-6 overflow-y-auto">
       <ProfileHeader
         name={user.name}
         title={user.title}

@@ -18,7 +18,7 @@ interface UserProps {
 
 export function FollowCard({ displayName, isFollowing, onFollow }: UserProps) {
   return (
-    <Card className="bg-muted w-full max-w-sm border-0 shadow-none">
+    <Card className="bg-card w-full max-w-sm border shadow-none">
       <CardContent>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">

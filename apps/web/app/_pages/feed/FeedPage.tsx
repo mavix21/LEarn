@@ -19,7 +19,7 @@ export function FeedPage() {
   const isLoading = posts === undefined;
 
   const PostSkeleton = () => (
-    <div className="bg-background animate-pulse rounded-xl border-b p-4">
+    <div className="bg-card animate-pulse rounded-xl border p-4">
       <div className="flex items-center space-x-4">
         <div className="bg-muted h-12 w-12 rounded-full"></div>
         <div className="flex-1 space-y-2">
@@ -38,7 +38,7 @@ export function FeedPage() {
   if (isLoading) {
     return (
       <div
-        className="bg-muted h-full overflow-y-auto rounded-xl p-4"
+        className="h-full overflow-y-auto p-4"
         style={{
           scrollbarGutter: "stable both-edges",
         }}
@@ -54,7 +54,7 @@ export function FeedPage() {
 
   return (
     <div
-      className="bg-muted h-full overflow-y-auto px-4"
+      className="bg-background h-full overflow-y-auto px-4"
       style={{
         scrollbarGutter: "stable both-edges",
       }}
@@ -66,15 +66,15 @@ export function FeedPage() {
         </Authenticated>
 
         <Tabs defaultValue="for-you">
-          <div className="bg-background rounded-xl p-1 shadow-md">
-            <TabsList className="bg-background w-full">
-              <TabsTrigger value="for-you" className="rounded-lg border-0">
+          <div className="bg-card rounded-xl border p-1">
+            <TabsList className="bg-card w-full">
+              <TabsTrigger value="for-you" className="rounded-lg">
                 For you
               </TabsTrigger>
               <TabsTrigger
                 value="following"
                 disabled={!isAuthenticated}
-                className="rounded-lg border-0"
+                className="rounded-lg"
               >
                 Following
               </TabsTrigger>

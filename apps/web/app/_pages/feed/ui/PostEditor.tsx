@@ -110,7 +110,7 @@ export function PostEditor() {
   }
 
   return (
-    <div className="bg-background space-y-2 rounded-xl p-4 shadow-md">
+    <div className="bg-card space-y-2 rounded-xl border p-4">
       <div className="flex gap-3">
         <div className="bg-muted h-10 rounded-full p-2">
           <User className="text-muted-foreground" />

@@ -6,7 +6,7 @@ import {
 
 export default function Connections() {
   return (
-    <div className="bg-background mb-6 rounded-xl p-4 shadow-md">
+    <div className="bg-card mb-6 rounded-xl border p-4">
       <h2 className="mb-4 text-lg font-semibold">My Manager</h2>
       <div className="space-y-4">
         <div className="flex items-center">
