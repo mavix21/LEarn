@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useMutation, useQuery } from "convex/react";
 import { Heart } from "lucide-react";
 
@@ -12,46 +11,57 @@ interface LikeButtonProps {
 }
 
 export function LikeButton({ postId }: LikeButtonProps) {
-  const createLike = useMutation(api.likes.createLikePost);
-  const deleteLike = useMutation(api.likes.deleteLikePost);
   const getLikes = useQuery(api.likes.getLikes, {
     postId: postId as Id<"posts">,
   });
 
-  const [isLiked, setIsLiked] = useState<boolean | undefined>(undefined);
+  const createLike = useMutation(api.likes.createLikePost).withOptimisticUpdate(
+    (localStore, args) => {
+      // Optimistically update the likes query
+      const currentLikes = localStore.getQuery(api.likes.getLikes, {
+        postId: args.postId,
+      });
+      if (currentLikes !== undefined) {
+        localStore.setQuery(api.likes.getLikes, { postId: args.postId }, [
+          ...currentLikes,
+          {
+            _id: "temp" as Id<"likes">,
+            _creationTime: Date.now(),
+            postId: args.postId,
+            authorId: "temp" as Id<"users">,
+          },
+        ]);
+      }
+    },
+  );
+
+  const deleteLike = useMutation(api.likes.deleteLikePost).withOptimisticUpdate(
+    (localStore, args) => {
+      // Optimistically update the likes query
+      const currentLikes = localStore.getQuery(api.likes.getLikes, {
+        postId: args.postId,
+      });
+      if (currentLikes !== undefined) {
+        localStore.setQuery(api.likes.getLikes, { postId: args.postId }, []);
+      }
+    },
+  );
+
+  const isLiked = getLikes !== undefined && getLikes.length > 0;
 
   const handleLike = async () => {
-    if (isLiked === undefined) return;
-    if (!isLiked) {
-      setIsLiked(true);
-      createLike({
-        postId: postId as Id<"posts">,
-      }).catch((error) => {
-        setIsLiked(false);
-        console.error("Failed to create like:", error);
-      });
+    if (isLiked) {
+      await deleteLike({ postId: postId as Id<"posts"> });
     } else {
-      setIsLiked(false);
-      deleteLike({
-        postId: postId as Id<"posts">,
-      }).catch((error) => {
-        setIsLiked(true);
-        console.error("Failed to delete like:", error);
-      });
+      await createLike({ postId: postId as Id<"posts"> });
     }
   };
-
-  useEffect(() => {
-    if (getLikes !== undefined) {
-      setIsLiked(getLikes.length > 0);
-    }
-  }, [getLikes]);
 
   return (
     <button
       onClick={handleLike}
       className="flex items-center transition-colors hover:text-red-500"
-      disabled={isLiked === undefined}
+      disabled={getLikes === undefined}
     >
       <Heart
         size={20}
