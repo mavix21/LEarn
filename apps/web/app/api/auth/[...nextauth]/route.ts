@@ -6,7 +6,7 @@ import { config } from "@/auth";
 
 declare module "next-auth" {
   interface Session extends SIWESession {
-    address: string;
+    address: `0x${string}`;
     chainId: number;
     userId: Id<"users">;
     convexToken: string;
