@@ -18,6 +18,8 @@ export const getHashtagWordsWithFilterAndCount = query({
       .withSearchIndex("search_post", (q) => q.search("content", "#"))
       .collect();
 
+    console.log("Convex posts", posts);
+
     // Create a map to count hashtag occurrences
     const hashtagCountMap = new Map<string, number>();
 
