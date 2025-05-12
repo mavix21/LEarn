@@ -73,12 +73,16 @@ export const getUserProfile = query({
       .filter((q) => q.eq(q.field("userId"), args.userId))
       .collect();
 
+    if (!user) {
+      return null;
+    }
+
     return {
-      name: user?.name ?? user?.displayName ?? user?.address ?? "",
-      title: user?.title ?? "",
-      location: user?.location ?? "",
-      avatarUrl: user?.avatarUrl ?? user?.image ?? "",
-      bio: user?.bio ?? "",
+      name: user.name || user.displayName || user.address,
+      title: user.title ?? "",
+      location: user.location ?? "",
+      avatarUrl: user.avatarUrl ?? user.image ?? "",
+      bio: user.bio ?? "",
       topics: userTopics.map(({ endorsements, topic }) => ({
         topic,
         endorsements: endorsements ?? 0,
