@@ -42,17 +42,6 @@ export function FollowCard({ displayName, isFollowing, onFollow }: UserProps) {
               </div>
             </Link>
           </div>
-          <Button
-            variant={isFollowing ? "outline" : "default"}
-            className={
-              isFollowing
-                ? "hover:bg-destructive/10 hover:text-destructive"
-                : "bg-primary hover:bg-primary/80"
-            }
-            onClick={onFollow}
-          >
-            {isFollowing ? "Following" : "Follow"}
-          </Button>
         </div>
       </CardContent>
     </Card>

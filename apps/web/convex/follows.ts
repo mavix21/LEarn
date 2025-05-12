@@ -5,7 +5,7 @@ import { mutation, query } from "./_generated/server";
 
 export const getFollow = query({
   args: {
-    userId: v.id("users"),
+    followingId: v.id("users"),
   },
   handler: async (ctx, args) => {
     const id = await ctx.auth.getUserIdentity();
@@ -16,7 +16,8 @@ export const getFollow = query({
     return await ctx.db
       .query("follows")
       .filter((q) => q.eq(q.field("followerId"), id.subject as Id<"users">))
-      .collect();
+      .filter((q) => q.eq(q.field("followingId"), args.followingId))
+      .unique();
   },
 });
 
