@@ -17,6 +17,7 @@ import type * as authAdapter from "../authAdapter.js";
 import type * as authTables from "../authTables.js";
 import type * as comments from "../comments.js";
 import type * as dummy from "../dummy.js";
+import type * as follows from "../follows.js";
 import type * as http from "../http.js";
 import type * as likes from "../likes.js";
 import type * as messages from "../messages.js";
@@ -38,6 +39,7 @@ declare const fullApi: ApiFromModules<{
   authTables: typeof authTables;
   comments: typeof comments;
   dummy: typeof dummy;
+  follows: typeof follows;
   http: typeof http;
   likes: typeof likes;
   messages: typeof messages;
