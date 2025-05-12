@@ -1,3 +1,5 @@
+import { v } from "convex/values";
+
 import { query } from "./_generated/server";
 
 interface HashtagCount {
@@ -7,36 +9,43 @@ interface HashtagCount {
 
 export const getHashtagWordsWithFilterAndCount = query({
   args: {
-    // Puedes añadir argumentos si necesitas filtrar más
+    limit: v.optional(v.number()),
   },
-  handler: async (ctx) => {
-    // Realiza una consulta que filtre directamente las palabras con "#"
-    const summaries = await ctx.db
+  handler: async (ctx, args) => {
+    // Get all posts that contain hashtags
+    const posts = await ctx.db
       .query("posts")
       .withSearchIndex("search_post", (q) => q.search("content", "#"))
       .collect();
 
-    // Crear un mapa para contar las ocurrencias de hashtags
+    // Create a map to count hashtag occurrences
     const hashtagCountMap = new Map<string, number>();
 
-    // Iterar sobre los registros filtrados
-    summaries.forEach((summary) => {
-      const words = summary.content.split(/\s+/);
+    // Process each post to extract hashtags
+    posts.forEach((post) => {
+      // Use regex to find all hashtags in the content
+      const hashtagRegex = /#[\w\u0590-\u05ff]+/g;
+      const hashtags = post.content.match(hashtagRegex) || [];
 
-      words
-        .filter((word) => word.startsWith("#"))
-        .forEach((hashtag) => {
-          // Incrementa el contador para cada hashtag
-          hashtagCountMap.set(hashtag, (hashtagCountMap.get(hashtag) || 0) + 1);
-        });
+      // Count each hashtag
+      hashtags.forEach((hashtag) => {
+        const normalizedHashtag = hashtag.toLowerCase();
+        hashtagCountMap.set(
+          normalizedHashtag,
+          (hashtagCountMap.get(normalizedHashtag) || 0) + 1,
+        );
+      });
     });
 
-    // Convierte el mapa a un array y ordena por count de manera descendente
+    // Convert map to array and sort by count
     const hashtagCountArray: HashtagCount[] = Array.from(
       hashtagCountMap,
       ([hashtag, count]) => ({ hashtag, count }),
     ).sort((a, b) => b.count - a.count);
 
-    return hashtagCountArray;
+    // Apply limit if provided
+    return args.limit
+      ? hashtagCountArray.slice(0, args.limit)
+      : hashtagCountArray;
   },
 });
