@@ -33,7 +33,7 @@
     "convex": "^1.24.1",
     "convex-helpers": "^0.1.85",
     "jose": "^6.0.11",
-    "lucide-react": "^0.508.0",
+    "lucide-react": "^0.509.0",
     "motion": "^12.10.1",
     "next": "15.3.2",
     "next-auth": "^4.24.11",
@@ -42,7 +42,7 @@
     "react": "catalog:react19",
     "react-dom": "catalog:react19",
     "react-dropzone": "^14.3.8",
-    "viem": "^2.29.0",
+    "viem": "^2.29.2",
     "wagmi": "^2.15.2",
     "zod": "catalog:"
   },
