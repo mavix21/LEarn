@@ -16,9 +16,9 @@ interface UserProps {
   followingId: string;
 }
 
-export function FollowCard({ displayName, followingId }: UserProps) {
+export function SearchCard({ displayName, followingId }: UserProps) {
   return (
-    <Card className="bg-card w-full max-w-sm border shadow-none">
+    <Card className="bg-card w-full border shadow-none">
       <CardContent>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
@@ -49,7 +49,7 @@ export function FollowCard({ displayName, followingId }: UserProps) {
   );
 }
 
-export function FollowCardSkeleton() {
+export function SearchCardSkeleton() {
   return (
     <Card className="bg-muted w-full max-w-sm border-0 shadow-none">
       <CardContent>
