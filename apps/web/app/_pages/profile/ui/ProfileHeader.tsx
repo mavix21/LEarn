@@ -1,20 +1,18 @@
+"use client";
+
 import Image from "next/image";
-import { Edit2, FileText, Globe, Mail } from "lucide-react";
+import { Avatar, Socials } from "@coinbase/onchainkit/identity";
+import { Edit2 } from "lucide-react";
+import { base } from "viem/chains";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@skill-based/ui/components/avatar";
 import { Button } from "@skill-based/ui/components/button";
-
-import X from "@/app/_shared/ui/svg/X";
 
 interface ProfileHeaderProps {
   name: string;
   title: string;
   location: string;
   avatarUrl: string;
+  address: `0x${string}`;
 }
 
 export function ProfileHeader({
@@ -22,6 +20,7 @@ export function ProfileHeader({
   title,
   location,
   avatarUrl,
+  address,
 }: ProfileHeaderProps) {
   return (
     <div className="space-y-6">
@@ -36,13 +35,11 @@ export function ProfileHeader({
       </div>
       <div className="space-y-4 px-5">
         <div className="relative z-10 -mt-24 flex flex-col gap-4 md:-mt-14 md:flex-row md:items-end">
-          <Avatar className="border-primary size-32 rounded-full border-4">
-            <AvatarImage
-              src={avatarUrl || "/placeholder.svg?height=128&width=128"}
-              alt={name}
-            />
-            <AvatarFallback>{name[0]}</AvatarFallback>
-          </Avatar>
+          <Avatar
+            address={address}
+            chain={base}
+            className="border-primary size-32 rounded-full border-4"
+          />
           <div className="-mt-4 flex flex-grow flex-col items-start">
             <h1 className="text-2xl font-bold">{name}</h1>
             <p className="text-muted-foreground">{title || "No title"}</p>
@@ -52,20 +49,7 @@ export function ProfileHeader({
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          <div className="flex items-center justify-center gap-3">
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <X className="text-muted-foreground h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <Mail className="text-muted-foreground h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <FileText className="text-muted-foreground h-5 w-5" />
-            </Button>
-            <Button variant="ghost" size="icon" className="rounded-full">
-              <Globe className="text-muted-foreground h-5 w-5" />
-            </Button>
-          </div>
+          <Socials address={address} chain={base} />
           <Button variant="default" size="sm" className="rounded-full">
             <Edit2 className="mr-1 h-4 w-4" />
             Edit Profile

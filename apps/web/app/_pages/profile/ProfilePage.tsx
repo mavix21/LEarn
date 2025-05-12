@@ -1,5 +1,6 @@
 import { Suspense } from "react";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 import { fetchQuery } from "convex/nextjs";
 import {
   Check,
@@ -31,14 +32,17 @@ import { TalentTabSkeleton } from "./ui/TalentTabSkeleton";
 
 export async function ProfilePage({ userId }: { userId: string }) {
   const data = await auth();
+  if (!data) redirect("/feed");
+
+  const { address, convexToken: token } = data;
+
   const user = await fetchQuery(
     api.users.getUserProfile,
     {
       userId: userId as Id<"users">,
     },
-    { token: data?.convexToken },
+    { token },
   );
-  console.log("user", user);
 
   if (!user) {
     return <div>User not found</div>;
@@ -51,6 +55,7 @@ export async function ProfilePage({ userId }: { userId: string }) {
         title={user.title}
         location={user.location}
         avatarUrl={user.avatarUrl}
+        address={address}
       />
 
       <div className="px-5">
