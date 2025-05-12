@@ -27,6 +27,7 @@ export function WhoToFollow() {
             <FollowCard
               key={user._id}
               displayName={user.displayName as Id<"users">}
+              followingId={user._id}
               isFollowing={false}
               onFollow={() => {}}
             />

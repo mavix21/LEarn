@@ -1,9 +1,13 @@
+"use client";
+
 import { useMutation, useQuery } from "convex/react";
 
 import { Button } from "@skill-based/ui/components/button";
 
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
+
+("0");
 
 interface FollowButtonProps {
   followingId: string;
@@ -66,7 +70,7 @@ export function FollowButton({ followingId }: FollowButtonProps) {
       variant={isFollowing ? "outline" : "default"}
       className={
         isFollowing
-          ? "hover:bg-destructive/10 hover:text-destructive"
+          ? "hover:bg-background/90 hover:text-foreground"
           : "bg-primary hover:bg-primary/80"
       }
       onClick={handleFollow}

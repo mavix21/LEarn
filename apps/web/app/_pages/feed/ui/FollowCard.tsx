@@ -10,13 +10,21 @@ import { Button } from "@skill-based/ui/components/button";
 import { Card, CardContent } from "@skill-based/ui/components/card";
 import { Skeleton } from "@skill-based/ui/components/skeleton";
 
+import { FollowButton } from "./FollowButton";
+
 interface UserProps {
   displayName: string;
+  followingId: string;
   isFollowing: boolean;
   onFollow: () => void;
 }
 
-export function FollowCard({ displayName, isFollowing, onFollow }: UserProps) {
+export function FollowCard({
+  displayName,
+  followingId,
+  isFollowing,
+  onFollow,
+}: UserProps) {
   return (
     <Card className="bg-card w-full max-w-sm border shadow-none">
       <CardContent>
@@ -42,6 +50,7 @@ export function FollowCard({ displayName, isFollowing, onFollow }: UserProps) {
               </div>
             </Link>
           </div>
+          <FollowButton followingId={followingId} />
         </div>
       </CardContent>
     </Card>
