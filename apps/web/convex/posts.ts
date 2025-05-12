@@ -89,13 +89,23 @@ export const getPostsByAuthorId = query({
     if (!id) {
       throw new Error("Unauthorized");
     }
-    return await ctx.db
+    const posts = await ctx.db
       .query("posts")
       .withIndex("by_authorId", (q) =>
         q.eq("authorId", id.subject as Id<"users">),
       )
       .order("desc")
       .collect();
+
+    return Promise.all(
+      posts.map(async (post) => {
+        const user = await ctx.db.get(post.authorId);
+        return {
+          ...post,
+          authorName: user?.displayName ?? "Anonymous",
+        };
+      }),
+    );
   },
 });
 
