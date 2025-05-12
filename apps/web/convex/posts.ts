@@ -111,6 +111,27 @@ export const getOtherUsers = query({
   },
 });
 
+export const getUsers = query({
+  args: {
+    paginationOpts: v.object({
+      numItems: v.number(),
+      cursor: v.union(v.string(), v.null()),
+    }),
+  },
+  handler: async (ctx, args) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
+
+    return await ctx.db
+      .query("users")
+      .filter((q) => q.neq(q.field("_id"), id.subject as Id<"users">))
+      .order("desc")
+      .paginate(args.paginationOpts);
+  },
+});
+
 export const getHashtagsContent = query({
   args: {},
   returns: v.array(v.string()),
