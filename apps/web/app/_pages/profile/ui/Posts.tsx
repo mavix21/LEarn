@@ -3,6 +3,8 @@ import { ChevronRight, MoreHorizontal } from "lucide-react";
 
 import { Button } from "@skill-based/ui/components/button";
 
+import { Post } from "../../feed/ui";
+
 export function Posts() {
   return (
     <div className="mb-8">
@@ -23,7 +25,7 @@ export function Posts() {
         </div>
       </div>
 
-      <div className="space-y-6">
+      {/* <div className="space-y-6">
         <div className="flex gap-4">
           <div className="flex-grow">
             <h3 className="mb-1 font-medium">
@@ -80,7 +82,14 @@ export function Posts() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
+      <Post
+        postId={""}
+        authorName={""}
+        content={""}
+        creationTime={0}
+        attachmentsUrls={[]}
+      />
     </div>
   );
 }

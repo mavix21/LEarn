@@ -84,13 +84,16 @@ export const getPosts = query({
 });
 
 export const getPostsByAuthorId = query({
-  args: {
-    authorId: v.id("users"),
-  },
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
     return await ctx.db
       .query("posts")
-      .withIndex("by_authorId", (q) => q.eq("authorId", args.authorId))
+      .withIndex("by_authorId", (q) =>
+        q.eq("authorId", id.subject as Id<"users">),
+      )
       .order("desc")
       .collect();
   },
