@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import { useQuery } from "convex/react";
 import { Building, File, Hash, LinkIcon, Pencil, Trash2 } from "lucide-react";
 
 import { Badge } from "@skill-based/ui/components/badge";
@@ -15,6 +17,7 @@ import {
 import { ScrollArea } from "@skill-based/ui/components/scroll-area";
 
 import type { Id } from "@/convex/_generated/dataModel";
+import { api } from "@/convex/_generated/api";
 
 interface CertificationCardProps {
   certification: {
@@ -25,7 +28,7 @@ interface CertificationCardProps {
     credentialId?: string;
     credentialUrl?: string;
     issueDate?: string;
-    media: { storageId: string; type: "image" | "pdf" } | null;
+    media: { storageId: Id<"_storage">; type: "image" | "pdf" } | null;
   };
   onEdit: () => void;
   onDelete: () => void;
@@ -36,6 +39,13 @@ export function CertificationCard({
   onEdit,
   onDelete,
 }: CertificationCardProps) {
+  const mediaUrl = useQuery(
+    api.storage.getUrl,
+    certification.media?.storageId
+      ? { storageId: certification.media.storageId }
+      : "skip",
+  );
+
   return (
     <Card className="overflow-hidden">
       <CardHeader className="pb-3">
@@ -82,6 +92,17 @@ export function CertificationCard({
             ))}
           </div>
         </ScrollArea>
+        {certification.media?.type === "image" && mediaUrl && (
+          <div className="mt-4">
+            <Image
+              src={mediaUrl}
+              alt={`${certification.name} certificate`}
+              width={100}
+              height={100}
+              className="rounded-lg object-cover"
+            />
+          </div>
+        )}
       </CardContent>
       <CardFooter className="flex flex-col items-start gap-2 border-t pt-3">
         {certification.credentialId && (
