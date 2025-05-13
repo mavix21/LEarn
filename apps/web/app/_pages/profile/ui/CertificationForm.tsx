@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery } from "convex/react";
@@ -63,6 +63,7 @@ export function CertificationForm({
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedStorageId, setUploadedStorageId] =
     useState<Id<"_storage"> | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const deleteFile = useMutation(api.storage.deleteById);
@@ -76,14 +77,14 @@ export function CertificationForm({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: certification?.name ?? "",
-      issuingCompany: certification?.issuingCompany ?? "",
-      skills: certification?.skills ?? [],
-      credentialId: certification?.credentialId ?? "",
-      credentialUrl: certification?.credentialUrl ?? "",
-      mediaStorageId: certification?.media?.storageId,
-      mediaType: certification?.media?.type,
-      issueDate: certification?.issueDate ?? "",
+      name: "",
+      issuingCompany: "",
+      skills: [],
+      credentialId: "",
+      credentialUrl: "",
+      mediaStorageId: undefined,
+      mediaType: undefined,
+      issueDate: "",
     },
   });
 
@@ -97,9 +98,9 @@ export function CertificationForm({
   const createCertification = useMutation(api.certifications.add);
   const updateCertification = useMutation(api.certifications.update);
 
-  // Update form when certification data is loaded
+  // Initialize form and preview when certification is loaded
   useEffect(() => {
-    if (certification) {
+    if (certification && !isInitialized) {
       form.reset({
         name: certification.name,
         issuingCompany: certification.issuingCompany,
@@ -110,15 +111,19 @@ export function CertificationForm({
         mediaType: certification.media?.type,
         issueDate: certification.issueDate,
       });
+      if (certification.media?.storageId) {
+        setUploadedStorageId(certification.media.storageId);
+      }
+      setIsInitialized(true);
     }
-  }, [certification, form]);
+  }, [certification, form, isInitialized]);
 
-  // Update preview URL when editing an existing certification with media
+  // Set preview URL when editing an existing certification with media
   useEffect(() => {
-    if (certification?.media?.type === "image" && getFileUrl) {
+    if (certification?.media?.type === "image" && getFileUrl && !previewUrl) {
       setPreviewUrl(getFileUrl);
     }
-  }, [certification?.media?.type, getFileUrl]);
+  }, [certification?.media?.type, getFileUrl, previewUrl]);
 
   const handleAddSkill = () => {
     if (skillInput.trim()) {
@@ -171,7 +176,6 @@ export function CertificationForm({
     try {
       setIsUploading(true);
       const storageId = await uploadFile(selectedFile);
-      setUploadedStorageId(null);
       setUploadedStorageId(storageId as Id<"_storage">);
       form.setValue("mediaStorageId", storageId as Id<"_storage">);
       form.setValue(
@@ -187,23 +191,17 @@ export function CertificationForm({
     }
   };
 
-  // Centralized cleanup function
-  const cleanupFile = useCallback(async () => {
-    // Only clean up if we're not currently uploading and we have a storage ID
-    if (!isUploading && uploadedStorageId) {
+  const handleRemoveFile = async () => {
+    if (uploadedStorageId) {
       try {
         await deleteFile({ storageId: uploadedStorageId });
       } catch (error) {
         console.error("Error deleting file:", error);
       }
-      setUploadedStorageId(null);
-      form.setValue("mediaStorageId", undefined);
-      form.setValue("mediaType", undefined);
     }
-  }, [uploadedStorageId, isUploading, deleteFile, form]);
 
-  const handleRemoveFile = () => {
     setSelectedFile(null);
+    setUploadedStorageId(null);
     if (previewUrl) {
       URL.revokeObjectURL(previewUrl);
       setPreviewUrl(null);
@@ -213,25 +211,15 @@ export function CertificationForm({
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
-    cleanupFile();
   };
 
   // Handle all dialog closing scenarios
-  const handleDialogClose = async () => {
-    await cleanupFile();
+  const handleDialogClose = () => {
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+    }
     onCancel();
   };
-
-  // Cleanup preview URL and handle file cleanup when component unmounts
-  useEffect(() => {
-    return () => {
-      if (previewUrl) {
-        URL.revokeObjectURL(previewUrl);
-      }
-      // Ensure cleanup happens on unmount (e.g., when clicking outside or using the X button)
-      cleanupFile();
-    };
-  }, [previewUrl, cleanupFile]);
 
   async function onFormSubmit(values: z.infer<typeof formSchema>) {
     try {
