@@ -24,7 +24,7 @@ export default defineSchema({
 
   certification_media: defineTable({
     certificationId: v.id("certifications"),
-    storageId: v.string(),
+    storageId: v.id("_storage"),
     type: v.union(v.literal("image"), v.literal("pdf")),
   }).index("by_certificationId", ["certificationId"]),
 

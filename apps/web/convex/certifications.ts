@@ -93,7 +93,7 @@ export const add = mutation({
     credentialId: v.optional(v.string()),
     credentialUrl: v.optional(v.string()),
     issueDate: v.optional(v.string()),
-    mediaStorageId: v.optional(v.string()),
+    mediaStorageId: v.optional(v.id("_storage")),
     mediaType: v.optional(v.union(v.literal("image"), v.literal("pdf"))),
   },
   handler: async (ctx, args) => {
@@ -136,7 +136,7 @@ export const update = mutation({
     credentialId: v.optional(v.string()),
     credentialUrl: v.optional(v.string()),
     issueDate: v.optional(v.string()),
-    mediaStorageId: v.optional(v.string()),
+    mediaStorageId: v.optional(v.id("_storage")),
     mediaType: v.optional(v.union(v.literal("image"), v.literal("pdf"))),
   },
   handler: async (ctx, args) => {
