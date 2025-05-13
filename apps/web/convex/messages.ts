@@ -71,7 +71,6 @@ export const sendMessage = mutation({
       receiverId: args.receiverId,
       senderId: userId as Id<"users">,
       content: args.content,
-      createdAt: now,
     });
   },
 });
