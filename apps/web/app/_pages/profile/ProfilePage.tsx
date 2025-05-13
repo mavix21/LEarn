@@ -1,8 +1,7 @@
 import { Suspense } from "react";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 import { fetchQuery } from "convex/nextjs";
-import { ChevronRight, Edit2, MoreHorizontal } from "lucide-react";
+import { Edit2 } from "lucide-react";
 
 import { Badge } from "@skill-based/ui/components/badge";
 import { Button } from "@skill-based/ui/components/button";
@@ -18,7 +17,7 @@ import { auth } from "@/auth";
 import { api } from "@/convex/_generated/api";
 
 import { AskMeAbout } from "./ui/AskMeAbout";
-import CertificationsSection from "./ui/CertificationsSection";
+import { CertificationsSection } from "./ui/CertificationsSection";
 import { Groups } from "./ui/Groups";
 import { Posts } from "./ui/Posts";
 import { ProfileHeader } from "./ui/ProfileHeader";
