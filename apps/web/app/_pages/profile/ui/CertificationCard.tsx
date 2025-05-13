@@ -1,6 +1,6 @@
 "use client";
 
-import { Building, Hash, LinkIcon, Pencil, Trash2 } from "lucide-react";
+import { Building, File, Hash, LinkIcon, Pencil, Trash2 } from "lucide-react";
 
 import { Badge } from "@skill-based/ui/components/badge";
 import { Button } from "@skill-based/ui/components/button";
@@ -14,12 +14,21 @@ import {
 } from "@skill-based/ui/components/card";
 import { ScrollArea } from "@skill-based/ui/components/scroll-area";
 
-import type { Certification } from "../model/credential";
+import type { Id } from "@/convex/_generated/dataModel";
 
 interface CertificationCardProps {
-  certification: Certification;
-  onEdit: (certification: Certification) => void;
-  onDelete: (id: string) => void;
+  certification: {
+    _id: Id<"certifications">;
+    name: string;
+    issuingCompany: string;
+    skills: string[];
+    credentialId?: string;
+    credentialUrl?: string;
+    issueDate?: string;
+    media: { storageId: string; type: "image" | "pdf" } | null;
+  };
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
 export function CertificationCard({
@@ -37,7 +46,7 @@ export function CertificationCard({
               variant="ghost"
               size="icon"
               className="h-8 w-8"
-              onClick={() => onEdit(certification)}
+              onClick={onEdit}
             >
               <Pencil className="h-4 w-4" />
               <span className="sr-only">Edit</span>
@@ -46,7 +55,7 @@ export function CertificationCard({
               variant="ghost"
               size="icon"
               className="text-destructive h-8 w-8"
-              onClick={() => onDelete(certification.id)}
+              onClick={onDelete}
             >
               <Trash2 className="h-4 w-4" />
               <span className="sr-only">Delete</span>
@@ -91,6 +100,13 @@ export function CertificationCard({
             <LinkIcon className="h-3.5 w-3.5" />
             <span>Verify Credential</span>
           </a>
+        )}
+        {certification.media && (
+          <div className="flex items-center gap-2 text-sm">
+            <File className="h-4 w-4" />
+            <span className="font-medium">Media:</span>{" "}
+            {certification.media.type.toUpperCase()}
+          </div>
         )}
       </CardFooter>
     </Card>
