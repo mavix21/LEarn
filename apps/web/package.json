@@ -19,6 +19,7 @@
   "dependencies": {
     "@auth/core": "^0.34.2",
     "@coinbase/onchainkit": "^0.38.13",
+    "@hookform/resolvers": "^5.0.1",
     "@reown/appkit": "^1.7.4",
     "@reown/appkit-adapter-wagmi": "^1.7.4",
     "@reown/appkit-siwe": "^1.7.4",
@@ -31,9 +32,9 @@
     "@tiptap/react": "^2.12.0",
     "@tiptap/starter-kit": "^2.12.0",
     "convex": "^1.24.1",
-    "convex-helpers": "^0.1.85",
+    "convex-helpers": "^0.1.86",
     "jose": "^6.0.11",
-    "lucide-react": "^0.509.0",
+    "lucide-react": "^0.510.0",
     "motion": "^12.10.1",
     "next": "15.3.2",
     "next-auth": "^4.24.11",
@@ -42,6 +43,8 @@
     "react": "catalog:react19",
     "react-dom": "catalog:react19",
     "react-dropzone": "^14.3.8",
+    "react-hook-form": "^7.56.3",
+    "sonner": "^2.0.3",
     "viem": "^2.27.2",
     "wagmi": "^2.14.11",
     "zod": "catalog:"
