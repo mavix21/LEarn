@@ -2,10 +2,13 @@
 
 import type React from "react";
 import { useState } from "react";
+import { useQuery } from "convex/react";
 import { Send } from "lucide-react";
 
 import { Button } from "@skill-based/ui/components/button";
 import { Input } from "@skill-based/ui/components/input";
+
+import { api } from "@/convex/_generated/api";
 
 import { MessageList } from "./MessageList";
 
@@ -53,6 +56,13 @@ interface MessagePanelProps {
 export function MessagePanel({ conversation }: MessagePanelProps) {
   const [messages, setMessages] = useState(initialMessages);
   const [newMessage, setNewMessage] = useState("");
+
+  // const listMessagesFromUserToOther = useQuery(
+  //   api.messages.listMessagesFromUserToOther,
+  //   {
+  //     receiverId: conversation.id,
+  //   },
+  // );
 
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault();

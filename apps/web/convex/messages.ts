@@ -11,7 +11,24 @@ export const listConversations = query({
     if (!identity) throw new Error("Not authenticated");
     const userId = identity.subject as Id<"users">;
     const all = await ctx.db.query("messages").order("desc").collect();
-    return all.filter((conv) => conv.senderId === userId);
+    const conversations = all.filter((conv) => conv.senderId === userId);
+
+    // Get user information for each conversation
+    const conversationsWithNames = await Promise.all(
+      conversations.map(async (conv) => {
+        const receiver = await ctx.db.get(conv.receiverId);
+        return {
+          ...conv,
+          receiverName:
+            receiver?.name ??
+            receiver?.displayName ??
+            receiver?.address ??
+            "Unknown",
+        };
+      }),
+    );
+
+    return conversationsWithNames;
   },
 });
 
@@ -23,7 +40,7 @@ export const listMessagesFromUserToOther = query({
     if (!identity) throw new Error("Not authenticated");
     const userId = identity.subject as Id<"users">;
 
-    return await ctx.db
+    const messages = await ctx.db
       .query("messages")
       .filter((q) =>
         q.and(
@@ -33,6 +50,19 @@ export const listMessagesFromUserToOther = query({
       )
       .order("asc")
       .collect();
+
+    // Get receiver information
+    const receiver = await ctx.db.get(args.receiverId);
+
+    return messages.map((msg) => ({
+      ...msg,
+      receiverName:
+        receiver?.name ??
+        receiver?.displayName ??
+        receiver?.address ??
+        "Unknown",
+      senderName: identity.name ?? identity.nickname ?? "You",
+    }));
   },
 });
 
@@ -43,7 +73,7 @@ export const listMessagesFromOtherToUser = query({
     if (!identity) throw new Error("Not authenticated");
     const userId = identity.subject as Id<"users">;
 
-    return await ctx.db
+    const messages = await ctx.db
       .query("messages")
       .filter((q) =>
         q.and(
@@ -53,6 +83,16 @@ export const listMessagesFromOtherToUser = query({
       )
       .order("asc")
       .collect();
+
+    // Get sender information
+    const sender = await ctx.db.get(args.receiverId);
+
+    return messages.map((msg) => ({
+      ...msg,
+      senderName:
+        sender?.name ?? sender?.displayName ?? sender?.address ?? "Unknown",
+      receiverName: identity.name ?? identity.nickname ?? "You",
+    }));
   },
 });
 
@@ -66,7 +106,6 @@ export const sendMessage = mutation({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
     const userId = identity.subject;
-    const now = Date.now();
     await ctx.db.insert("messages", {
       receiverId: args.receiverId,
       senderId: userId as Id<"users">,

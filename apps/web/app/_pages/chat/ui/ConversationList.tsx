@@ -2,8 +2,10 @@
 
 import { cn } from "@skill-based/ui/lib/utils";
 
+import type { Id } from "@/convex/_generated/dataModel";
+
 interface Conversation {
-  id: string;
+  id: Id<"messages">;
   name: string;
   lastMessage: string;
   timestamp: string;
@@ -12,7 +14,7 @@ interface Conversation {
 
 interface ConversationListProps {
   conversations: Conversation[];
-  activeConversationId: string;
+  activeConversationId: Id<"messages"> | undefined;
   onSelect: (conversation: Conversation) => void;
 }
 
@@ -21,6 +23,7 @@ export function ConversationList({
   activeConversationId,
   onSelect,
 }: ConversationListProps) {
+  // console.log(conversations);
   return (
     <div className="overflow-y-auto">
       {conversations.map((conversation) => (
