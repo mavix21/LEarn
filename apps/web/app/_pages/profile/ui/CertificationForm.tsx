@@ -91,7 +91,8 @@ export function CertificationForm({
   const getFileUrl = useQuery(
     api.storage.getUrl,
     form.watch("mediaStorageId") && form.watch("mediaType") === "image"
-      ? { storageId: form.watch("mediaStorageId")! }
+      ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        { storageId: form.watch("mediaStorageId")! }
       : "skip",
   );
 
@@ -143,7 +144,7 @@ export function CertificationForm({
     );
   };
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
