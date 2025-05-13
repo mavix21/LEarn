@@ -15,6 +15,7 @@ import type {
 } from "convex/server";
 import type * as authAdapter from "../authAdapter.js";
 import type * as authTables from "../authTables.js";
+import type * as certifications from "../certifications.js";
 import type * as comments from "../comments.js";
 import type * as dummy from "../dummy.js";
 import type * as follows from "../follows.js";
@@ -37,6 +38,7 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   authAdapter: typeof authAdapter;
   authTables: typeof authTables;
+  certifications: typeof certifications;
   comments: typeof comments;
   dummy: typeof dummy;
   follows: typeof follows;
