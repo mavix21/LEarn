@@ -112,7 +112,6 @@ export default defineSchema({
     senderId: v.id("users"),
     receiverId: v.id("users"),
     content: v.string(),
-    createdAt: v.number(),
     imageUrl: v.optional(v.string()),
   })
     .index("by_senderId", ["senderId"])
