@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useMutation, useQuery } from "convex/react";
 import { Plus } from "lucide-react";
+import { toast } from "sonner";
 
 import { Button } from "@skill-based/ui/components/button";
 import {
@@ -10,63 +12,48 @@ import {
   DialogTrigger,
 } from "@skill-based/ui/components/dialog";
 
-import type { Certification } from "../model/credential";
+import type { Id } from "@/convex/_generated/dataModel";
+import { api } from "@/convex/_generated/api";
+
 import { CertificationCard } from "./CertificationCard";
 import { CertificationForm } from "./CertificationForm";
 
-export default function CertificationsSection() {
-  const [certifications, setCertifications] = useState<Certification[]>([
-    {
-      id: "1",
-      name: "AWS Certified Solutions Architect",
-      issuingCompany: "Amazon Web Services",
-      skills: ["AWS", "Cloud Architecture", "Infrastructure"],
-      credentialId: "AWS-ASA-123456",
-      credentialUrl: "https://aws.amazon.com/verification",
-      issueDate: "2023-05-15",
-    },
-    {
-      id: "2",
-      name: "Professional Scrum Master I",
-      issuingCompany: "Scrum.org",
-      skills: ["Agile", "Scrum", "Project Management"],
-      credentialId: "PSM-I-987654",
-      credentialUrl: "https://www.scrum.org/certificates",
-      issueDate: "2022-11-30",
-    },
-  ]);
-
+export function CertificationsSection() {
   const [open, setOpen] = useState(false);
-  const [editingCertification, setEditingCertification] =
-    useState<Certification | null>(null);
+  const [editingCertificationId, setEditingCertificationId] =
+    useState<Id<"certifications"> | null>(null);
 
-  const handleAddCertification = (certification: Omit<Certification, "id">) => {
-    if (editingCertification) {
-      setCertifications(
-        certifications.map((cert) =>
-          cert.id === editingCertification.id
-            ? { ...certification, id: cert.id }
-            : cert,
-        ),
-      );
-    } else {
-      setCertifications([
-        ...certifications,
-        { ...certification, id: Date.now().toString() },
-      ]);
-    }
-    setOpen(false);
-    setEditingCertification(null);
-  };
+  // Fetch certifications
+  const certifications = useQuery(api.certifications.list);
+  const removeCertification = useMutation(api.certifications.remove);
 
-  const handleDeleteCertification = (id: string) => {
-    setCertifications(certifications.filter((cert) => cert.id !== id));
-  };
-
-  const handleEditCertification = (certification: Certification) => {
-    setEditingCertification(certification);
+  const handleAddCertification = () => {
+    setEditingCertificationId(null);
     setOpen(true);
   };
+
+  const handleEditCertification = (id: Id<"certifications">) => {
+    setEditingCertificationId(id);
+    setOpen(true);
+  };
+
+  const handleDeleteCertification = async (id: Id<"certifications">) => {
+    try {
+      await removeCertification({ id });
+      toast.success("Certification deleted successfully");
+    } catch (error) {
+      toast.error("Failed to delete certification");
+      console.error("Error deleting certification:", error);
+    }
+  };
+
+  if (certifications === undefined) {
+    return (
+      <div className="flex h-[200px] items-center justify-center">
+        <div className="text-muted-foreground">Loading certifications...</div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -76,18 +63,17 @@ export default function CertificationsSection() {
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button onClick={() => setEditingCertification(null)}>
+            <Button onClick={handleAddCertification}>
               <Plus className="mr-2 h-4 w-4" />
               Add Certification
             </Button>
           </DialogTrigger>
           <DialogContent className="sm:max-w-[550px]">
             <CertificationForm
-              onSubmit={handleAddCertification}
-              initialData={editingCertification ?? undefined}
+              certificationId={editingCertificationId}
               onCancel={() => {
                 setOpen(false);
-                setEditingCertification(null);
+                setEditingCertificationId(null);
               }}
             />
           </DialogContent>
@@ -106,7 +92,7 @@ export default function CertificationsSection() {
               <Button
                 variant="outline"
                 className="mt-4"
-                onClick={() => setEditingCertification(null)}
+                onClick={handleAddCertification}
               >
                 <Plus className="mr-2 h-4 w-4" />
                 Add Your First Certification
@@ -114,11 +100,10 @@ export default function CertificationsSection() {
             </DialogTrigger>
             <DialogContent className="sm:max-w-[550px]">
               <CertificationForm
-                onSubmit={handleAddCertification}
-                initialData={editingCertification ?? undefined}
+                certificationId={editingCertificationId}
                 onCancel={() => {
                   setOpen(false);
-                  setEditingCertification(null);
+                  setEditingCertificationId(null);
                 }}
               />
             </DialogContent>
@@ -128,10 +113,10 @@ export default function CertificationsSection() {
         <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,100%),1fr)] gap-4">
           {certifications.map((certification) => (
             <CertificationCard
-              key={certification.id}
+              key={certification._id}
               certification={certification}
-              onEdit={handleEditCertification}
-              onDelete={handleDeleteCertification}
+              onEdit={() => handleEditCertification(certification._id)}
+              onDelete={() => handleDeleteCertification(certification._id)}
             />
           ))}
         </div>
