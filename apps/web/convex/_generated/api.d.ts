@@ -23,6 +23,7 @@ import type * as http from "../http.js";
 import type * as likes from "../likes.js";
 import type * as messages from "../messages.js";
 import type * as posts from "../posts.js";
+import type * as storage from "../storage.js";
 import type * as trendingTopics from "../trendingTopics.js";
 import type * as userTopics from "../userTopics.js";
 import type * as users from "../users.js";
@@ -46,6 +47,7 @@ declare const fullApi: ApiFromModules<{
   likes: typeof likes;
   messages: typeof messages;
   posts: typeof posts;
+  storage: typeof storage;
   trendingTopics: typeof trendingTopics;
   userTopics: typeof userTopics;
   users: typeof users;

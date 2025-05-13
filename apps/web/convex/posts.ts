@@ -148,7 +148,7 @@ export const getUsers = query({
 export const getHashtagsContent = query({
   args: {},
   returns: v.array(v.string()),
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
     // Get all posts (optionally, you can use a search index for performance)
     const posts = await ctx.db
       .query("posts")
@@ -161,12 +161,6 @@ export const getHashtagsContent = query({
     );
 
     return hashtags;
-  },
-});
-
-export const generateUploadUrl = mutation({
-  handler: async (ctx) => {
-    return await ctx.storage.generateUploadUrl();
   },
 });
 
