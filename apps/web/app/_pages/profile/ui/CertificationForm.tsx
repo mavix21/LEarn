@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { fetchQuery } from "convex/nextjs";
 import { useMutation, useQuery } from "convex/react";
 import { File, X } from "lucide-react";
 import { useForm } from "react-hook-form";
@@ -31,6 +32,8 @@ import { Input } from "@skill-based/ui/components/input";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { uploadFile } from "@/src/storage/upload-file.action";
+
+import { uploadCertificateJSON } from "../api/file/route";
 
 const formSchema = z.object({
   name: z.string().min(1, "Certification name is required"),
@@ -63,6 +66,7 @@ export function CertificationForm({
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedStorageId, setUploadedStorageId] =
     useState<Id<"_storage"> | null>(null);
+  const [uploadURL, setUploadURL] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -176,8 +180,9 @@ export function CertificationForm({
 
     try {
       setIsUploading(true);
-      const storageId = await uploadFile(selectedFile);
+      const { storageId, uploadUrl } = await uploadFile(selectedFile);
       setUploadedStorageId(storageId as Id<"_storage">);
+      setUploadURL(uploadUrl);
       form.setValue("mediaStorageId", storageId as Id<"_storage">);
       form.setValue(
         "mediaType",
@@ -224,11 +229,21 @@ export function CertificationForm({
 
   async function onFormSubmit(values: z.infer<typeof formSchema>) {
     try {
+      const mediaStorageId = values.mediaStorageId;
       // Check if there's a selected file that hasn't been uploaded
-      if (selectedFile && !values.mediaStorageId) {
+      if (selectedFile && mediaStorageId === undefined) {
         toast.error("Please upload the selected file before saving");
         return;
       }
+
+      if (!mediaStorageId) {
+        toast.error("Please upload a proof of your certification");
+        return;
+      }
+
+      const url = await fetchQuery(api.storage.getUrl, {
+        storageId: mediaStorageId,
+      });
 
       // Prevent submission if file is currently uploading
       if (isUploading) {
@@ -243,9 +258,18 @@ export function CertificationForm({
           id: certificationId,
           ...values,
         });
+
         toast.success("Certification updated successfully");
       } else {
         await createCertification(values);
+        await uploadCertificateJSON(
+          values.name,
+          values.issuingCompany,
+          values.issueDate ?? "",
+          values.credentialId ?? "",
+          values.credentialUrl ?? "",
+          url ?? "",
+        );
         toast.success("Certification added successfully");
       }
 

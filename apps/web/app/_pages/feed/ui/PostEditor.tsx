@@ -82,7 +82,12 @@ export function PostEditor() {
     let storageIds: string[] = [];
     try {
       if (selectedImages.length > 0) {
-        storageIds = await Promise.all(selectedImages.map(uploadFile));
+        storageIds = await Promise.all(
+          selectedImages.map(async (image) => {
+            const { storageId } = await uploadFile(image);
+            return storageId;
+          }),
+        );
       }
       await createPost({
         content: input,
