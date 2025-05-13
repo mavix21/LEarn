@@ -6,6 +6,28 @@ import { authTables } from "./authTables";
 export default defineSchema({
   ...authTables,
 
+  certifications: defineTable({
+    userId: v.id("users"),
+    name: v.string(),
+    issuingCompany: v.string(),
+    skills: v.array(v.string()),
+    credentialId: v.optional(v.string()),
+    credentialUrl: v.optional(v.string()),
+    issueDate: v.optional(v.string()),
+  })
+    .index("by_userId", ["userId"])
+    .index("by_issuingCompany", ["issuingCompany"])
+    .searchIndex("search_certifications", {
+      searchField: "name",
+      filterFields: ["userId"],
+    }),
+
+  certification_media: defineTable({
+    certificationId: v.id("certifications"),
+    storageId: v.string(),
+    type: v.union(v.literal("image"), v.literal("pdf")),
+  }).index("by_certificationId", ["certificationId"]),
+
   connections: defineTable({
     requesterId: v.id("users"),
     recipientId: v.id("users"),
