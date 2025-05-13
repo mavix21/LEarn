@@ -14,10 +14,10 @@ import { Button } from "@skill-based/ui/components/button";
 import "./post-editor.module.css";
 
 import { api } from "@/convex/_generated/api";
+import { uploadFile } from "@/src/storage/upload-file.action";
 
 export function PostEditor() {
   const createPost = useMutation(api.posts.createPost);
-  const generateUploadUrl = useMutation(api.posts.generateUploadUrl);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -77,24 +77,12 @@ export function PostEditor() {
     setSelectedImages((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  async function uploadImage(file: File): Promise<string> {
-    const uploadUrl = await generateUploadUrl();
-    const res = await fetch(uploadUrl, {
-      method: "POST",
-      headers: { "Content-Type": file.type },
-      body: file,
-    });
-    const { storageId } = await res.json();
-    // Return the storage ID (not a URL)
-    return storageId;
-  }
-
   async function onSubmit() {
     setUploading(true);
     let storageIds: string[] = [];
     try {
       if (selectedImages.length > 0) {
-        storageIds = await Promise.all(selectedImages.map(uploadImage));
+        storageIds = await Promise.all(selectedImages.map(uploadFile));
       }
       await createPost({
         content: input,
@@ -142,16 +130,6 @@ export function PostEditor() {
                 </Button>
               </div>
             ))}
-            {/* {selectedImages.length < 2 && (
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => fileInputRef.current?.click()}
-                className="h-16 w-16 flex items-center justify-center"
-              >
-                +
-              </Button>
-            )} */}
             <input
               type="file"
               accept="image/*"
