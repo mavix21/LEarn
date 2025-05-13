@@ -40,64 +40,6 @@ export function Posts() {
         </div>
       </div>
 
-      {/* <div className="space-y-6">
-        <div className="flex gap-4">
-          <div className="flex-grow">
-            <h3 className="mb-1 font-medium">
-              Spotify $10 Evergreen Referral Incentive is Live!
-            </h3>
-            <p className="text-sm text-gray-500">James Harrison</p>
-            <p className="text-xs">Posted on February 1, 2021</p>
-          </div>
-          <div className="h-20 w-20 flex-shrink-0 rounded-lg bg-yellow-100">
-            <Image
-              src="/placeholder.svg?height=80&width=80"
-              alt="Post thumbnail"
-              width={80}
-              height={80}
-              className="h-full w-full rounded-lg object-cover"
-            />
-          </div>
-        </div>
-
-        <div className="flex gap-4">
-          <div className="flex-grow">
-            <h3 className="mb-1 font-medium">
-              Spotify $10 Evergreen Referral Incentive is Live!
-            </h3>
-            <p className="text-sm text-gray-500">Judith Nguyen</p>
-            <p className="text-xs">Posted on February 1, 2021</p>
-          </div>
-          <div className="h-20 w-20 flex-shrink-0 rounded-lg bg-pink-100">
-            <Image
-              src="/placeholder.svg?height=80&width=80"
-              alt="Post thumbnail"
-              width={80}
-              height={80}
-              className="h-full w-full rounded-lg object-cover"
-            />
-          </div>
-        </div>
-
-        <div className="flex gap-4">
-          <div className="flex-grow">
-            <h3 className="mb-1 font-medium">
-              Spotify $10 Evergreen Referral Incentive is Live!
-            </h3>
-            <p className="text-sm text-gray-500">Aaron Cooper</p>
-            <p className="text-xs">Posted on February 1, 2021</p>
-          </div>
-          <div className="h-20 w-20 flex-shrink-0 rounded-lg bg-blue-100">
-            <Image
-              src="/placeholder.svg?height=80&width=80"
-              alt="Post thumbnail"
-              width={80}
-              height={80}
-              className="h-full w-full rounded-lg object-cover"
-            />
-          </div>
-        </div>
-      </div> */}
       {isLoading ? (
         <div className="flex flex-col gap-4">
           <PostSkeleton />
