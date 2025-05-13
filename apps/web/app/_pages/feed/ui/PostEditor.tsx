@@ -135,7 +135,7 @@ export function PostEditor() {
                   type="button"
                   variant="destructive"
                   size="icon"
-                  className="absolute -right-2 -top-2"
+                  className="absolute -right-2 -top-2 size-6 rounded-full"
                   onClick={() => removeImage(idx)}
                 >
                   ×
