@@ -10,7 +10,18 @@ export const listConversations = query({
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Not authenticated");
     const userId = identity.subject as Id<"users">;
-    const all = await ctx.db.query("messages").order("desc").collect();
+    const all = [];
+    let message = await ctx.db.query("messages").order("desc").first();
+    while (message !== null) {
+      all.push(message);
+      message = await ctx.db
+        .query("messages")
+        .withIndex("by_receiverId", (q) =>
+          q.lt("receiverId", message?.receiverId as Id<"users">),
+        )
+        .first();
+    }
+
     const conversations = all.filter((conv) => conv.senderId === userId);
 
     // Get user information for each conversation
