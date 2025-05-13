@@ -57,6 +57,7 @@ export function MessagePanel({ conversation }: MessagePanelProps) {
   const [messages, setMessages] = useState(initialMessages);
   const [newMessage, setNewMessage] = useState("");
 
+  console.log("conversation", conversation);
   // const listMessagesFromUserToOther = useQuery(
   //   api.messages.listMessagesFromUserToOther,
   //   {

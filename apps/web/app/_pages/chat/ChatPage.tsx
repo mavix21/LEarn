@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import { MessageSquarePlus } from "lucide-react";
 
@@ -9,6 +9,7 @@ import { Button } from "@skill-based/ui/components/button";
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
+import type { Conversation } from "./model/conversation.interface";
 import { ConversationList } from "./ui/ConversationList";
 import { MessagePanel } from "./ui/MessagePanel";
 import { NewConversationDialog } from "./ui/NewConversationDialog";
@@ -37,23 +38,30 @@ import { NewConversationDialog } from "./ui/NewConversationDialog";
 //     unread: 0,
 //   },
 // ];
+
 export function ChatPage() {
   const initialConversations = useQuery(api.messages.listConversations);
-  const transformedConversations = initialConversations?.map((msg) => ({
-    id: msg._id,
-    name: "Chat", // You may want to customize this
-    lastMessage: msg.content,
-    timestamp: new Date(msg._creationTime).toLocaleTimeString(),
-    unread: 0,
-  }));
+  const transformedConversations: Conversation[] | undefined =
+    initialConversations?.map((msg) => ({
+      id: msg._id,
+      name: msg.receiverName, // You may want to customize this
+      lastMessage: msg.content,
+      timestamp: new Date(msg._creationTime).toLocaleTimeString(),
+      unread: 0,
+    }));
 
-  const [conversations, setConversations] = useState(transformedConversations);
-  const [activeConversation, setActiveConversation] = useState(
-    transformedConversations?.[0],
-  );
+  // const [conversations, setConversations] = useState(
+  //   transformedConversations || [],
+  // );
+  // const [activeConversation, setActiveConversation] = useState<
+  //   Conversation | undefined
+  // >(undefined);
+
+  const activeConversation = transformedConversations?.[0];
+
   const [isNewConversationOpen, setIsNewConversationOpen] = useState(false);
 
-  if (initialConversations === undefined) return "Loading...";
+  if (transformedConversations === undefined) return "Loading...";
 
   const handleNewConversation = (name: string) => {
     const newConversation = {
@@ -63,12 +71,10 @@ export function ChatPage() {
       timestamp: "Just now",
       unread: 0,
     };
-    setConversations([newConversation, ...conversations]);
-    setActiveConversation(newConversation);
+    // setConversations([newConversation, ...conversations]);
     setIsNewConversationOpen(false);
   };
-  console.log("transformedConversations", transformedConversations);
-  console.log("conversations", conversations);
+
   return (
     <div className="bg-background flex h-screen">
       <div className="border-border w-80 border-r">
@@ -86,9 +92,9 @@ export function ChatPage() {
           </Button>
         </div>
         <ConversationList
-          conversations={conversations}
+          conversations={transformedConversations}
           activeConversationId={activeConversation?.id}
-          onSelect={setActiveConversation}
+          onSelect={() => {}}
         />
       </div>
 
