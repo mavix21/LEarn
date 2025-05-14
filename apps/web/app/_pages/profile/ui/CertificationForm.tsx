@@ -181,9 +181,9 @@ export function CertificationForm({
     try {
       setIsUploading(true);
       const { storageId, uploadUrl } = await uploadFile(selectedFile);
-      setUploadedStorageId(storageId as Id<"_storage">);
+      setUploadedStorageId(storageId);
       setUploadURL(uploadUrl);
-      form.setValue("mediaStorageId", storageId as Id<"_storage">);
+      form.setValue("mediaStorageId", storageId);
       form.setValue(
         "mediaType",
         selectedFile.type.startsWith("image/") ? "image" : "pdf",
