@@ -108,7 +108,7 @@ export async function ProfilePage({ userId }: { userId: string }) {
 
             <TabsContent value="talent" className="mt-0">
               <Suspense fallback={<TalentTabSkeleton />}>
-                <TalentTab />
+                <TalentTab address={address} />
               </Suspense>
             </TabsContent>
 

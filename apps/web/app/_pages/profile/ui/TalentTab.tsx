@@ -13,13 +13,7 @@ import type { TalentsResponse } from "../model/talent-protocol";
 type Credential = TalentsResponse["credentials"][number];
 type CredentialsByCategory = Record<string, Credential[]>;
 
-export async function TalentTab() {
-  const session = await auth();
-
-  if (!session) redirect("/feed");
-
-  const { address } = session;
-
+export async function TalentTab({ address }: { address: `0x${string}` }) {
   const result = await tryCatch(
     fetch(
       `https://api.talentprotocol.com/credentials?id=${address}&accountSource=wallet`,
