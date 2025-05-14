@@ -117,24 +117,26 @@ export function CertificationCard({
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <CardTitle className="line-clamp-2">{certification.name}</CardTitle>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={onEdit}
-            >
-              <Pencil className="h-4 w-4" />
-              <span className="sr-only">Edit</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-destructive h-8 w-8"
-              onClick={onDelete}
-            >
-              <Trash2 className="h-4 w-4" />
-              <span className="sr-only">Delete</span>
-            </Button>
+            <div className="flex">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={onEdit}
+              >
+                <Pencil className="h-4 w-4" />
+                <span className="sr-only">Edit</span>
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-destructive h-8 w-8"
+                onClick={onDelete}
+              >
+                <Trash2 className="h-4 w-4" />
+                <span className="sr-only">Delete</span>
+              </Button>
+            </div>
           </div>
           <div className="flex gap-1">
             {certification.isMinted && (
