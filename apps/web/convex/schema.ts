@@ -14,6 +14,7 @@ export default defineSchema({
     credentialId: v.optional(v.string()),
     credentialUrl: v.optional(v.string()),
     issueDate: v.optional(v.string()),
+    isMinted: v.boolean(),
   })
     .index("by_userId", ["userId"])
     .index("by_issuingCompany", ["issuingCompany"])

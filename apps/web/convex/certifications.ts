@@ -111,6 +111,7 @@ export const add = mutation({
       credentialId: args.credentialId,
       credentialUrl: args.credentialUrl,
       issueDate: args.issueDate,
+      isMinted: false,
     });
 
     // If there's media, create a media record
@@ -190,6 +191,28 @@ export const update = mutation({
   },
 });
 
+export const updateMinted = mutation({
+  args: { id: v.id("certifications"), isMinted: v.boolean() },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+    // Get the certification to verify ownership
+    const certification = await ctx.db.get(args.id);
+    if (!certification) {
+      throw new ConvexError("Certification not found");
+    }
+    if (certification.userId !== identity.subject) {
+      throw new ConvexError("Not authorized to update this certification");
+    }
+    // Update the certification
+    await ctx.db.patch(args.id, {
+      isMinted: args.isMinted,
+    });
+    return args.id;
+  },
+});
 // Delete a certification and its associated media
 export const remove = mutation({
   args: {
