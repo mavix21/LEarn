@@ -1,10 +1,7 @@
-import { redirect } from "next/navigation";
-
 import { Badge } from "@skill-based/ui/components/badge";
 import { Card, CardContent } from "@skill-based/ui/components/card";
 import { Progress } from "@skill-based/ui/components/progress";
 
-import { auth } from "@/auth";
 import { env } from "@/src/env";
 import { tryCatch } from "@/src/lib/try-catch";
 
@@ -30,6 +27,34 @@ export async function TalentTab({ address }: { address: `0x${string}` }) {
   }
 
   const { credentials }: TalentsResponse = await result.data.json();
+
+  if (credentials.every((credential) => credential.points === 0)) {
+    return (
+      <div className="space-y-4">
+        <h1 className="text-2xl font-semibold">Talent</h1>
+        <Card>
+          <CardContent className="flex flex-col items-center justify-center space-y-4 py-8 text-center">
+            <h3 className="text-xl font-semibold">
+              No Talent Credentials Found
+            </h3>
+            <p className="text-muted-foreground max-w-md">
+              Start building your on-chain reputation and showcase your skills
+              with Talent Protocol. Get verified credentials and stand out in
+              the web3 ecosystem.
+            </p>
+            <a
+              href="https://www.talentprotocol.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium"
+            >
+              Build Your Builder Score
+            </a>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
 
   // Group credentials by category and filter out zero points
   const credentialsByCategory = credentials.reduce<CredentialsByCategory>(
