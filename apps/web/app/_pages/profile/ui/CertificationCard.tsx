@@ -182,8 +182,6 @@ export function CertificationCard({
               />
             </div>
           )}
-        </CardContent>
-        <CardFooter className="flex flex-col items-start gap-4 border-t pt-3">
           <div className="space-y-2">
             {certification.credentialId && (
               <div className="text-muted-foreground flex items-center gap-2 text-xs">
@@ -202,14 +200,9 @@ export function CertificationCard({
                 <span>Verify Credential</span>
               </a>
             )}
-            {certification.media && (
-              <div className="flex items-center gap-2 text-sm">
-                <File className="h-4 w-4" />
-                <span className="font-medium">Media:</span>{" "}
-                {certification.media.type.toUpperCase()}
-              </div>
-            )}
           </div>
+        </CardContent>
+        <CardFooter className="flex flex-col items-start gap-4 border-t pt-3">
           {!certification.isMinted && (
             <Button
               variant="secondary"

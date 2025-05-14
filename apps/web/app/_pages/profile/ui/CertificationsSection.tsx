@@ -1,7 +1,8 @@
 "use client";
 
+import type { Preloaded } from "convex/react";
 import { useState } from "react";
-import { useMutation, useQuery } from "convex/react";
+import { useMutation, usePreloadedQuery, useQuery } from "convex/react";
 import { Plus } from "lucide-react";
 import { toast } from "sonner";
 
@@ -19,16 +20,20 @@ import { CertificationCard } from "./CertificationCard";
 import { CertificationForm } from "./CertificationForm";
 
 export function CertificationsSection({
-  mintRecipient,
+  preloadedUser,
 }: {
-  mintRecipient: string;
+  preloadedUser: Preloaded<typeof api.users.getUserProfile>;
 }) {
+  const { userId, address, isMe } = usePreloadedQuery(preloadedUser);
+
   const [open, setOpen] = useState(false);
   const [editingCertificationId, setEditingCertificationId] =
     useState<Id<"certifications"> | null>(null);
 
   // Fetch certifications
-  const certifications = useQuery(api.certifications.list);
+  const certifications = useQuery(api.certifications.list, {
+    userId,
+  });
   const removeCertification = useMutation(api.certifications.remove);
 
   const handleAddCertification = () => {
@@ -66,12 +71,14 @@ export function CertificationsSection({
           <h2 className="text-xl font-bold tracking-tight">Certifications</h2>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
-          <DialogTrigger asChild>
-            <Button onClick={handleAddCertification}>
-              <Plus className="mr-2 h-4 w-4" />
-              Add Certification
-            </Button>
-          </DialogTrigger>
+          {isMe && (
+            <DialogTrigger asChild>
+              <Button onClick={handleAddCertification}>
+                <Plus className="mr-2 h-4 w-4" />
+                Add Certification
+              </Button>
+            </DialogTrigger>
+          )}
           <DialogContent className="sm:max-w-[550px]">
             <CertificationForm
               certificationId={editingCertificationId}
@@ -119,7 +126,7 @@ export function CertificationsSection({
             <CertificationCard
               key={certification._id}
               certification={certification}
-              mintRecipient={mintRecipient}
+              mintRecipient={address}
               onEdit={() => handleEditCertification(certification._id)}
               onDelete={() => handleDeleteCertification(certification._id)}
             />
