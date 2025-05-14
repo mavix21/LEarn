@@ -1,7 +1,7 @@
 "use client";
 
 import type { Preloaded } from "convex/react";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMutation, usePreloadedQuery } from "convex/react";
 import { Check, Edit2, X } from "lucide-react";
 
@@ -19,6 +19,13 @@ export function SummarySection({
   const [isEditing, setIsEditing] = useState(false);
   const [editedBio, setEditedBio] = useState(bio);
   const updateBio = useMutation(api.users.updateBio);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  useEffect(() => {
+    if (isEditing && textareaRef.current) {
+      textareaRef.current.focus();
+    }
+  }, [isEditing]);
 
   const handleSave = async () => {
     await updateBio({ bio: editedBio });
@@ -65,18 +72,19 @@ export function SummarySection({
           </div>
         )}
       </div>
-      <div className="text-muted-foreground space-y-2">
+      <div className="space-y-2">
         {isEditing ? (
           <Textarea
+            ref={textareaRef}
             value={editedBio}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) =>
               setEditedBio(e.target.value)
             }
             placeholder="Write something about yourself..."
-            className="min-h-[100px]"
+            className="min-h-[100px] text-base"
           />
         ) : bio ? (
-          <p>{bio}</p>
+          <p className="min-h-[100px] rounded-md border py-2 pl-3">{bio}</p>
         ) : (
           <p className="italic">No bio provided.</p>
         )}
