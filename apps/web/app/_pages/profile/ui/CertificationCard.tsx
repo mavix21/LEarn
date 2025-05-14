@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useQuery } from "convex/react";
 import { Building, File, Hash, LinkIcon, Pencil, Trash2 } from "lucide-react";
+import { useWriteContract } from "wagmi";
 
 import { Badge } from "@skill-based/ui/components/badge";
 import { Button } from "@skill-based/ui/components/button";
@@ -17,6 +18,7 @@ import {
 import { ScrollArea } from "@skill-based/ui/components/scroll-area";
 
 import type { Id } from "@/convex/_generated/dataModel";
+import { abi } from "@/app/_shared/lib/abi";
 import { api } from "@/convex/_generated/api";
 
 interface CertificationCardProps {
@@ -39,12 +41,26 @@ export function CertificationCard({
   onEdit,
   onDelete,
 }: CertificationCardProps) {
+  const { data: hash, writeContract } = useWriteContract();
+
   const mediaUrl = useQuery(
     api.storage.getUrl,
     certification.media?.storageId
       ? { storageId: certification.media.storageId }
       : "skip",
   );
+
+  const handleMint = () => {
+    const tokenId = writeContract({
+      address: "0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2",
+      abi,
+      functionName: "mint",
+      args: [1],
+    });
+
+    console.log(tokenId);
+    return tokenId;
+  };
 
   return (
     <Card className="overflow-hidden">
@@ -56,7 +72,7 @@ export function CertificationCard({
               variant="secondary"
               size="lg"
               className="h-8 w-8"
-              onClick={() => console.log("mint")}
+              onClick={handleMint}
             >
               <span>Mint</span>
             </Button>
