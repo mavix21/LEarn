@@ -19,9 +19,7 @@ import { auth } from "@/auth";
 import { api } from "@/convex/_generated/api";
 import { tryCatch } from "@/src/lib/try-catch";
 
-import { AskMeAbout } from "./ui/AskMeAbout";
 import { CertificationsSection } from "./ui/CertificationsSection";
-import { Groups } from "./ui/Groups";
 import { Posts } from "./ui/Posts";
 import { ProfileHeader } from "./ui/ProfileHeader";
 import { SummarySection } from "./ui/SummarySection";
@@ -32,7 +30,7 @@ export async function ProfilePage({ userId }: { userId: string }) {
   const data = await auth();
   if (!data) redirect("/feed");
 
-  const { address, convexToken: token } = data;
+  const { convexToken: token } = data;
 
   const result = await tryCatch<
     Preloaded<typeof api.users.getUserProfile>,
@@ -72,14 +70,6 @@ export async function ProfilePage({ userId }: { userId: string }) {
             <TabsContent value="overview" className="space-y-8">
               {/* Summary Section */}
               <SummarySection preloadedUser={preloadedUser} />
-
-              {/* Ask Me About Section */}
-              <div className="mb-8">
-                <AskMeAbout preloadedUser={preloadedUser} />
-              </div>
-
-              {/* Groups Section */}
-              <Groups />
 
               {/* Hobbies Section */}
               <div className="mb-8">
@@ -123,7 +113,7 @@ export async function ProfilePage({ userId }: { userId: string }) {
             </TabsContent> */}
             <TabsContent value="certificates" className="mt-0">
               {/* Certifications Section */}
-              <CertificationsSection mintRecipient={address} />
+              <CertificationsSection preloadedUser={preloadedUser} />
             </TabsContent>
 
             <TabsContent value="more" className="mt-0">
