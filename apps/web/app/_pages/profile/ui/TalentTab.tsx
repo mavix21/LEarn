@@ -6,6 +6,7 @@ import { Progress } from "@skill-based/ui/components/progress";
 
 import { auth } from "@/auth";
 import { env } from "@/src/env";
+import { tryCatch } from "@/src/lib/try-catch";
 
 import type { TalentsResponse } from "../model/talent-protocol";
 
@@ -19,16 +20,22 @@ export async function TalentTab() {
 
   const { address } = session;
 
-  const data = await fetch(
-    `https://api.talentprotocol.com/credentials?id=${address}&accountSource=wallet`,
-    {
-      headers: {
-        "X-API-KEY": env.TALENT_API_KEY,
+  const result = await tryCatch(
+    fetch(
+      `https://api.talentprotocol.com/credentials?id=${address}&accountSource=wallet`,
+      {
+        headers: {
+          "X-API-KEY": env.TALENT_API_KEY,
+        },
       },
-    },
+    ),
   );
 
-  const { credentials }: TalentsResponse = await data.json();
+  if (result.error) {
+    return <div>No talent credentials found!</div>;
+  }
+
+  const { credentials }: TalentsResponse = await result.data.json();
 
   // Group credentials by category and filter out zero points
   const credentialsByCategory = credentials.reduce<CredentialsByCategory>(
