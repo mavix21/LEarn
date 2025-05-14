@@ -44,9 +44,9 @@ export function MintingOverlay() {
             blockchain...
           </p>
 
-          <div className="bg-muted mt-4 h-2.5 w-full max-w-xs overflow-hidden rounded-full">
+          {/* <div className="bg-muted mt-4 h-2.5 w-full max-w-xs overflow-hidden rounded-full">
             <div className="bg-primary animate-progress h-full rounded-full"></div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

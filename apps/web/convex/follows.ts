@@ -21,6 +21,56 @@ export const getFollow = query({
   },
 });
 
+export const getFollowers = query({
+  handler: async (ctx) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
+
+    const followers = await ctx.db
+      .query("follows")
+      .filter((q) => q.eq(q.field("followingId"), id.subject as Id<"users">))
+      .order("desc")
+      .take(2);
+
+    return Promise.all(
+      followers.map(async (follower) => {
+        const user = await ctx.db.get(follower.followerId);
+        return {
+          ...follower,
+          followerName: user?.displayName ?? "Anonymous",
+        };
+      }),
+    );
+  },
+});
+
+export const getFollowing = query({
+  handler: async (ctx) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
+
+    const following = await ctx.db
+      .query("follows")
+      .filter((q) => q.eq(q.field("followerId"), id.subject as Id<"users">))
+      .order("desc")
+      .take(2);
+
+    return Promise.all(
+      following.map(async (f) => {
+        const user = await ctx.db.get(f.followingId);
+        return {
+          ...following,
+          followingName: user?.displayName ?? "Anonymous",
+        };
+      }),
+    );
+  },
+});
+
 export const createFollow = mutation({
   args: {
     followingId: v.id("users"),
