@@ -117,19 +117,8 @@ export default defineSchema({
     .index("by_senderId", ["senderId"])
     .index("by_receiverId", ["receiverId"]),
 
-  // conversations: defineTable({
-  //   participantIds: v.array(v.id("users")),
-  //   lastMessage: v.optional(v.string()),
-  //   lastMessageAt: v.optional(v.number()),
-  // }).index("by_participantIds", ["participantIds"]),
-
-  // messages: defineTable({
-  //   conversationId: v.id("conversations"),
-  //   senderId: v.id("users"),
-  //   content: v.string(),
-  //   createdAt: v.number(),
-  //   imageUrl: v.optional(v.string()),
-  // })
-  //   .index("by_conversationId", ["conversationId"])
-  //   .index("by_senderId", ["senderId"]),
+  tokens: defineTable({
+    userId: v.id("users"),
+    tokenId: v.number(),
+  }),
 });

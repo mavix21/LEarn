@@ -69,7 +69,7 @@ export async function ProfilePage({ userId }: { userId: string }) {
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="talent">Talent</TabsTrigger>
               <TabsTrigger value="posts">Posts</TabsTrigger>
-              <TabsTrigger value="events">Events</TabsTrigger>
+              <TabsTrigger value="certificates">Certificates</TabsTrigger>
               <TabsTrigger value="more">More</TabsTrigger>
             </TabsList>
 
@@ -96,9 +96,6 @@ export async function ProfilePage({ userId }: { userId: string }) {
                 <AskMeAbout topics={user.topics} />
               </div>
 
-              {/* Certifications Section */}
-              <CertificationsSection />
-
               {/* Groups Section */}
               <Groups />
 
@@ -124,7 +121,6 @@ export async function ProfilePage({ userId }: { userId: string }) {
                   <Badge>Auto Detailing</Badge>
                   <Badge>Table Tennis</Badge>
                 </div>
-
               </div>
             </TabsContent>
 
@@ -138,8 +134,12 @@ export async function ProfilePage({ userId }: { userId: string }) {
               <Posts />
             </TabsContent>
 
-            <TabsContent value="events" className="mt-0">
+            {/* <TabsContent value="events" className="mt-0">
               <UpcomingEvents />
+            </TabsContent> */}
+            <TabsContent value="certificates" className="mt-0">
+              {/* Certifications Section */}
+              <CertificationsSection />
             </TabsContent>
 
             <TabsContent value="more" className="mt-0">

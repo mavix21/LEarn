@@ -53,6 +53,14 @@ export function CertificationCard({
           <CardTitle className="line-clamp-2">{certification.name}</CardTitle>
           <div className="flex gap-1">
             <Button
+              variant="secondary"
+              size="lg"
+              className="h-8 w-8"
+              onClick={() => console.log("mint")}
+            >
+              <span>Mint</span>
+            </Button>
+            <Button
               variant="ghost"
               size="icon"
               className="h-8 w-8"
