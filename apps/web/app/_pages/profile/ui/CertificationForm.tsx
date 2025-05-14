@@ -262,14 +262,6 @@ export function CertificationForm({
         toast.success("Certification updated successfully");
       } else {
         await createCertification(values);
-        await uploadCertificateJSON(
-          values.name,
-          values.issuingCompany,
-          values.issueDate ?? "",
-          values.credentialId ?? "",
-          values.credentialUrl ?? "",
-          url ?? "",
-        );
         toast.success("Certification added successfully");
       }
 

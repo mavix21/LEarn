@@ -130,7 +130,7 @@ export async function ProfilePage({ userId }: { userId: string }) {
             </TabsContent> */}
             <TabsContent value="certificates" className="mt-0">
               {/* Certifications Section */}
-              <CertificationsSection />
+              <CertificationsSection mintRecipient={address} />
             </TabsContent>
 
             <TabsContent value="more" className="mt-0">

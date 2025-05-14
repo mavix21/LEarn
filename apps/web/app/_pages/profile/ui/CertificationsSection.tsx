@@ -18,7 +18,11 @@ import { api } from "@/convex/_generated/api";
 import { CertificationCard } from "./CertificationCard";
 import { CertificationForm } from "./CertificationForm";
 
-export function CertificationsSection() {
+export function CertificationsSection({
+  mintRecipient,
+}: {
+  mintRecipient: string;
+}) {
   const [open, setOpen] = useState(false);
   const [editingCertificationId, setEditingCertificationId] =
     useState<Id<"certifications"> | null>(null);
@@ -115,6 +119,7 @@ export function CertificationsSection() {
             <CertificationCard
               key={certification._id}
               certification={certification}
+              mintRecipient={mintRecipient}
               onEdit={() => handleEditCertification(certification._id)}
               onDelete={() => handleDeleteCertification(certification._id)}
             />

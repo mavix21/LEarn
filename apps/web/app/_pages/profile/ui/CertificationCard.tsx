@@ -2,7 +2,15 @@
 
 import Image from "next/image";
 import { useQuery } from "convex/react";
-import { Building, File, Hash, LinkIcon, Pencil, Trash2 } from "lucide-react";
+import {
+  Building,
+  File,
+  Hash,
+  LinkIcon,
+  Pencil,
+  Sparkles,
+  Trash2,
+} from "lucide-react";
 import { useWriteContract } from "wagmi";
 
 import { Badge } from "@skill-based/ui/components/badge";
@@ -21,6 +29,8 @@ import type { Id } from "@/convex/_generated/dataModel";
 import { abi } from "@/app/_shared/lib/abi";
 import { api } from "@/convex/_generated/api";
 
+import { uploadCertificateJSON } from "../api/file/route";
+
 interface CertificationCardProps {
   certification: {
     _id: Id<"certifications">;
@@ -32,12 +42,14 @@ interface CertificationCardProps {
     issueDate?: string;
     media: { storageId: Id<"_storage">; type: "image" | "pdf" } | null;
   };
+  mintRecipient: string;
   onEdit: () => void;
   onDelete: () => void;
 }
 
 export function CertificationCard({
   certification,
+  mintRecipient,
   onEdit,
   onDelete,
 }: CertificationCardProps) {
@@ -50,12 +62,33 @@ export function CertificationCard({
       : "skip",
   );
 
-  const handleMint = () => {
+  const handleMint = async () => {
+    const certificateUpload = await uploadCertificateJSON(
+      certification.name,
+      certification.issuingCompany,
+      certification.issueDate ?? "",
+      certification.credentialId ?? "",
+      certification.credentialUrl ?? "",
+      mediaUrl ?? "",
+    );
+
+    console.log(
+      "certificateUpload",
+      certificateUpload,
+      "address",
+      mintRecipient,
+    );
+
+    console.log("pinata");
+
     const tokenId = writeContract({
-      address: "0xFBA3912Ca04dd458c843e2EE08967fC04f3579c2",
+      address: "0xb0b87c1269D82c4b6F5f1e8b5c800701e92A1933",
       abi,
-      functionName: "mint",
-      args: [1],
+      functionName: "mintNFT",
+      args: [
+        mintRecipient as `0x${string}`,
+        `https://rose-gentle-toucan-395.mypinata.cloud/ipfs/${certificateUpload?.cid}`,
+      ],
     });
 
     console.log(tokenId);
@@ -71,10 +104,13 @@ export function CertificationCard({
             <Button
               variant="secondary"
               size="lg"
-              className="h-8 w-8"
+              className="relative h-8 w-20 overflow-hidden rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:brightness-110"
               onClick={handleMint}
             >
-              <span>Mint</span>
+              <span className="flex items-center gap-2">
+                <span>Mint</span>
+                <Sparkles className="h-5 w-5 animate-pulse" />
+              </span>
             </Button>
             <Button
               variant="ghost"
