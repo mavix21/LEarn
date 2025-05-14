@@ -2,6 +2,7 @@
 
 import { fetchMutation } from "convex/nextjs";
 
+import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
 export async function uploadFile(file: File) {
@@ -14,7 +15,7 @@ export async function uploadFile(file: File) {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const response = await res.json();
 
-  const storageId = response.storageId as string;
+  const storageId = response.storageId as Id<"_storage">;
   // Return the storage ID (not a URL)
   return { storageId, uploadUrl };
 }
