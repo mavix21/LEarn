@@ -1,5 +1,13 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
+import { NFTCard } from "@coinbase/onchainkit/nft";
+import {
+  NFTLastSoldPrice,
+  NFTMedia,
+  NFTNetwork,
+  NFTOwner,
+  NFTTitle,
+} from "@coinbase/onchainkit/nft/view";
 import { fetchQuery } from "convex/nextjs";
 import { Edit2 } from "lucide-react";
 
@@ -116,6 +124,7 @@ export async function ProfilePage({ userId }: { userId: string }) {
                   <Badge>Auto Detailing</Badge>
                   <Badge>Table Tennis</Badge>
                 </div>
+
               </div>
             </TabsContent>
 

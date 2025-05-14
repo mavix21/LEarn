@@ -1,8 +1,25 @@
+"use client";
+
 import React from "react";
+import { NFTCard } from "@coinbase/onchainkit/nft";
+import {
+  NFTLastSoldPrice,
+  NFTMedia,
+  NFTNetwork,
+  NFTOwner,
+  NFTTitle,
+} from "@coinbase/onchainkit/nft/view";
 import { ChevronRight, Users } from "lucide-react";
 
 import { Avatar, AvatarFallback } from "@skill-based/ui/components/avatar";
 import { Button } from "@skill-based/ui/components/button";
+
+function NFTData() {
+  return {
+    title: "My NFT",
+    imageUrl: "https://example.com/image.png",
+  };
+}
 
 export function Groups() {
   return (
@@ -67,6 +84,18 @@ export function Groups() {
             231 Members
           </span>
         </div>
+      </div>
+      <div>
+        <NFTCard
+          tokenId="1"
+          contractAddress="0xb96F1123B36b405e79D0E721Ca5D9ACd7CA99D49"
+          // useNFTData={NFTData}
+        >
+          <NFTMedia />
+          <NFTTitle />
+          <NFTOwner />
+          <NFTNetwork />
+        </NFTCard>
       </div>
     </div>
   );
