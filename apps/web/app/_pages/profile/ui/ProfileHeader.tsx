@@ -35,7 +35,9 @@ export function ProfileHeader({ preloadedUser }: ProfileHeaderProps) {
             className="size-32 rounded-full"
           />
           <div className="-mt-4 flex flex-grow flex-col items-start">
-            <h1 className="text-2xl font-bold">{user.name}</h1>
+            <h1 className="max-w-40 truncate text-2xl font-bold">
+              {user.name}
+            </h1>
             <p className="text-muted-foreground">{user.title || "No title"}</p>
             <p className="text-muted-foreground/50 mt-1 text-sm">
               {user.location || "No location"}
