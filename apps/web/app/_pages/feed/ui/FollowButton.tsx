@@ -3,15 +3,17 @@
 import { useMutation, useQuery } from "convex/react";
 
 import { Button } from "@skill-based/ui/components/button";
+import { cn } from "@skill-based/ui/lib/utils";
 
 import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
 interface FollowButtonProps {
   followingId: string;
+  className?: string;
 }
 
-export function FollowButton({ followingId }: FollowButtonProps) {
+export function FollowButton({ followingId, className }: FollowButtonProps) {
   const getFollows = useQuery(api.follows.getFollow, {
     followingId: followingId as Id<"users">,
   });
@@ -66,11 +68,12 @@ export function FollowButton({ followingId }: FollowButtonProps) {
   return (
     <Button
       variant={isFollowing ? "outline" : "default"}
-      className={
+      className={cn(
         isFollowing
           ? "hover:bg-background/90 hover:text-foreground"
-          : "bg-primary hover:bg-primary/80"
-      }
+          : "bg-primary hover:bg-primary/80",
+        className,
+      )}
       onClick={handleFollow}
       disabled={getFollows === undefined}
     >

@@ -2,7 +2,6 @@
 
 import { useQuery } from "convex/react";
 
-import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 
 import { FollowCard, FollowCardSkeleton } from "./FollowCard";
@@ -26,7 +25,7 @@ export function WhoToFollow() {
           otherUsers.map((user) => (
             <FollowCard
               key={user._id}
-              displayName={user.displayName as Id<"users">}
+              displayName={user.displayName ?? user.address}
               followingId={user._id}
             />
           ))
