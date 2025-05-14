@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import {
   Building,
+  CheckCircle,
   File,
   Hash,
   LinkIcon,
@@ -11,7 +12,8 @@ import {
   Sparkles,
   Trash2,
 } from "lucide-react";
-import { useWriteContract } from "wagmi";
+import { createPortal } from "react-dom";
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 
 import { Badge } from "@skill-based/ui/components/badge";
 import { Button } from "@skill-based/ui/components/button";
@@ -24,12 +26,14 @@ import {
   CardTitle,
 } from "@skill-based/ui/components/card";
 import { ScrollArea } from "@skill-based/ui/components/scroll-area";
+import { cn } from "@skill-based/ui/lib/utils";
 
 import type { Id } from "@/convex/_generated/dataModel";
 import { abi } from "@/app/_shared/lib/abi";
 import { api } from "@/convex/_generated/api";
 
 import { uploadCertificateJSON } from "../api/file/route";
+import { MintingOverlay } from "./MintingOverlay";
 
 interface CertificationCardProps {
   certification: {
@@ -40,6 +44,7 @@ interface CertificationCardProps {
     credentialId?: string;
     credentialUrl?: string;
     issueDate?: string;
+    isMinted: boolean;
     media: { storageId: Id<"_storage">; type: "image" | "pdf" } | null;
   };
   mintRecipient: string;
@@ -53,7 +58,11 @@ export function CertificationCard({
   onEdit,
   onDelete,
 }: CertificationCardProps) {
-  const { data: hash, writeContract } = useWriteContract();
+  const { data: hash, isPending, writeContract } = useWriteContract();
+  const { isLoading: isConfirming, isSuccess: isConfirmed } =
+    useWaitForTransactionReceipt({
+      hash,
+    });
 
   const mediaUrl = useQuery(
     api.storage.getUrl,
@@ -61,6 +70,8 @@ export function CertificationCard({
       ? { storageId: certification.media.storageId }
       : "skip",
   );
+
+  const updateMinted = useMutation(api.certifications.updateMinted);
 
   const handleMint = async () => {
     const certificateUpload = await uploadCertificateJSON(
@@ -72,15 +83,6 @@ export function CertificationCard({
       mediaUrl ?? "",
     );
 
-    console.log(
-      "certificateUpload",
-      certificateUpload,
-      "address",
-      mintRecipient,
-    );
-
-    console.log("pinata");
-
     const tokenId = writeContract({
       address: "0xb0b87c1269D82c4b6F5f1e8b5c800701e92A1933",
       abi,
@@ -91,105 +93,133 @@ export function CertificationCard({
       ],
     });
 
-    console.log(tokenId);
-    return tokenId;
+    // console.log(tokenId);
+    // return tokenId;
+
+    await updateMinted({
+      id: certification._id as Id<"certifications">,
+      isMinted: true,
+    });
+
+    console.log(
+      "certificateUpload",
+      certificateUpload,
+      "address",
+      mintRecipient,
+    );
   };
 
   return (
-    <Card className="overflow-hidden">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <CardTitle className="line-clamp-2">{certification.name}</CardTitle>
-          <div className="flex gap-1">
-            <Button
-              variant="secondary"
-              size="lg"
-              className="relative h-8 w-20 overflow-hidden rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:brightness-110"
-              onClick={handleMint}
-            >
-              <span className="flex items-center gap-2">
-                <span>Mint</span>
-                <Sparkles className="h-5 w-5 animate-pulse" />
-              </span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-8 w-8"
-              onClick={onEdit}
-            >
-              <Pencil className="h-4 w-4" />
-              <span className="sr-only">Edit</span>
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="text-destructive h-8 w-8"
-              onClick={onDelete}
-            >
-              <Trash2 className="h-4 w-4" />
-              <span className="sr-only">Delete</span>
-            </Button>
+    <>
+      {(isPending || isConfirming) &&
+        createPortal(<MintingOverlay />, document.body)}
+      <Card className="overflow-hidden">
+        <CardHeader className="pb-3">
+          <div className="flex items-start justify-between">
+            <CardTitle className="line-clamp-2">{certification.name}</CardTitle>
+            <div className="flex gap-1">
+              {certification.isMinted ? (
+                <Badge
+                  variant="default"
+                  className={cn(
+                    "bg-primary text-primary-foreground animate-in fade-in zoom-in text-base font-medium transition-all duration-500",
+                  )}
+                >
+                  <CheckCircle className="mr-2 size-5" />
+                  Minted
+                </Badge>
+              ) : (
+                <Button
+                  variant="secondary"
+                  size="lg"
+                  className="relative h-8 w-20 overflow-hidden rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:brightness-110"
+                  onClick={handleMint}
+                >
+                  <span className="flex items-center gap-2">
+                    <span>Mint</span>
+                    <Sparkles className="h-5 w-5 animate-pulse" />
+                  </span>
+                </Button>
+              )}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={onEdit}
+              >
+                <Pencil className="h-4 w-4" />
+                <span className="sr-only">Edit</span>
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-destructive h-8 w-8"
+                onClick={onDelete}
+              >
+                <Trash2 className="h-4 w-4" />
+                <span className="sr-only">Delete</span>
+              </Button>
+            </div>
           </div>
-        </div>
-        <CardDescription className="flex items-center gap-1">
-          <Building className="h-3.5 w-3.5" />
-          {certification.issuingCompany}
-        </CardDescription>
-        {certification.issueDate && (
-          <CardDescription className="text-xs">
-            Issued: {new Date(certification.issueDate).toLocaleDateString()}
+          <CardDescription className="flex items-center gap-1">
+            <Building className="h-3.5 w-3.5" />
+            {certification.issuingCompany}
           </CardDescription>
-        )}
-      </CardHeader>
-      <CardContent className="pb-2">
-        <ScrollArea orientation="horizontal" className="w-full">
-          <div className="flex flex-wrap gap-1.5">
-            {certification.skills.map((skill) => (
-              <Badge key={skill} variant="secondary" className="text-xs">
-                {skill}
-              </Badge>
-            ))}
-          </div>
-        </ScrollArea>
-        {certification.media?.type === "image" && mediaUrl && (
-          <div className="mt-4">
-            <Image
-              src={mediaUrl}
-              alt={`${certification.name} certificate`}
-              width={100}
-              height={100}
-              className="rounded-lg object-cover"
-            />
-          </div>
-        )}
-      </CardContent>
-      <CardFooter className="flex flex-col items-start gap-2 border-t pt-3">
-        {certification.credentialId && (
-          <div className="text-muted-foreground flex items-center gap-2 text-xs">
-            <Hash className="h-3.5 w-3.5" />
-            <span>ID: {certification.credentialId}</span>
-          </div>
-        )}
-        {certification.credentialUrl && (
-          <a
-            href={certification.credentialUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-primary flex items-center gap-2 text-xs hover:underline"
-          >
-            <LinkIcon className="h-3.5 w-3.5" />
-            <span>Verify Credential</span>
-          </a>
-        )}
-        {certification.media && (
-          <div className="flex items-center gap-2 text-sm">
-            <File className="h-4 w-4" />
-            <span className="font-medium">Media:</span>{" "}
-            {certification.media.type.toUpperCase()}
-          </div>
-        )}
-      </CardFooter>
-    </Card>
+          {certification.issueDate && (
+            <CardDescription className="text-xs">
+              Issued: {new Date(certification.issueDate).toLocaleDateString()}
+            </CardDescription>
+          )}
+        </CardHeader>
+        <CardContent className="pb-2">
+          <ScrollArea orientation="horizontal" className="w-full">
+            <div className="flex flex-wrap gap-1.5">
+              {certification.skills.map((skill) => (
+                <Badge key={skill} variant="secondary" className="text-xs">
+                  {skill}
+                </Badge>
+              ))}
+            </div>
+          </ScrollArea>
+          {certification.media?.type === "image" && mediaUrl && (
+            <div className="mt-4">
+              <Image
+                src={mediaUrl}
+                alt={`${certification.name} certificate`}
+                width={100}
+                height={100}
+                className="rounded-lg object-cover"
+              />
+            </div>
+          )}
+        </CardContent>
+        <CardFooter className="flex flex-col items-start gap-2 border-t pt-3">
+          {certification.credentialId && (
+            <div className="text-muted-foreground flex items-center gap-2 text-xs">
+              <Hash className="h-3.5 w-3.5" />
+              <span>ID: {certification.credentialId}</span>
+            </div>
+          )}
+          {certification.credentialUrl && (
+            <a
+              href={certification.credentialUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-primary flex items-center gap-2 text-xs hover:underline"
+            >
+              <LinkIcon className="h-3.5 w-3.5" />
+              <span>Verify Credential</span>
+            </a>
+          )}
+          {certification.media && (
+            <div className="flex items-center gap-2 text-sm">
+              <File className="h-4 w-4" />
+              <span className="font-medium">Media:</span>{" "}
+              {certification.media.type.toUpperCase()}
+            </div>
+          )}
+        </CardFooter>
+      </Card>
+    </>
   );
 }
