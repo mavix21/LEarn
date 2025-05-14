@@ -1,4 +1,4 @@
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 
 import type { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
@@ -74,7 +74,9 @@ export const getUserProfile = query({
       .collect();
 
     if (!user) {
-      return null;
+      throw new ConvexError({
+        message: "User not found",
+      });
     }
 
     const coverImageUrl =
@@ -85,6 +87,7 @@ export const getUserProfile = query({
     return {
       name: user.displayName ?? user.address,
       title: user.title ?? "",
+      address: user.address as `0x${string}`,
       location: user.location ?? "",
       avatarUrl: user.avatarUrl ?? user.image ?? "",
       coverImageStorageId: user.coverImageStorageId,
@@ -128,6 +131,22 @@ export const updateCoverImage = mutation({
 
     await ctx.db.patch(id.subject as Id<"users">, {
       coverImageStorageId: args.coverImageStorageId,
+    });
+  },
+});
+
+export const updateBio = mutation({
+  args: {
+    bio: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
+
+    await ctx.db.patch(id.subject as Id<"users">, {
+      bio: args.bio,
     });
   },
 });
