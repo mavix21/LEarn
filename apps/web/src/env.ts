@@ -19,6 +19,7 @@ export const env = createEnv({
     CONVEX_AUTH_ADAPTER_SECRET: z.string(),
     CONVEX_AUTH_PRIVATE_KEY: z.string(),
     TALENT_API_KEY: z.string(),
+    PINATA_JWT: z.string(),
   },
 
   /**
@@ -32,6 +33,7 @@ export const env = createEnv({
     NEXT_PUBLIC_ONCHAINKIT_WALLET_CONFIG: z.string(),
     NEXT_PUBLIC_CONVEX_URL: z.string(),
     NEXT_PUBLIC_WC_PROJECT_ID: z.string(),
+    NEXT_PUBLIC_GATEWAY_URL: z.string(),
   },
   /**
    * Destructure all variables from `process.env` to make sure they aren't tree-shaken away.
@@ -47,6 +49,7 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_ONCHAINKIT_WALLET_CONFIG,
     NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
     NEXT_PUBLIC_WC_PROJECT_ID: process.env.NEXT_PUBLIC_WC_PROJECT_ID,
+    NEXT_PUBLIC_GATEWAY_URL: process.env.NEXT_PUBLIC_GATEWAY_URL,
   },
   skipValidation:
     !!process.env.CI || process.env.npm_lifecycle_event === "lint",
