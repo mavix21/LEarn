@@ -97,7 +97,7 @@ export function CertificationCard({
     // return tokenId;
 
     await updateMinted({
-      id: certification._id as Id<"certifications">,
+      id: certification._id,
       isMinted: true,
     });
 
@@ -117,49 +117,37 @@ export function CertificationCard({
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <CardTitle className="line-clamp-2">{certification.name}</CardTitle>
-            <div className="flex gap-1">
-              {certification.isMinted ? (
-                <Badge
-                  variant="default"
-                  className={cn(
-                    "bg-primary text-primary-foreground animate-in fade-in zoom-in text-base font-medium transition-all duration-500",
-                  )}
-                >
-                  <CheckCircle className="mr-2 size-5" />
-                  Minted
-                </Badge>
-              ) : (
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  className="relative h-8 w-20 overflow-hidden rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:brightness-110"
-                  onClick={handleMint}
-                >
-                  <span className="flex items-center gap-2">
-                    <span>Mint</span>
-                    <Sparkles className="h-5 w-5 animate-pulse" />
-                  </span>
-                </Button>
-              )}
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={onEdit}
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-8 w-8"
+              onClick={onEdit}
+            >
+              <Pencil className="h-4 w-4" />
+              <span className="sr-only">Edit</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="text-destructive h-8 w-8"
+              onClick={onDelete}
+            >
+              <Trash2 className="h-4 w-4" />
+              <span className="sr-only">Delete</span>
+            </Button>
+          </div>
+          <div className="flex gap-1">
+            {certification.isMinted && (
+              <Badge
+                variant="default"
+                className={cn(
+                  "bg-primary text-primary-foreground animate-in fade-in zoom-in font-medium transition-all duration-500",
+                )}
               >
-                <Pencil className="h-4 w-4" />
-                <span className="sr-only">Edit</span>
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-destructive h-8 w-8"
-                onClick={onDelete}
-              >
-                <Trash2 className="h-4 w-4" />
-                <span className="sr-only">Delete</span>
-              </Button>
-            </div>
+                <CheckCircle className="mr-2 size-3" />
+                Minted
+              </Badge>
+            )}
           </div>
           <CardDescription className="flex items-center gap-1">
             <Building className="h-3.5 w-3.5" />
@@ -182,41 +170,56 @@ export function CertificationCard({
             </div>
           </ScrollArea>
           {certification.media?.type === "image" && mediaUrl && (
-            <div className="mt-4">
+            <div className="mt-4 w-full">
               <Image
                 src={mediaUrl}
                 alt={`${certification.name} certificate`}
-                width={100}
-                height={100}
-                className="rounded-lg object-cover"
+                width={200}
+                height={200}
+                className="mx-auto rounded-lg object-cover"
               />
             </div>
           )}
         </CardContent>
-        <CardFooter className="flex flex-col items-start gap-2 border-t pt-3">
-          {certification.credentialId && (
-            <div className="text-muted-foreground flex items-center gap-2 text-xs">
-              <Hash className="h-3.5 w-3.5" />
-              <span>ID: {certification.credentialId}</span>
-            </div>
-          )}
-          {certification.credentialUrl && (
-            <a
-              href={certification.credentialUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-primary flex items-center gap-2 text-xs hover:underline"
+        <CardFooter className="flex flex-col items-start gap-4 border-t pt-3">
+          <div className="space-y-2">
+            {certification.credentialId && (
+              <div className="text-muted-foreground flex items-center gap-2 text-xs">
+                <Hash className="h-3.5 w-3.5" />
+                <span>ID: {certification.credentialId}</span>
+              </div>
+            )}
+            {certification.credentialUrl && (
+              <a
+                href={certification.credentialUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary flex items-center gap-2 text-xs hover:underline"
+              >
+                <LinkIcon className="h-3.5 w-3.5" />
+                <span>Verify Credential</span>
+              </a>
+            )}
+            {certification.media && (
+              <div className="flex items-center gap-2 text-sm">
+                <File className="h-4 w-4" />
+                <span className="font-medium">Media:</span>{" "}
+                {certification.media.type.toUpperCase()}
+              </div>
+            )}
+          </div>
+          {!certification.isMinted && (
+            <Button
+              variant="secondary"
+              size="lg"
+              className="relative ml-auto h-8 w-20 overflow-hidden rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:brightness-110"
+              onClick={handleMint}
             >
-              <LinkIcon className="h-3.5 w-3.5" />
-              <span>Verify Credential</span>
-            </a>
-          )}
-          {certification.media && (
-            <div className="flex items-center gap-2 text-sm">
-              <File className="h-4 w-4" />
-              <span className="font-medium">Media:</span>{" "}
-              {certification.media.type.toUpperCase()}
-            </div>
+              <span className="flex items-center gap-2">
+                <span>Mint</span>
+                <Sparkles className="h-5 w-5 animate-pulse" />
+              </span>
+            </Button>
           )}
         </CardFooter>
       </Card>
