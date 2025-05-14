@@ -1,13 +1,5 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { NFTCard } from "@coinbase/onchainkit/nft";
-import {
-  NFTLastSoldPrice,
-  NFTMedia,
-  NFTNetwork,
-  NFTOwner,
-  NFTTitle,
-} from "@coinbase/onchainkit/nft/view";
 import { fetchQuery } from "convex/nextjs";
 import { Edit2 } from "lucide-react";
 
@@ -31,7 +23,6 @@ import { Posts } from "./ui/Posts";
 import { ProfileHeader } from "./ui/ProfileHeader";
 import { TalentTab } from "./ui/TalentTab";
 import { TalentTabSkeleton } from "./ui/TalentTabSkeleton";
-import UpcomingEvents from "./ui/UpcomingEvents";
 
 export async function ProfilePage({ userId }: { userId: string }) {
   const data = await auth();
