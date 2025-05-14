@@ -44,6 +44,7 @@
     "react": "catalog:react19",
     "react-dom": "catalog:react19",
     "react-dropzone": "^14.3.8",
+    "react-easy-crop": "^5.4.1",
     "react-hook-form": "^7.56.3",
     "sonner": "^2.0.3",
     "viem": "^2.27.2",
