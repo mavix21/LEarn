@@ -1,6 +1,8 @@
+import type { Preloaded } from "convex/react";
+import type { ConvexError } from "convex/values";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { fetchQuery } from "convex/nextjs";
+import { preloadQuery } from "convex/nextjs";
 import { Edit2 } from "lucide-react";
 
 import { Badge } from "@skill-based/ui/components/badge";
@@ -15,12 +17,14 @@ import {
 import type { Id } from "@/convex/_generated/dataModel";
 import { auth } from "@/auth";
 import { api } from "@/convex/_generated/api";
+import { tryCatch } from "@/src/lib/try-catch";
 
 import { AskMeAbout } from "./ui/AskMeAbout";
 import { CertificationsSection } from "./ui/CertificationsSection";
 import { Groups } from "./ui/Groups";
 import { Posts } from "./ui/Posts";
 import { ProfileHeader } from "./ui/ProfileHeader";
+import { SummarySection } from "./ui/SummarySection";
 import { TalentTab } from "./ui/TalentTab";
 import { TalentTabSkeleton } from "./ui/TalentTabSkeleton";
 
@@ -30,29 +34,28 @@ export async function ProfilePage({ userId }: { userId: string }) {
 
   const { address, convexToken: token } = data;
 
-  const user = await fetchQuery(
-    api.users.getUserProfile,
-    {
-      userId: userId as Id<"users">,
-    },
-    { token },
+  const result = await tryCatch<
+    Preloaded<typeof api.users.getUserProfile>,
+    ConvexError<{ message: string }>
+  >(
+    preloadQuery(
+      api.users.getUserProfile,
+      {
+        userId: userId as Id<"users">,
+      },
+      { token },
+    ),
   );
 
-  if (!user) {
-    return <div>User not found</div>;
+  if (result.error) {
+    return <div>Error: {result.error.data.message}</div>;
   }
+
+  const preloadedUser = result.data;
 
   return (
     <div className="bg-card container mx-auto h-full max-w-6xl space-y-6 overflow-y-auto">
-      <ProfileHeader
-        name={user.name}
-        title={user.title}
-        location={user.location}
-        address={address}
-        isMe={user.isMe}
-        coverImageUrl={user.coverImageUrl}
-        coverImageStorageId={user.coverImageStorageId}
-      />
+      <ProfileHeader preloadedUser={preloadedUser} />
 
       <div className="px-5">
         {/* Main Content */}
@@ -68,25 +71,11 @@ export async function ProfilePage({ userId }: { userId: string }) {
 
             <TabsContent value="overview" className="space-y-8">
               {/* Summary Section */}
-              <div className="space-y-8">
-                <div className="mb-4 flex items-center justify-between">
-                  <h2 className="text-xl font-semibold">Bio</h2>
-                  <Button variant="ghost" size="sm" className="p-1">
-                    <Edit2 className="h-4 w-4" />
-                  </Button>
-                </div>
-                <div className="text-muted-foreground space-y-2">
-                  {user.bio ? (
-                    <p>{user.bio}</p>
-                  ) : (
-                    <p className="italic text-gray-400">No bio provided.</p>
-                  )}
-                </div>
-              </div>
+              <SummarySection preloadedUser={preloadedUser} />
 
               {/* Ask Me About Section */}
               <div className="mb-8">
-                <AskMeAbout topics={user.topics} />
+                <AskMeAbout preloadedUser={preloadedUser} />
               </div>
 
               {/* Groups Section */}

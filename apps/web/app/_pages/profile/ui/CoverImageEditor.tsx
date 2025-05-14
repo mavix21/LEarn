@@ -4,6 +4,7 @@ import type { Area } from "react-easy-crop";
 import { useCallback, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useMutation } from "convex/react";
 import { Edit2 } from "lucide-react";
 
 import { Button } from "@skill-based/ui/components/button";
@@ -14,9 +15,9 @@ import {
 } from "@skill-based/ui/components/dialog";
 
 import type { Id } from "@/convex/_generated/dataModel";
+import { api } from "@/convex/_generated/api";
 import { deleteFile } from "@/src/storage/delete-file.action";
 import { uploadFile } from "@/src/storage/upload-file.action";
-import { updateCoverImage } from "@/src/users/update-cover-image.action";
 
 const Cropper = dynamic(() => import("react-easy-crop"), { ssr: false });
 
@@ -40,6 +41,7 @@ export function CoverImageEditor({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const updateCoverImage = useMutation(api.users.updateCoverImage);
 
   const onSelectFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -123,7 +125,7 @@ export function CoverImageEditor({
       const { storageId } = await uploadFile(file);
 
       // Update user's cover image
-      await updateCoverImage(storageId);
+      await updateCoverImage({ coverImageStorageId: storageId });
 
       if (onChange) onChange(croppedDataUrl);
       setModalOpen(false);
