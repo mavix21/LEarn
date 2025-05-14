@@ -7,7 +7,6 @@ export const userSchema = {
   displayName: v.optional(v.string()),
   bio: v.optional(v.string()),
   email: v.optional(v.string()),
-  name: v.optional(v.string()),
   emailVerified: v.optional(v.number()),
   image: v.optional(v.string()),
   title: v.optional(v.string()),

@@ -52,7 +52,7 @@ export const getUser = query({
     }
 
     return {
-      name: user.name ?? user.displayName ?? user.address,
+      name: user.displayName ?? user.address,
       title: user.title ?? "",
       location: user.location ?? "",
       avatarUrl: user.avatarUrl ?? user.image ?? "",
@@ -78,7 +78,7 @@ export const getUserProfile = query({
     }
 
     return {
-      name: user.name || user.displayName || user.address,
+      name: user.displayName ?? user.address,
       title: user.title ?? "",
       location: user.location ?? "",
       avatarUrl: user.avatarUrl ?? user.image ?? "",
