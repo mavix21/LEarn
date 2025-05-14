@@ -2,7 +2,7 @@ import type { Preloaded } from "convex/react";
 import type { ConvexError } from "convex/values";
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
-import { preloadQuery } from "convex/nextjs";
+import { preloadedQueryResult, preloadQuery } from "convex/nextjs";
 import { Edit2 } from "lucide-react";
 
 import { Badge } from "@skill-based/ui/components/badge";
@@ -108,7 +108,9 @@ export async function ProfilePage({ userId }: { userId: string }) {
 
             <TabsContent value="talent" className="mt-0">
               <Suspense fallback={<TalentTabSkeleton />}>
-                <TalentTab address={address} />
+                <TalentTab
+                  address={preloadedQueryResult(preloadedUser).address}
+                />
               </Suspense>
             </TabsContent>
 
