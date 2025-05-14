@@ -13,6 +13,8 @@ import { Button } from "@skill-based/ui/components/button";
 
 import "./post-editor.module.css";
 
+import { toast } from "sonner";
+
 import { api } from "@/convex/_generated/api";
 import { uploadFile } from "@/src/storage/upload-file.action";
 
@@ -23,7 +25,6 @@ export function PostEditor() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const editor = useEditor({
-    immediatelyRender: false,
     editorProps: {
       attributes: {
         class: "focus:outline-none",
@@ -33,6 +34,7 @@ export function PostEditor() {
       StarterKit.configure({
         bold: false,
         italic: false,
+        heading: false,
       }),
       Placeholder.configure({
         placeholder: "Write something cool today",
@@ -49,7 +51,7 @@ export function PostEditor() {
   const onDrop = useCallback(
     (acceptedFiles: File[]) => {
       if (selectedImages.length + acceptedFiles.length > 2) {
-        alert("You can only attach up to 2 images.");
+        toast.error("You can only attach up to 2 images.");
         return;
       }
       setSelectedImages((prev) => [...prev, ...acceptedFiles].slice(0, 2));
@@ -109,11 +111,11 @@ export function PostEditor() {
           <User className="text-muted-foreground" />
         </div>
         <div className="flex-1" {...getRootProps()}>
-          <input {...getInputProps()} />
           <EditorContent
             editor={editor}
-            className="bg-muted max-h-80 w-full overflow-y-auto rounded-xl p-2"
+            className="bg-muted text-foreground max-h-80 w-full overflow-y-auto rounded-xl p-2"
           />
+          <input {...getInputProps()} />
           <div className="mt-2 flex gap-2">
             {selectedImages.map((file, idx) => (
               <div key={idx} className="relative">
