@@ -48,8 +48,10 @@ export async function ProfilePage({ userId }: { userId: string }) {
         name={user.name}
         title={user.title}
         location={user.location}
-        avatarUrl={user.avatarUrl}
         address={address}
+        isMe={user.isMe}
+        coverImageUrl={user.coverImageUrl}
+        coverImageStorageId={user.coverImageStorageId}
       />
 
       <div className="px-5">
