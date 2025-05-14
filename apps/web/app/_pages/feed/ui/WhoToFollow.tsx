@@ -16,7 +16,7 @@ export function WhoToFollow() {
         <h2 className="text-xl font-bold">Who to follow</h2>
       </div>
 
-      <div className="mb-6 space-y-6">
+      <div className="mb-6 space-y-2">
         {otherUsers === undefined ? (
           <>
             <FollowCardSkeleton />
