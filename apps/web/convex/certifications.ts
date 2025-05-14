@@ -5,18 +5,13 @@ import { mutation, query } from "./_generated/server";
 
 // Get all certifications for the current user with their media
 export const list = query({
-  args: {},
-  handler: async (ctx) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new Error("Not authenticated");
-    }
-
+  args: {
+    userId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
     const certifications = await ctx.db
       .query("certifications")
-      .withIndex("by_userId", (q) =>
-        q.eq("userId", identity.subject as Id<"users">),
-      )
+      .withIndex("by_userId", (q) => q.eq("userId", args.userId))
       .collect();
 
     // Get media for each certification
