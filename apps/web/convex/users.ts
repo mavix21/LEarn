@@ -85,6 +85,7 @@ export const getUserProfile = query({
         : null) ?? undefined;
 
     return {
+      userId: user._id,
       name: user.displayName ?? user.address,
       title: user.title ?? "",
       address: user.address as `0x${string}`,
