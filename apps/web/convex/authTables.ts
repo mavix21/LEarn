@@ -12,6 +12,7 @@ export const userSchema = {
   title: v.optional(v.string()),
   location: v.optional(v.string()),
   avatarUrl: v.optional(v.string()),
+  coverImageStorageId: v.optional(v.id("_storage")),
 };
 
 export const sessionSchema = {

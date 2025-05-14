@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 
+import type { Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 
 export const createUser = mutation({
@@ -41,11 +42,6 @@ export const getUser = query({
     userId: v.id("users"),
   },
   handler: async (ctx, args) => {
-    const id = await ctx.auth.getUserIdentity();
-    if (!id) {
-      throw new Error("Unauthorized");
-    }
-
     const user = await ctx.db.get(args.userId);
     if (!user) {
       return null;
@@ -57,7 +53,6 @@ export const getUser = query({
       location: user.location ?? "",
       avatarUrl: user.avatarUrl ?? user.image ?? "",
       bio: user.bio ?? "",
-      isMe: user._id === id.subject,
     };
   },
 });
@@ -67,6 +62,11 @@ export const getUserProfile = query({
     userId: v.id("users"),
   },
   handler: async (ctx, args) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
+
     const user = await ctx.db.get(args.userId);
     const userTopics = await ctx.db
       .query("user_topics")
@@ -77,12 +77,20 @@ export const getUserProfile = query({
       return null;
     }
 
+    const coverImageUrl =
+      (user.coverImageStorageId
+        ? await ctx.storage.getUrl(user.coverImageStorageId)
+        : null) ?? undefined;
+
     return {
       name: user.displayName ?? user.address,
       title: user.title ?? "",
       location: user.location ?? "",
       avatarUrl: user.avatarUrl ?? user.image ?? "",
+      coverImageStorageId: user.coverImageStorageId,
+      coverImageUrl,
       bio: user.bio ?? "",
+      isMe: user._id === id.subject,
       topics: userTopics.map(({ endorsements, topic }) => ({
         topic,
         endorsements: endorsements ?? 0,
@@ -104,6 +112,22 @@ export const updateDisplayName = mutation({
 
     await ctx.db.patch(args.userId, {
       displayName: args.displayName,
+    });
+  },
+});
+
+export const updateCoverImage = mutation({
+  args: {
+    coverImageStorageId: v.id("_storage"),
+  },
+  handler: async (ctx, args) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
+
+    await ctx.db.patch(id.subject as Id<"users">, {
+      coverImageStorageId: args.coverImageStorageId,
     });
   },
 });
