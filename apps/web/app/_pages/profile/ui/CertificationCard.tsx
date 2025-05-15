@@ -246,15 +246,23 @@ export function CertificationCard({
               </Button>
             </div>
           ) : (
-            <Badge
-              variant="default"
-              className={cn(
-                "bg-primary text-primary-foreground animate-in fade-in zoom-in font-medium transition-all duration-500",
-              )}
-            >
-              <CheckCircle className="mr-2 size-3" />
-              Minted
-            </Badge>
+            // <Badge
+            //   variant="default"
+            //   className={cn(
+            //     "relative overflow-hidden rounded-xl bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 px-8 py-6 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:brightness-110",
+            //   )}
+            // >
+            //   Minted
+            //   <CheckCircle className="ml-2 size-3" />
+            // </Badge>
+            <div className="relative flex h-full w-full justify-center">
+              <Badge className="relative w-full justify-center overflow-hidden rounded-md bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 text-lg font-semibold text-white">
+                <span className="flex items-center gap-2">
+                  <span className="text-sm">Minted</span>
+                  <CheckCircle className="ml-2 size-5" />
+                </span>
+              </Badge>
+            </div>
           )}
         </CardFooter>
       </Card>
