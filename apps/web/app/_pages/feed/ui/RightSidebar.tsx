@@ -11,7 +11,7 @@ export function RightSidebar() {
       <Authenticated>
         <WhoToFollow />
       </Authenticated>
-      <TrendingTopics />
+      {/* <TrendingTopics /> */}
     </div>
   );
 }
