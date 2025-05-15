@@ -142,7 +142,7 @@ export const wagmiAdapter = new WagmiAdapter({
 
 // Create modal
 const modal = createAppKit({
-  defaultNetwork: baseSepolia,
+  defaultNetwork: base,
   coinbasePreference: "smartWalletOnly",
   adapters: [wagmiAdapter],
   networks: chains,
