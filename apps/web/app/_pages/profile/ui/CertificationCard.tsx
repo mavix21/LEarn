@@ -33,6 +33,7 @@ import { cn } from "@skill-based/ui/lib/utils";
 
 import type { Id } from "@/convex/_generated/dataModel";
 import { abi } from "@/app/_shared/lib/abi";
+import { CERTIFICATION_CONTRACT_ADDRESS } from "@/app/_shared/lib/constants";
 import { api } from "@/convex/_generated/api";
 
 import { uploadCertificateJSON } from "../api/file/route";
@@ -61,22 +62,9 @@ export function CertificationCard({
   onEdit,
   onDelete,
 }: CertificationCardProps) {
-  const addMinted = useMutation(api.certifications.addMinted);
+  const updateMinted = useMutation(api.certifications.updateMinted);
 
-  const {
-    data: hash,
-    isPending,
-    writeContract,
-  } = useWriteContract({
-    mutation: {
-      onSuccess: async () => {
-        await updateMinted({
-          id: certification._id,
-          isMinted: true,
-        });
-      },
-    },
-  });
+  const { data: hash, isPending, writeContract } = useWriteContract();
 
   const {
     isLoading: isConfirming,
@@ -97,10 +85,10 @@ export function CertificationCard({
           if (event.eventName === "Transfer") {
             const { tokenId } = event.args;
             console.log(tokenId);
-            addMinted({
-              certificationId: certification._id,
+            updateMinted({
+              id: certification._id,
+              contractAddress: CERTIFICATION_CONTRACT_ADDRESS,
               tokenId: tokenId,
-              contractAddress: "0xb0b87c1269D82c4b6F5f1e8b5c800701e92A1933",
             })
               .then(() => console.log("Minted"))
               .catch((error) => console.error(error));
@@ -118,8 +106,6 @@ export function CertificationCard({
       : "skip",
   );
 
-  const updateMinted = useMutation(api.certifications.updateMinted);
-
   const handleMint = async () => {
     const certificateUpload = await uploadCertificateJSON(
       certification.name,
@@ -131,7 +117,7 @@ export function CertificationCard({
     );
 
     writeContract({
-      address: "0xb0b87c1269D82c4b6F5f1e8b5c800701e92A1933",
+      address: CERTIFICATION_CONTRACT_ADDRESS,
       abi,
       functionName: "mintNFT",
       args: [
