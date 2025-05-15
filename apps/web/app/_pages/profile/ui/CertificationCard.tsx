@@ -5,7 +5,7 @@ import Image from "next/image";
 import { useMutation, useQuery } from "convex/react";
 import {
   Building,
-  CheckCircle,
+  ExternalLink,
   Hash,
   LinkIcon,
   Pencil,
@@ -36,7 +36,7 @@ import {
 import { GlowEffect } from "@skill-based/ui/components/glow-effect";
 import { ScrollArea } from "@skill-based/ui/components/scroll-area";
 
-import type { Doc, Id } from "@/convex/_generated/dataModel";
+import type { Doc } from "@/convex/_generated/dataModel";
 import { abi } from "@/app/_shared/lib/abi";
 import { CERTIFICATION_CONTRACT_ADDRESS } from "@/app/_shared/lib/constants";
 import { api } from "@/convex/_generated/api";
@@ -145,12 +145,17 @@ export function CertificationCard({
             )}
           </CardImage>
           {certification.mintingStatus.type === "minted" && (
-            <Badge className="absolute bottom-2 left-4 justify-center overflow-hidden rounded-md bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 text-xs font-semibold text-white">
-              <span className="flex items-center gap-2">
-                <span>Minted</span>
-                <CheckCircle className="size-4" />
-              </span>
-            </Badge>
+            <a
+              href={`https://opensea.io/item/base/${CERTIFICATION_CONTRACT_ADDRESS}/${certification.mintingStatus.tokenId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group"
+            >
+              <Badge className="absolute bottom-2 left-4 flex items-center justify-center gap-1 overflow-hidden rounded-md bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 text-xs font-semibold text-white">
+                <span className="group-hover:underline">Minted</span>
+                <ExternalLink className="size-4" />
+              </Badge>
+            </a>
           )}
         </div>
         <CardHeader className="row-span-1 row-start-2 grid-cols-[1fr_auto] grid-rows-1">
@@ -189,7 +194,7 @@ export function CertificationCard({
             </CardDescription>
           )}
         </div>
-        <CardContent className="row-span-1 row-start-4 pb-2">
+        <CardContent className="row-span-1 row-start-4 space-y-2 pb-2">
           <ScrollArea orientation="horizontal" className="w-full">
             <div className="flex flex-wrap gap-1.5">
               {certification.skills.map((skill) => (
@@ -248,7 +253,9 @@ export function CertificationCard({
                   {certification.mintingStatus.endorsements.some(
                     (endorsement) => endorsement.userId === session?.userId,
                   ) ? (
-                    <Button className="w-full">Endorsed</Button>
+                    <Badge variant="outline" className="w-full">
+                      Endorsed
+                    </Badge>
                   ) : (
                     <Dialog open={open} onOpenChange={setOpen}>
                       <DialogTrigger asChild>
@@ -256,6 +263,7 @@ export function CertificationCard({
                       </DialogTrigger>
                       <DialogContent>
                         <EndorseForm
+                          certificationId={certification._id}
                           tokenId={certification.mintingStatus.tokenId}
                         />
                       </DialogContent>
