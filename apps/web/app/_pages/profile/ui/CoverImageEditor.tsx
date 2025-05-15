@@ -138,7 +138,7 @@ export function CoverImageEditor({
   };
 
   return (
-    <div className="relative h-48 w-full rounded-lg">
+    <div className="relative h-40 w-full rounded-lg">
       <Image
         src={coverImageUrl ?? "/placeholder.svg"}
         alt="Profile cover image"
