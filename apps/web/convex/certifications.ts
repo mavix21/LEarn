@@ -14,11 +14,7 @@ export const list = query({
       .withIndex("by_userId", (q) => q.eq("userId", args.userId))
       .collect();
 
-    return certifications.map((certification) => ({
-      ...certification,
-      isMinted: certification.mintingStatus.type === "minted",
-      media: certification.media,
-    }));
+    return certifications;
   },
 });
 
@@ -194,5 +190,60 @@ export const remove = mutation({
 
     // Delete the certification
     await ctx.db.delete(args.id);
+  },
+});
+
+export const endorse = mutation({
+  args: {
+    id: v.id("certifications"),
+    userId: v.id("users"),
+    comment: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) {
+      throw new Error("Not authenticated");
+    }
+
+    // Get the certification to verify ownership
+    const certification = await ctx.db.get(args.id);
+
+    if (!certification) {
+      throw new ConvexError({ message: "Certification not found" });
+    }
+
+    if (certification.userId !== identity.subject) {
+      throw new ConvexError({
+        message: "Not authorized to endorse this certification",
+      });
+    }
+
+    if (certification.mintingStatus.type !== "minted") {
+      throw new ConvexError({ message: "Certification is not minted" });
+    }
+
+    // Check if the endorsement already exists
+    if (
+      certification.mintingStatus.endorsements.some(
+        (endorsement) => endorsement.userId === args.userId,
+      )
+    ) {
+      throw new ConvexError({ message: "Certification is already endorsed" });
+    }
+
+    // Add the endorsement
+    await ctx.db.patch(args.id, {
+      mintingStatus: {
+        ...certification.mintingStatus,
+        endorsements: [
+          ...certification.mintingStatus.endorsements,
+          {
+            userId: args.userId,
+            endorserAddress: identity.subject,
+            comment: args.comment,
+          },
+        ],
+      },
+    });
   },
 });
