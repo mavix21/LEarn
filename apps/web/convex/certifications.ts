@@ -242,3 +242,18 @@ export const remove = mutation({
     await ctx.db.delete(args.id);
   },
 });
+
+export const addMinted = mutation({
+  args: {
+    certificationId: v.id("certifications"),
+    tokenId: v.int64(),
+    contractAddress: v.string(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.insert("certifications_minted", {
+      certificationId: args.certificationId,
+      tokenId: args.tokenId,
+      contractAddress: args.contractAddress,
+    });
+  },
+});

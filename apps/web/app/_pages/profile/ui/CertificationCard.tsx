@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Image from "next/image";
 import { useMutation, useQuery } from "convex/react";
 import {
@@ -12,11 +13,8 @@ import {
   Trash2,
 } from "lucide-react";
 import { createPortal } from "react-dom";
-import {
-  useWaitForTransactionReceipt,
-  useWatchContractEvent,
-  useWriteContract,
-} from "wagmi";
+import { parseEventLogs } from "viem";
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
 
 import { Badge } from "@skill-based/ui/components/badge";
 import { Button } from "@skill-based/ui/components/button";
@@ -29,6 +27,7 @@ import {
   CardImage,
   CardTitle,
 } from "@skill-based/ui/components/card";
+import { GlowEffect } from "@skill-based/ui/components/glow-effect";
 import { ScrollArea } from "@skill-based/ui/components/scroll-area";
 import { cn } from "@skill-based/ui/lib/utils";
 
@@ -62,6 +61,8 @@ export function CertificationCard({
   onEdit,
   onDelete,
 }: CertificationCardProps) {
+  const addMinted = useMutation(api.certifications.addMinted);
+
   const {
     data: hash,
     isPending,
@@ -73,22 +74,42 @@ export function CertificationCard({
           id: certification._id,
           isMinted: true,
         });
-
-        // watchContractEvent(config, {
-        //   address: "0xb0b87c1269D82c4b6F5f1e8b5c800701e92A1933",
-        //   abi,
-        //   eventName: "CertificateMinted",
-        //   onLogs(logs) {
-        //     console.log("New logs events!", logs);
-        //   },
-        // });
       },
     },
   });
-  const { isLoading: isConfirming, isSuccess: isConfirmed } =
-    useWaitForTransactionReceipt({
-      hash,
-    });
+
+  const {
+    isLoading: isConfirming,
+    isSuccess,
+    data,
+  } = useWaitForTransactionReceipt({
+    hash,
+  });
+
+  useEffect(() => {
+    if (isSuccess) {
+      for (const log of data.logs) {
+        const events = parseEventLogs({
+          abi,
+          logs: [log],
+        });
+        for (const event of events) {
+          if (event.eventName === "Transfer") {
+            const { tokenId } = event.args;
+            console.log(tokenId);
+            addMinted({
+              certificationId: certification._id,
+              tokenId: tokenId,
+              contractAddress: "0xb0b87c1269D82c4b6F5f1e8b5c800701e92A1933",
+            })
+              .then(() => console.log("Minted"))
+              .catch((error) => console.error(error));
+            return;
+          }
+        }
+      }
+    }
+  }, [isSuccess, data]);
 
   const mediaUrl = useQuery(
     api.storage.getUrl,
@@ -124,7 +145,7 @@ export function CertificationCard({
     <>
       {(isPending || isConfirming) &&
         createPortal(<MintingOverlay />, document.body)}
-      <Card className="row-span-5 grid grid-cols-1 grid-rows-subgrid gap-4 overflow-hidden pb-2">
+      <Card className="relative row-span-5 grid grid-cols-1 grid-rows-subgrid gap-4 pb-2">
         <CardImage className="row-span-1 row-start-1">
           {certification.media?.type === "image" && mediaUrl && (
             <Image
@@ -205,17 +226,25 @@ export function CertificationCard({
         </CardContent>
         <CardFooter className="row-span-1 row-start-5 flex flex-col items-end justify-center gap-4 border-t !pt-2">
           {!certification.isMinted ? (
-            <Button
-              variant="secondary"
-              size="lg"
-              className="relative ml-auto h-8 w-20 overflow-hidden rounded-xl bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:brightness-110"
-              onClick={handleMint}
-            >
-              <span className="flex items-center gap-2">
-                <span>Mint</span>
-                <Sparkles className="h-5 w-5 animate-pulse" />
-              </span>
-            </Button>
+            <div className="relative flex w-full justify-center">
+              <GlowEffect
+                colors={["#FF5733", "#33FF57", "#3357FF", "#F1C40F"]}
+                mode="colorShift"
+                blur="soft"
+                duration={3}
+                scale={0.9}
+              />
+              <Button
+                size="lg"
+                className="relative mx-auto w-[calc(100%-1rem)] bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:brightness-110"
+                onClick={handleMint}
+              >
+                <span className="flex items-center gap-2">
+                  <span>Mint</span>
+                  <Sparkles className="h-5 w-5 animate-pulse" />
+                </span>
+              </Button>
+            </div>
           ) : (
             <Badge
               variant="default"
