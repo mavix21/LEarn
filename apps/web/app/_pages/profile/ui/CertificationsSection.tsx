@@ -125,6 +125,7 @@ export function CertificationsSection({
           {certifications.map((certification) => (
             <CertificationCard
               key={certification._id}
+              userId={userId}
               certification={certification}
               mintRecipient={address}
               onEdit={() => handleEditCertification(certification._id)}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useMutation, useQuery } from "convex/react";
 import {
@@ -27,31 +27,27 @@ import {
   CardImage,
   CardTitle,
 } from "@skill-based/ui/components/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from "@skill-based/ui/components/dialog";
 import { GlowEffect } from "@skill-based/ui/components/glow-effect";
 import { ScrollArea } from "@skill-based/ui/components/scroll-area";
-import { cn } from "@skill-based/ui/lib/utils";
 
-import type { Id } from "@/convex/_generated/dataModel";
+import type { Doc, Id } from "@/convex/_generated/dataModel";
 import { abi } from "@/app/_shared/lib/abi";
 import { CERTIFICATION_CONTRACT_ADDRESS } from "@/app/_shared/lib/constants";
 import { api } from "@/convex/_generated/api";
 
 import { uploadCertificateJSON } from "../api/file/route";
+import EndorseForm from "./EndorseForm";
 import { MintingOverlay } from "./MintingOverlay";
 
 interface CertificationCardProps {
-  certification: {
-    _id: Id<"certifications">;
-    name: string;
-    issuingCompany: string;
-    skills: string[];
-    credentialId?: string;
-    credentialUrl?: string;
-    issueDate?: string;
-    isMinted: boolean;
-    media: { storageId: Id<"_storage">; type: "image" | "pdf" } | null;
-  };
+  certification: Doc<"certifications">;
   mintRecipient: string;
+  userId: Id<"users">;
   onEdit: () => void;
   onDelete: () => void;
 }
@@ -59,9 +55,11 @@ interface CertificationCardProps {
 export function CertificationCard({
   certification,
   mintRecipient,
+  userId,
   onEdit,
   onDelete,
 }: CertificationCardProps) {
+  const [open, setOpen] = useState(false);
   const updateMinted = useMutation(api.certifications.updateMinted);
 
   const { data: hash, isPending, writeContract } = useWriteContract();
@@ -101,7 +99,7 @@ export function CertificationCard({
 
   const mediaUrl = useQuery(
     api.storage.getUrl,
-    certification.media?.storageId
+    certification.media.storageId
       ? { storageId: certification.media.storageId }
       : "skip",
   );
@@ -132,20 +130,32 @@ export function CertificationCard({
       {(isPending || isConfirming) &&
         createPortal(<MintingOverlay />, document.body)}
       <Card className="relative row-span-5 grid grid-cols-1 grid-rows-subgrid gap-4 pb-2">
-        <CardImage className="row-span-1 row-start-1">
-          {certification.media?.type === "image" && mediaUrl && (
-            <Image
-              src={mediaUrl}
-              alt={`${certification.name} certificate`}
-              width={500}
-              height={500}
-              className="mx-auto h-full w-auto object-cover"
-            />
+        <div className="relative row-span-1 row-start-1">
+          <CardImage
+            withOverlay={certification.mintingStatus.type === "minted"}
+          >
+            {certification.media.type === "image" && mediaUrl && (
+              <Image
+                src={mediaUrl}
+                alt={`${certification.name} certificate`}
+                width={500}
+                height={500}
+                className="mx-auto h-full w-auto object-cover"
+              />
+            )}
+          </CardImage>
+          {certification.mintingStatus.type === "minted" && (
+            <Badge className="absolute bottom-2 left-4 justify-center overflow-hidden rounded-md bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 text-xs font-semibold text-white">
+              <span className="flex items-center gap-2">
+                <span>Minted</span>
+                <CheckCircle className="size-4" />
+              </span>
+            </Badge>
           )}
-        </CardImage>
+        </div>
         <CardHeader className="row-span-1 row-start-2 grid-cols-[1fr_auto] grid-rows-1">
           <CardTitle className="line-clamp-2">{certification.name}</CardTitle>
-          {!certification.isMinted && (
+          {certification.mintingStatus.type === "not_minted" && (
             <div className="flex">
               <Button
                 variant="ghost"
@@ -168,7 +178,7 @@ export function CertificationCard({
             </div>
           )}
         </CardHeader>
-        <div className="row-span-1 row-start-3 px-6">
+        <div className="row-span-1 row-start-3 px-4">
           <CardDescription className="flex items-center gap-1">
             <Building className="h-3.5 w-3.5" />
             {certification.issuingCompany}
@@ -211,7 +221,7 @@ export function CertificationCard({
           </div>
         </CardContent>
         <CardFooter className="row-span-1 row-start-5 flex flex-col items-end justify-center gap-4 border-t !pt-2">
-          {!certification.isMinted ? (
+          {certification.mintingStatus.type === "not_minted" ? (
             <div className="relative flex w-full justify-center">
               <GlowEffect
                 colors={["#FF5733", "#33FF57", "#3357FF", "#F1C40F"]}
@@ -232,23 +242,32 @@ export function CertificationCard({
               </Button>
             </div>
           ) : (
-            // <Badge
-            //   variant="default"
-            //   className={cn(
-            //     "relative overflow-hidden rounded-xl bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 px-8 py-6 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:brightness-110",
-            //   )}
-            // >
-            //   Minted
-            //   <CheckCircle className="ml-2 size-3" />
-            // </Badge>
-            <div className="relative flex h-full w-full justify-center">
-              <Badge className="relative w-full justify-center overflow-hidden rounded-md bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 text-lg font-semibold text-white">
-                <span className="flex items-center gap-2">
-                  <span className="text-sm">Minted</span>
-                  <CheckCircle className="size-5" />
-                </span>
-              </Badge>
-            </div>
+            <>
+              {certification.userId !== userId ? (
+                <div className="relative flex h-full w-full justify-between">
+                  {certification.mintingStatus.endorsements.some(
+                    (endorsement) => endorsement.userId === userId,
+                  ) ? (
+                    <Button className="w-full">Endorsed</Button>
+                  ) : (
+                    <Dialog open={open} onOpenChange={setOpen}>
+                      <DialogTrigger asChild>
+                        <Button className="w-full">Endorse</Button>
+                      </DialogTrigger>
+                      <DialogContent>
+                        <EndorseForm />
+                      </DialogContent>
+                    </Dialog>
+                  )}
+                </div>
+              ) : (
+                <div className="relative flex h-full w-full justify-between">
+                  <Badge variant="outline" className="w-full">
+                    Endorses: {certification.mintingStatus.endorsements.length}
+                  </Badge>
+                </div>
+              )}
+            </>
           )}
         </CardFooter>
       </Card>
