@@ -259,7 +259,7 @@ export function CertificationCard({
               <Badge className="relative w-full justify-center overflow-hidden rounded-md bg-gradient-to-r from-green-400 via-emerald-500 to-teal-500 text-lg font-semibold text-white">
                 <span className="flex items-center gap-2">
                   <span className="text-sm">Minted</span>
-                  <CheckCircle className="ml-2 size-5" />
+                  <CheckCircle className="size-5" />
                 </span>
               </Badge>
             </div>
