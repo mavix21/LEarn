@@ -12,14 +12,7 @@ export default function Layout({
 }) {
   return (
     <>
-      <div className="col-start-1 row-start-2 mx-auto hidden w-full px-2 pt-4 lg:block">
-        {/* Manager Section */}
-        <div className="mx-auto max-w-xs">
-          <Suspense fallback={<div>Loading...</div>}>
-            <Connections params={params} />
-          </Suspense>
-        </div>
-      </div>
+      <div className="col-start-1 row-start-2 mx-auto hidden w-full px-2 pt-4 lg:block"></div>
 
       <div className="col-span-1 col-start-1 h-full overflow-y-hidden border-x lg:col-start-2">
         {children}
@@ -30,6 +23,12 @@ export default function Layout({
         <div className="mx-auto max-w-xs">
           {/* Additional Details Section */}
           {/* <AdditionalDetails /> */}
+          {/* Manager Section */}
+          <div className="mx-auto max-w-xs">
+            <Suspense fallback={<div>Loading...</div>}>
+              <Connections params={params} />
+            </Suspense>
+          </div>
         </div>
       </div>
     </>
