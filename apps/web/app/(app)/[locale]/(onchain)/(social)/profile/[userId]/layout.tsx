@@ -19,16 +19,11 @@ export default function Layout({
       </div>
 
       {/* Sidebar */}
-      <div className="col-start-3 row-start-2 hidden h-full overflow-y-auto px-2 pt-4 lg:block">
+      <div className="col-start-3 row-start-2 hidden h-full overflow-y-auto p-4 lg:block">
         <div className="mx-auto max-w-xs">
-          {/* Additional Details Section */}
-          {/* <AdditionalDetails /> */}
-          {/* Manager Section */}
-          <div className="mx-auto max-w-xs">
-            <Suspense fallback={<div>Loading...</div>}>
-              <Connections params={params} />
-            </Suspense>
-          </div>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Connections params={params} />
+          </Suspense>
         </div>
       </div>
     </>

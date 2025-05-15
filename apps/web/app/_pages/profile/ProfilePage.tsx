@@ -52,13 +52,13 @@ export async function ProfilePage({ userId }: { userId: string }) {
   const preloadedUser = result.data;
 
   return (
-    <div className="bg-card container mx-auto h-full max-w-6xl space-y-6 overflow-y-auto">
+    <div className="bg-card container mx-auto h-full max-w-4xl space-y-4 overflow-y-auto">
       <ProfileHeader preloadedUser={preloadedUser} />
 
       <div className="px-5">
         {/* Main Content */}
         <div className="w-full">
-          <Tabs defaultValue="overview" className="w-full space-y-8">
+          <Tabs defaultValue="overview" className="w-full space-y-4">
             <TabsList className="w-full">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="talent">Talent</TabsTrigger>
