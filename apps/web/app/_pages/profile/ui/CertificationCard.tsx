@@ -110,46 +110,33 @@ export function CertificationCard({
     <>
       {(isPending || isConfirming) &&
         createPortal(<MintingOverlay />, document.body)}
-      <Card className="overflow-hidden">
-        <CardHeader className="pb-3">
-          <div className="flex items-start justify-between">
-            <CardTitle className="line-clamp-2">{certification.name}</CardTitle>
-            {!certification.isMinted && (
-              <div className="flex">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8"
-                  onClick={onEdit}
-                >
-                  <Pencil className="h-4 w-4" />
-                  <span className="sr-only">Edit</span>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-destructive h-8 w-8"
-                  onClick={onDelete}
-                >
-                  <Trash2 className="h-4 w-4" />
-                  <span className="sr-only">Delete</span>
-                </Button>
-              </div>
-            )}
-          </div>
-          <div className="flex gap-1">
-            {certification.isMinted && (
-              <Badge
-                variant="default"
-                className={cn(
-                  "bg-primary text-primary-foreground animate-in fade-in zoom-in font-medium transition-all duration-500",
-                )}
+      <Card className="row-span-4 grid grid-cols-1 grid-rows-subgrid gap-4 overflow-hidden">
+        <CardHeader className="row-span-1 row-start-1 grid-cols-[1fr_auto] grid-rows-1">
+          <CardTitle className="line-clamp-2">{certification.name}</CardTitle>
+          {!certification.isMinted && (
+            <div className="flex">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={onEdit}
               >
-                <CheckCircle className="mr-2 size-3" />
-                Minted
-              </Badge>
-            )}
-          </div>
+                <Pencil className="h-4 w-4" />
+                <span className="sr-only">Edit</span>
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="text-destructive h-8 w-8"
+                onClick={onDelete}
+              >
+                <Trash2 className="h-4 w-4" />
+                <span className="sr-only">Delete</span>
+              </Button>
+            </div>
+          )}
+        </CardHeader>
+        <div className="row-span-1 row-start-2 px-6">
           <CardDescription className="flex items-center gap-1">
             <Building className="h-3.5 w-3.5" />
             {certification.issuingCompany}
@@ -159,8 +146,8 @@ export function CertificationCard({
               Issued: {new Date(certification.issueDate).toLocaleDateString()}
             </CardDescription>
           )}
-        </CardHeader>
-        <CardContent className="pb-2">
+        </div>
+        <CardContent className="row-span-1 row-start-3 pb-2">
           <ScrollArea orientation="horizontal" className="w-full">
             <div className="flex flex-wrap gap-1.5">
               {certification.skills.map((skill) => (
@@ -201,8 +188,8 @@ export function CertificationCard({
             )}
           </div>
         </CardContent>
-        <CardFooter className="flex flex-col items-start gap-4 border-t pt-3">
-          {!certification.isMinted && (
+        <CardFooter className="row-span-1 row-start-4 flex flex-col items-end gap-4 border-t">
+          {!certification.isMinted ? (
             <Button
               variant="secondary"
               size="lg"
@@ -214,6 +201,16 @@ export function CertificationCard({
                 <Sparkles className="h-5 w-5 animate-pulse" />
               </span>
             </Button>
+          ) : (
+            <Badge
+              variant="default"
+              className={cn(
+                "bg-primary text-primary-foreground animate-in fade-in zoom-in font-medium transition-all duration-500",
+              )}
+            >
+              <CheckCircle className="mr-2 size-3" />
+              Minted
+            </Badge>
           )}
         </CardFooter>
       </Card>

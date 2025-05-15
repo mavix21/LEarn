@@ -121,7 +121,7 @@ export function CertificationsSection({
           </Dialog>
         </div>
       ) : (
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(min(250px,100%),1fr))] gap-4">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(min(250px,100%),1fr))] grid-rows-[auto_auto_1fr_auto] gap-4">
           {certifications.map((certification) => (
             <CertificationCard
               key={certification._id}
