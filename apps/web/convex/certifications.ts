@@ -14,29 +14,11 @@ export const list = query({
       .withIndex("by_userId", (q) => q.eq("userId", args.userId))
       .collect();
 
-    // Get media for each certification
-    const certificationsWithMedia = await Promise.all(
-      certifications.map(async (certification) => {
-        const media = await ctx.db
-          .query("certification_media")
-          .withIndex("by_certificationId", (q) =>
-            q.eq("certificationId", certification._id),
-          )
-          .first();
-
-        return {
-          ...certification,
-          media: media
-            ? {
-                storageId: media.storageId,
-                type: media.type,
-              }
-            : null,
-        };
-      }),
-    );
-
-    return certificationsWithMedia;
+    return certifications.map((certification) => ({
+      ...certification,
+      isMinted: certification.mintingStatus.type === "minted",
+      media: certification.media,
+    }));
   },
 });
 
@@ -46,36 +28,12 @@ export const get = query({
     id: v.id("certifications"),
   },
   handler: async (ctx, args) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new Error("Not authenticated");
-    }
-
     const certification = await ctx.db.get(args.id);
     if (!certification) {
-      throw new ConvexError("Certification not found");
+      throw new ConvexError({ message: "Certification not found" });
     }
 
-    // Verify ownership
-    if (certification.userId !== identity.subject) {
-      throw new ConvexError("Not authorized to view this certification");
-    }
-
-    // Get associated media
-    const media = await ctx.db
-      .query("certification_media")
-      .withIndex("by_certificationId", (q) => q.eq("certificationId", args.id))
-      .first();
-
-    return {
-      ...certification,
-      media: media
-        ? {
-            storageId: media.storageId,
-            type: media.type,
-          }
-        : null,
-    };
+    return certification;
   },
 });
 
@@ -88,8 +46,8 @@ export const add = mutation({
     credentialId: v.optional(v.string()),
     credentialUrl: v.optional(v.string()),
     issueDate: v.optional(v.string()),
-    mediaStorageId: v.optional(v.id("_storage")),
-    mediaType: v.optional(v.union(v.literal("image"), v.literal("pdf"))),
+    mediaStorageId: v.id("_storage"),
+    mediaType: v.union(v.literal("image"), v.literal("pdf")),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -106,17 +64,14 @@ export const add = mutation({
       credentialId: args.credentialId,
       credentialUrl: args.credentialUrl,
       issueDate: args.issueDate,
-      isMinted: false,
-    });
-
-    // If there's media, create a media record
-    if (args.mediaStorageId && args.mediaType) {
-      await ctx.db.insert("certification_media", {
-        certificationId,
+      mintingStatus: {
+        type: "not_minted",
+      },
+      media: {
         storageId: args.mediaStorageId,
         type: args.mediaType,
-      });
-    }
+      },
+    });
 
     return certificationId;
   },
@@ -144,10 +99,12 @@ export const update = mutation({
     // Get the certification to verify ownership
     const certification = await ctx.db.get(args.id);
     if (!certification) {
-      throw new ConvexError("Certification not found");
+      throw new ConvexError({ message: "Certification not found" });
     }
     if (certification.userId !== identity.subject) {
-      throw new ConvexError("Not authorized to update this certification");
+      throw new ConvexError({
+        message: "Not authorized to update this certification",
+      });
     }
 
     // Update the certification
@@ -162,48 +119,53 @@ export const update = mutation({
 
     // Handle media update
     if (args.mediaStorageId && args.mediaType) {
-      // Delete existing media if any
-      const existingMedia = await ctx.db
-        .query("certification_media")
-        .withIndex("by_certificationId", (q) =>
-          q.eq("certificationId", args.id),
-        )
-        .first();
-
-      if (existingMedia) {
-        await ctx.db.delete(existingMedia._id);
-      }
-
-      // Add new media
-      await ctx.db.insert("certification_media", {
-        certificationId: args.id,
-        storageId: args.mediaStorageId,
-        type: args.mediaType,
+      await ctx.db.patch(args.id, {
+        media: {
+          storageId: args.mediaStorageId,
+          type: args.mediaType,
+        },
       });
     }
-
     return args.id;
   },
 });
 
 export const updateMinted = mutation({
-  args: { id: v.id("certifications"), isMinted: v.boolean() },
+  args: {
+    id: v.id("certifications"),
+    contractAddress: v.string(),
+    tokenId: v.int64(),
+  },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
     if (!identity) {
       throw new Error("Not authenticated");
     }
+
     // Get the certification to verify ownership
     const certification = await ctx.db.get(args.id);
     if (!certification) {
-      throw new ConvexError("Certification not found");
+      throw new ConvexError({ message: "Certification not found" });
     }
     if (certification.userId !== identity.subject) {
-      throw new ConvexError("Not authorized to update this certification");
+      throw new ConvexError({
+        message: "Not authorized to update this certification",
+      });
     }
+
+    // Check if the certification is already minted
+    if (certification.mintingStatus.type === "minted") {
+      throw new ConvexError({ message: "Certification is already minted" });
+    }
+
     // Update the certification
     await ctx.db.patch(args.id, {
-      isMinted: args.isMinted,
+      mintingStatus: {
+        type: "minted",
+        contractAddress: args.contractAddress,
+        tokenId: args.tokenId,
+        endorsements: [],
+      },
     });
     return args.id;
   },
@@ -222,38 +184,15 @@ export const remove = mutation({
     // Get the certification to verify ownership
     const certification = await ctx.db.get(args.id);
     if (!certification) {
-      throw new ConvexError("Certification not found");
+      throw new ConvexError({ message: "Certification not found" });
     }
     if (certification.userId !== identity.subject) {
-      throw new ConvexError("Not authorized to delete this certification");
-    }
-
-    // Delete associated media
-    const media = await ctx.db
-      .query("certification_media")
-      .withIndex("by_certificationId", (q) => q.eq("certificationId", args.id))
-      .first();
-
-    if (media) {
-      await ctx.db.delete(media._id);
+      throw new ConvexError({
+        message: "Not authorized to delete this certification",
+      });
     }
 
     // Delete the certification
     await ctx.db.delete(args.id);
-  },
-});
-
-export const addMinted = mutation({
-  args: {
-    certificationId: v.id("certifications"),
-    tokenId: v.int64(),
-    contractAddress: v.string(),
-  },
-  handler: async (ctx, args) => {
-    await ctx.db.insert("certifications_minted", {
-      certificationId: args.certificationId,
-      tokenId: args.tokenId,
-      contractAddress: args.contractAddress,
-    });
   },
 });
