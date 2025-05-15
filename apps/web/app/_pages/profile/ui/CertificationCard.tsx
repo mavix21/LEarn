@@ -5,7 +5,6 @@ import { useMutation, useQuery } from "convex/react";
 import {
   Building,
   CheckCircle,
-  File,
   Hash,
   LinkIcon,
   Pencil,
@@ -58,7 +57,20 @@ export function CertificationCard({
   onEdit,
   onDelete,
 }: CertificationCardProps) {
-  const { data: hash, isPending, writeContract } = useWriteContract();
+  const {
+    data: hash,
+    isPending,
+    writeContract,
+  } = useWriteContract({
+    mutation: {
+      onSuccess: async () => {
+        await updateMinted({
+          id: certification._id,
+          isMinted: true,
+        });
+      },
+    },
+  });
   const { isLoading: isConfirming, isSuccess: isConfirmed } =
     useWaitForTransactionReceipt({
       hash,
@@ -83,7 +95,7 @@ export function CertificationCard({
       mediaUrl ?? "",
     );
 
-    const tokenId = writeContract({
+    writeContract({
       address: "0xb0b87c1269D82c4b6F5f1e8b5c800701e92A1933",
       abi,
       functionName: "mintNFT",
@@ -92,21 +104,6 @@ export function CertificationCard({
         `https://rose-gentle-toucan-395.mypinata.cloud/ipfs/${certificateUpload?.cid}`,
       ],
     });
-
-    // console.log(tokenId);
-    // return tokenId;
-
-    await updateMinted({
-      id: certification._id,
-      isMinted: true,
-    });
-
-    console.log(
-      "certificateUpload",
-      certificateUpload,
-      "address",
-      mintRecipient,
-    );
   };
 
   return (
@@ -117,26 +114,28 @@ export function CertificationCard({
         <CardHeader className="pb-3">
           <div className="flex items-start justify-between">
             <CardTitle className="line-clamp-2">{certification.name}</CardTitle>
-            <div className="flex">
-              <Button
-                variant="ghost"
-                size="icon"
-                className="h-8 w-8"
-                onClick={onEdit}
-              >
-                <Pencil className="h-4 w-4" />
-                <span className="sr-only">Edit</span>
-              </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-destructive h-8 w-8"
-                onClick={onDelete}
-              >
-                <Trash2 className="h-4 w-4" />
-                <span className="sr-only">Delete</span>
-              </Button>
-            </div>
+            {!certification.isMinted && (
+              <div className="flex">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8"
+                  onClick={onEdit}
+                >
+                  <Pencil className="h-4 w-4" />
+                  <span className="sr-only">Edit</span>
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-destructive h-8 w-8"
+                  onClick={onDelete}
+                >
+                  <Trash2 className="h-4 w-4" />
+                  <span className="sr-only">Delete</span>
+                </Button>
+              </div>
+            )}
           </div>
           <div className="flex gap-1">
             {certification.isMinted && (
