@@ -19,7 +19,7 @@ export function ConnectionCard({ displayName, followingId }: UserProps) {
     <Card className="bg-card w-full border shadow-none">
       <CardContent>
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex max-w-40 items-center gap-3 overflow-hidden">
+          <div className="flex items-center gap-3 overflow-hidden">
             <Link
               href={`/profile/${followingId}`}
               className="flex items-center gap-3"
