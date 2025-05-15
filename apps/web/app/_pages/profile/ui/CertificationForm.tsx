@@ -33,8 +33,6 @@ import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
 import { uploadFile } from "@/src/storage/upload-file.action";
 
-import { uploadCertificateJSON } from "../api/file/route";
-
 const formSchema = z.object({
   name: z.string().min(1, "Certification name is required"),
   issuingCompany: z.string().min(1, "Issuing company is required"),
@@ -66,7 +64,7 @@ export function CertificationForm({
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedStorageId, setUploadedStorageId] =
     useState<Id<"_storage"> | null>(null);
-  const [uploadURL, setUploadURL] = useState("");
+  const [, setUploadURL] = useState("");
   const [isInitialized, setIsInitialized] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -112,23 +110,21 @@ export function CertificationForm({
         skills: certification.skills,
         credentialId: certification.credentialId,
         credentialUrl: certification.credentialUrl,
-        mediaStorageId: certification.media?.storageId,
-        mediaType: certification.media?.type,
+        mediaStorageId: certification.media.storageId,
+        mediaType: certification.media.type,
         issueDate: certification.issueDate,
       });
-      if (certification.media?.storageId) {
-        setUploadedStorageId(certification.media.storageId);
-      }
+      setUploadedStorageId(certification.media.storageId);
       setIsInitialized(true);
     }
   }, [certification, form, isInitialized]);
 
   // Set preview URL when editing an existing certification with media
   useEffect(() => {
-    if (certification?.media?.type === "image" && getFileUrl && !previewUrl) {
+    if (certification?.media.type === "image" && getFileUrl && !previewUrl) {
       setPreviewUrl(getFileUrl);
     }
-  }, [certification?.media?.type, getFileUrl, previewUrl]);
+  }, [certification?.media.type, getFileUrl, previewUrl]);
 
   const handleAddSkill = () => {
     if (skillInput.trim()) {
@@ -241,10 +237,6 @@ export function CertificationForm({
         return;
       }
 
-      const url = await fetchQuery(api.storage.getUrl, {
-        storageId: mediaStorageId,
-      });
-
       // Prevent submission if file is currently uploading
       if (isUploading) {
         toast.error("Please wait for the file upload to complete");
@@ -261,7 +253,16 @@ export function CertificationForm({
 
         toast.success("Certification updated successfully");
       } else {
-        await createCertification(values);
+        const { mediaStorageId, mediaType } = values;
+        if (!mediaStorageId || !mediaType) {
+          toast.error("Please upload a proof of your certification");
+          return;
+        }
+        await createCertification({
+          ...values,
+          mediaStorageId,
+          mediaType,
+        });
         toast.success("Certification added successfully");
       }
 
