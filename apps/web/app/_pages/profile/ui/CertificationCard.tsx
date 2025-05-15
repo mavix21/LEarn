@@ -12,7 +12,11 @@ import {
   Trash2,
 } from "lucide-react";
 import { createPortal } from "react-dom";
-import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
+import {
+  useWaitForTransactionReceipt,
+  useWatchContractEvent,
+  useWriteContract,
+} from "wagmi";
 
 import { Badge } from "@skill-based/ui/components/badge";
 import { Button } from "@skill-based/ui/components/button";
@@ -68,6 +72,15 @@ export function CertificationCard({
           id: certification._id,
           isMinted: true,
         });
+
+        // watchContractEvent(config, {
+        //   address: "0xb0b87c1269D82c4b6F5f1e8b5c800701e92A1933",
+        //   abi,
+        //   eventName: "CertificateMinted",
+        //   onLogs(logs) {
+        //     console.log("New logs events!", logs);
+        //   },
+        // });
       },
     },
   });

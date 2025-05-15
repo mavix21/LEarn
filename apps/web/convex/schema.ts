@@ -120,6 +120,6 @@ export default defineSchema({
 
   tokens: defineTable({
     userId: v.id("users"),
-    tokenId: v.number(),
+    tokenId: v.int64(),
   }),
 });
