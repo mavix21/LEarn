@@ -3,14 +3,8 @@
 import { use } from "react";
 import { useQuery } from "convex/react";
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@skill-based/ui/components/avatar";
-
+import type { Id } from "@/convex/_generated/dataModel";
 import { api } from "@/convex/_generated/api";
-import { Id } from "@/convex/_generated/dataModel";
 
 import { ConnectionCard, ConnectionCardSkeleton } from "./ConnectionCard";
 
@@ -41,6 +35,7 @@ export default function Connections({
           ) : (
             followers.map((follower) => (
               <ConnectionCard
+                key={follower.followerId}
                 displayName={follower.followerName}
                 followingId={follower.followerId}
               />
@@ -61,6 +56,7 @@ export default function Connections({
           ) : (
             following.map((f) => (
               <ConnectionCard
+                key={f.followingId}
                 displayName={f.followingName}
                 followingId={f.followingId}
               />
