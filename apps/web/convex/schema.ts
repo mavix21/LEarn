@@ -29,6 +29,14 @@ export default defineSchema({
     type: v.union(v.literal("image"), v.literal("pdf")),
   }).index("by_certificationId", ["certificationId"]),
 
+  certifications_minted: defineTable({
+    certificationId: v.id("certifications"),
+    contractAddress: v.string(),
+    tokenId: v.int64(),
+  })
+    .index("by_certificationId", ["certificationId"])
+    .index("by_tokenId", ["tokenId"]),
+
   connections: defineTable({
     requesterId: v.id("users"),
     recipientId: v.id("users"),
