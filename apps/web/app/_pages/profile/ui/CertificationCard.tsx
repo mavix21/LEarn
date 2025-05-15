@@ -26,6 +26,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardImage,
   CardTitle,
 } from "@skill-based/ui/components/card";
 import { ScrollArea } from "@skill-based/ui/components/scroll-area";
@@ -123,8 +124,19 @@ export function CertificationCard({
     <>
       {(isPending || isConfirming) &&
         createPortal(<MintingOverlay />, document.body)}
-      <Card className="row-span-4 grid grid-cols-1 grid-rows-subgrid gap-4 overflow-hidden">
-        <CardHeader className="row-span-1 row-start-1 grid-cols-[1fr_auto] grid-rows-1">
+      <Card className="row-span-5 grid grid-cols-1 grid-rows-subgrid gap-4 overflow-hidden pb-2">
+        <CardImage className="row-span-1 row-start-1">
+          {certification.media?.type === "image" && mediaUrl && (
+            <Image
+              src={mediaUrl}
+              alt={`${certification.name} certificate`}
+              width={500}
+              height={500}
+              className="mx-auto h-full w-auto object-cover"
+            />
+          )}
+        </CardImage>
+        <CardHeader className="row-span-1 row-start-2 grid-cols-[1fr_auto] grid-rows-1">
           <CardTitle className="line-clamp-2">{certification.name}</CardTitle>
           {!certification.isMinted && (
             <div className="flex">
@@ -149,7 +161,7 @@ export function CertificationCard({
             </div>
           )}
         </CardHeader>
-        <div className="row-span-1 row-start-2 px-6">
+        <div className="row-span-1 row-start-3 px-6">
           <CardDescription className="flex items-center gap-1">
             <Building className="h-3.5 w-3.5" />
             {certification.issuingCompany}
@@ -160,7 +172,7 @@ export function CertificationCard({
             </CardDescription>
           )}
         </div>
-        <CardContent className="row-span-1 row-start-3 pb-2">
+        <CardContent className="row-span-1 row-start-4 pb-2">
           <ScrollArea orientation="horizontal" className="w-full">
             <div className="flex flex-wrap gap-1.5">
               {certification.skills.map((skill) => (
@@ -170,17 +182,7 @@ export function CertificationCard({
               ))}
             </div>
           </ScrollArea>
-          {certification.media?.type === "image" && mediaUrl && (
-            <div className="mt-4 w-full">
-              <Image
-                src={mediaUrl}
-                alt={`${certification.name} certificate`}
-                width={200}
-                height={200}
-                className="mx-auto rounded-lg object-cover"
-              />
-            </div>
-          )}
+
           <div className="space-y-2">
             {certification.credentialId && (
               <div className="text-muted-foreground flex items-center gap-2 text-xs">
@@ -201,7 +203,7 @@ export function CertificationCard({
             )}
           </div>
         </CardContent>
-        <CardFooter className="row-span-1 row-start-4 flex flex-col items-end gap-4 border-t">
+        <CardFooter className="row-span-1 row-start-5 flex flex-col items-end justify-center gap-4 border-t !pt-2">
           {!certification.isMinted ? (
             <Button
               variant="secondary"

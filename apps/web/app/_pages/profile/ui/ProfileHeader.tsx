@@ -27,7 +27,7 @@ export function ProfileHeader({ preloadedUser }: ProfileHeaderProps) {
         coverImageStorageId={user.coverImageStorageId}
         isMe={user.isMe}
       />
-      <div className="space-y-4 px-5">
+      <div className="space-y-2 px-5">
         <div className="relative z-10 -mt-24 flex flex-col gap-4 md:-mt-14 md:flex-row md:items-end">
           <Avatar
             address={user.address}
