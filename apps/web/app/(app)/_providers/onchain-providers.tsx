@@ -2,7 +2,7 @@
 
 import type { ReactNode } from "react";
 import { OnchainKitProvider } from "@coinbase/onchainkit";
-import { base, baseSepolia } from "@reown/appkit/networks";
+import { base } from "@reown/appkit/networks";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { cookieToInitialState, WagmiProvider } from "wagmi";
 
@@ -28,7 +28,7 @@ export function OnchainProviders({ children, cookie }: Props) {
       <QueryClientProvider client={queryClient}>
         <OnchainKitProvider
           apiKey={env.NEXT_PUBLIC_ONCHAINKIT_API_KEY}
-          chain={baseSepolia}
+          chain={base}
           config={{
             appearance: {
               mode: "auto",
