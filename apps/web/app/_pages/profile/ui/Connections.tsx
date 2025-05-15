@@ -23,25 +23,51 @@ export default function Connections({
   const followers = useQuery(api.follows.getFollowers, {
     followingId: userId as Id<"users">,
   });
-  console.log(followers);
+  const following = useQuery(api.follows.getFollowing, {
+    followerId: userId as Id<"users">,
+  });
   return (
-    <div className="bg-card mb-6 rounded-xl border p-4">
-      <h2 className="mb-4 text-lg font-semibold">Followers</h2>
-      <div className="space-y-4">
-        {followers === undefined ? (
-          <>
-            <ConnectionCardSkeleton />
-            <ConnectionCardSkeleton />
-          </>
-        ) : (
-          followers.map((follower) => (
-            <ConnectionCard
-              displayName={follower.followerName}
-              followingId={follower.followerId}
-            />
-          ))
-        )}
+    <>
+      <div className="bg-card mb-6 rounded-xl border p-4">
+        <h2 className="mb-4 text-lg font-semibold">Followers</h2>
+        <div className="space-y-4">
+          {followers?.length === 0 ? (
+            <div>No followers found</div>
+          ) : followers === undefined ? (
+            <>
+              <ConnectionCardSkeleton />
+              <ConnectionCardSkeleton />
+            </>
+          ) : (
+            followers.map((follower) => (
+              <ConnectionCard
+                displayName={follower.followerName}
+                followingId={follower.followerId}
+              />
+            ))
+          )}
+        </div>
       </div>
-    </div>
+      <div className="bg-card mb-6 rounded-xl border p-4">
+        <h2 className="mb-4 text-lg font-semibold">Following</h2>
+        <div className="space-y-4">
+          {following?.length === 0 ? (
+            <div>No following found</div>
+          ) : following === undefined ? (
+            <>
+              <ConnectionCardSkeleton />
+              <ConnectionCardSkeleton />
+            </>
+          ) : (
+            following.map((f) => (
+              <ConnectionCard
+                displayName={f.followingName}
+                followingId={f.followingId}
+              />
+            ))
+          )}
+        </div>
+      </div>
+    </>
   );
 }

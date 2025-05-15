@@ -69,7 +69,7 @@ export const getFollowing = query({
       following.map(async (f) => {
         const user = await ctx.db.get(f.followingId);
         return {
-          ...following,
+          ...f,
           followingName: user?.displayName ?? "Anonymous",
         };
       }),
