@@ -28,30 +28,34 @@ export function ProfileHeader({ preloadedUser }: ProfileHeaderProps) {
         isMe={user.isMe}
       />
       <div className="space-y-2 px-5">
-        <div className="relative z-10 -mt-24 flex flex-col gap-4 md:-mt-14 md:flex-row md:items-end">
+        <div className="relative z-10 -mt-24 flex flex-col items-center gap-4 md:-mt-14 md:flex-row md:items-center">
           <Avatar
             address={user.address}
             chain={base}
             className="size-32 rounded-full"
           />
-          <div className="-mt-4 flex flex-grow flex-col items-start">
-            <h1 className="max-w-56 truncate text-2xl font-bold">
-              {user.name}
-            </h1>
-            <p className="text-muted-foreground">{user.title || "No title"}</p>
-            <p className="text-muted-foreground/50 mt-1 text-sm">
-              {user.location || "No location"}
-            </p>
+          <div className="flex w-full items-start justify-between">
+            <div className="flex flex-grow flex-col items-start">
+              <h1 className="max-w-56 truncate text-2xl font-bold">
+                {user.name}
+              </h1>
+              <p className="text-muted-foreground">
+                {user.title || "No title"}
+              </p>
+              {/* <p className="text-muted-foreground/50 mt-1 text-sm">
+                {user.location || "No location"}
+              </p> */}
+            </div>
+            <div className="flex flex-col space-x-2">
+              <Socials address={user.address} chain={base} />
+              {/* {user.isMe && (
+                <Button variant="default" size="sm" className="ml-auto">
+                  <Edit2 className="mr-1 h-4 w-4" />
+                  Edit Profile
+                </Button>
+              )} */}
+            </div>
           </div>
-        </div>
-        <div className="flex items-center space-x-2">
-          <Socials address={user.address} chain={base} />
-          {user.isMe && (
-            <Button variant="default" size="sm" className="ml-auto">
-              <Edit2 className="mr-1 h-4 w-4" />
-              Edit Profile
-            </Button>
-          )}
         </div>
       </div>
     </div>
