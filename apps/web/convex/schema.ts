@@ -14,7 +14,27 @@ export default defineSchema({
     credentialId: v.optional(v.string()),
     credentialUrl: v.optional(v.string()),
     issueDate: v.optional(v.string()),
-    isMinted: v.boolean(),
+    mintingStatus: v.union(
+      v.object({
+        type: v.literal("not_minted"),
+      }),
+      v.object({
+        type: v.literal("minted"),
+        contractAddress: v.string(),
+        tokenId: v.int64(),
+        endorsements: v.array(
+          v.object({
+            userId: v.id("users"),
+            endorserAddress: v.string(),
+            comment: v.string(),
+          }),
+        ),
+      }),
+    ),
+    media: v.object({
+      storageId: v.id("_storage"),
+      type: v.union(v.literal("image"), v.literal("pdf")),
+    }),
   })
     .index("by_userId", ["userId"])
     .index("by_issuingCompany", ["issuingCompany"])
@@ -22,20 +42,6 @@ export default defineSchema({
       searchField: "name",
       filterFields: ["userId"],
     }),
-
-  certification_media: defineTable({
-    certificationId: v.id("certifications"),
-    storageId: v.id("_storage"),
-    type: v.union(v.literal("image"), v.literal("pdf")),
-  }).index("by_certificationId", ["certificationId"]),
-
-  certifications_minted: defineTable({
-    certificationId: v.id("certifications"),
-    contractAddress: v.string(),
-    tokenId: v.int64(),
-  })
-    .index("by_certificationId", ["certificationId"])
-    .index("by_tokenId", ["tokenId"]),
 
   connections: defineTable({
     requesterId: v.id("users"),
