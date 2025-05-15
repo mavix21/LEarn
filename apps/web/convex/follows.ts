@@ -22,7 +22,10 @@ export const getFollow = query({
 });
 
 export const getFollowers = query({
-  handler: async (ctx) => {
+  args: {
+    followingId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
     const id = await ctx.auth.getUserIdentity();
     if (!id) {
       throw new Error("Unauthorized");
@@ -30,7 +33,7 @@ export const getFollowers = query({
 
     const followers = await ctx.db
       .query("follows")
-      .filter((q) => q.eq(q.field("followingId"), id.subject as Id<"users">))
+      .filter((q) => q.eq(q.field("followingId"), args.followingId))
       .order("desc")
       .take(2);
 
@@ -47,7 +50,10 @@ export const getFollowers = query({
 });
 
 export const getFollowing = query({
-  handler: async (ctx) => {
+  args: {
+    followerId: v.id("users"),
+  },
+  handler: async (ctx, args) => {
     const id = await ctx.auth.getUserIdentity();
     if (!id) {
       throw new Error("Unauthorized");
@@ -55,7 +61,7 @@ export const getFollowing = query({
 
     const following = await ctx.db
       .query("follows")
-      .filter((q) => q.eq(q.field("followerId"), id.subject as Id<"users">))
+      .filter((q) => q.eq(q.field("followerId"), args.followerId))
       .order("desc")
       .take(2);
 
