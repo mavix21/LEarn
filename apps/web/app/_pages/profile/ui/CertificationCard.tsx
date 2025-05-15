@@ -12,6 +12,7 @@ import {
   Sparkles,
   Trash2,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { createPortal } from "react-dom";
 import { parseEventLogs } from "viem";
 import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
@@ -47,7 +48,6 @@ import { MintingOverlay } from "./MintingOverlay";
 interface CertificationCardProps {
   certification: Doc<"certifications">;
   mintRecipient: string;
-  userId: Id<"users">;
   onEdit: () => void;
   onDelete: () => void;
 }
@@ -55,10 +55,10 @@ interface CertificationCardProps {
 export function CertificationCard({
   certification,
   mintRecipient,
-  userId,
   onEdit,
   onDelete,
 }: CertificationCardProps) {
+  const { data: session } = useSession();
   const [open, setOpen] = useState(false);
   const updateMinted = useMutation(api.certifications.updateMinted);
 
@@ -243,10 +243,10 @@ export function CertificationCard({
             </div>
           ) : (
             <>
-              {certification.userId !== userId ? (
+              {certification.userId !== session?.userId ? (
                 <div className="relative flex h-full w-full justify-between">
                   {certification.mintingStatus.endorsements.some(
-                    (endorsement) => endorsement.userId === userId,
+                    (endorsement) => endorsement.userId === session?.userId,
                   ) ? (
                     <Button className="w-full">Endorsed</Button>
                   ) : (
@@ -255,7 +255,9 @@ export function CertificationCard({
                         <Button className="w-full">Endorse</Button>
                       </DialogTrigger>
                       <DialogContent>
-                        <EndorseForm />
+                        <EndorseForm
+                          tokenId={certification.mintingStatus.tokenId}
+                        />
                       </DialogContent>
                     </Dialog>
                   )}
