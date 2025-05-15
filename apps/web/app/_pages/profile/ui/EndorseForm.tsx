@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useWriteContract } from "wagmi";
 import * as z from "zod";
 
 import { Button } from "@skill-based/ui/components/button";
@@ -20,7 +21,8 @@ import {
 } from "@skill-based/ui/components/form";
 import { Textarea } from "@skill-based/ui/components/textarea";
 
-import type { Id } from "@/convex/_generated/dataModel";
+import { abi } from "@/app/_shared/lib/abi";
+import { CERTIFICATION_CONTRACT_ADDRESS } from "@/app/_shared/lib/constants";
 
 const formSchema = z.object({
   comment: z
@@ -31,7 +33,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function EndorseForm() {
+export default function EndorseForm({ tokenId }: { tokenId: bigint }) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,10 +41,16 @@ export default function EndorseForm() {
     },
   });
 
-  function onSubmit(data: FormValues) {
-    // TODO: Handle form submission
-    console.log(data);
-  }
+  const { isPending, writeContract } = useWriteContract();
+
+  const onSubmit = (data: FormValues) => {
+    writeContract({
+      address: CERTIFICATION_CONTRACT_ADDRESS,
+      abi,
+      functionName: "endorseCertificate",
+      args: [tokenId, data.comment],
+    });
+  };
 
   return (
     <Form {...form}>
@@ -70,7 +78,9 @@ export default function EndorseForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit Endorsement</Button>
+        <Button type="submit" disabled={isPending}>
+          {isPending ? "Endorsing..." : "Submit Endorsement"}
+        </Button>
       </form>
     </Form>
   );
