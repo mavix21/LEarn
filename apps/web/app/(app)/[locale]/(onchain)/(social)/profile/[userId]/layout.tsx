@@ -29,7 +29,7 @@ export default function Layout({
       <div className="col-start-3 row-start-2 hidden h-full overflow-y-auto px-2 pt-4 lg:block">
         <div className="mx-auto max-w-xs">
           {/* Additional Details Section */}
-          <AdditionalDetails />
+          {/* <AdditionalDetails /> */}
         </div>
       </div>
     </>
