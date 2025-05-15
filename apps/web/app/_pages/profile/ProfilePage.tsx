@@ -62,7 +62,7 @@ export async function ProfilePage({ userId }: { userId: string }) {
             <TabsList className="w-full">
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="talent">Talent</TabsTrigger>
-              <TabsTrigger value="posts">Posts</TabsTrigger>
+              {/* <TabsTrigger value="posts">Posts</TabsTrigger> */}
               <TabsTrigger value="certificates">Certificates</TabsTrigger>
               <TabsTrigger value="more">More</TabsTrigger>
             </TabsList>
@@ -104,9 +104,9 @@ export async function ProfilePage({ userId }: { userId: string }) {
               </Suspense>
             </TabsContent>
 
-            <TabsContent value="posts" className="mt-0">
+            {/* <TabsContent value="posts" className="mt-0">
               <Posts />
-            </TabsContent>
+            </TabsContent> */}
 
             {/* <TabsContent value="events" className="mt-0">
               <UpcomingEvents />
