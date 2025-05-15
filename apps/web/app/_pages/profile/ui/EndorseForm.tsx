@@ -1,7 +1,10 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "convex/react";
+import { ConvexError } from "convex/values";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { useWriteContract } from "wagmi";
 import * as z from "zod";
 
@@ -21,8 +24,10 @@ import {
 } from "@skill-based/ui/components/form";
 import { Textarea } from "@skill-based/ui/components/textarea";
 
+import type { Id } from "@/convex/_generated/dataModel";
 import { abi } from "@/app/_shared/lib/abi";
 import { CERTIFICATION_CONTRACT_ADDRESS } from "@/app/_shared/lib/constants";
+import { api } from "@/convex/_generated/api";
 
 const formSchema = z.object({
   comment: z
@@ -33,7 +38,13 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-export default function EndorseForm({ tokenId }: { tokenId: bigint }) {
+export default function EndorseForm({
+  tokenId,
+  certificationId,
+}: {
+  tokenId: bigint;
+  certificationId: Id<"certifications">;
+}) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,15 +52,28 @@ export default function EndorseForm({ tokenId }: { tokenId: bigint }) {
     },
   });
 
+  const endorse = useMutation(api.certifications.endorse);
   const { isPending, writeContract } = useWriteContract();
 
-  const onSubmit = (data: FormValues) => {
-    writeContract({
-      address: CERTIFICATION_CONTRACT_ADDRESS,
-      abi,
-      functionName: "endorseCertificate",
-      args: [tokenId, data.comment],
-    });
+  const onSubmit = async (data: FormValues) => {
+    try {
+      await endorse({
+        comment: data.comment,
+        id: certificationId,
+      });
+
+      writeContract({
+        address: CERTIFICATION_CONTRACT_ADDRESS,
+        abi,
+        functionName: "endorseCertificate",
+        args: [tokenId, data.comment],
+      });
+    } catch (error) {
+      console.error(error);
+      if (error instanceof ConvexError) {
+        toast.error(error.data.message);
+      }
+    }
   };
 
   return (
