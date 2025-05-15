@@ -196,7 +196,6 @@ export const remove = mutation({
 export const endorse = mutation({
   args: {
     id: v.id("certifications"),
-    userId: v.id("users"),
     comment: v.string(),
   },
   handler: async (ctx, args) => {
@@ -205,17 +204,13 @@ export const endorse = mutation({
       throw new Error("Not authenticated");
     }
 
+    const currentUserId = identity.subject as Id<"users">;
+
     // Get the certification to verify ownership
     const certification = await ctx.db.get(args.id);
 
     if (!certification) {
       throw new ConvexError({ message: "Certification not found" });
-    }
-
-    if (certification.userId !== identity.subject) {
-      throw new ConvexError({
-        message: "Not authorized to endorse this certification",
-      });
     }
 
     if (certification.mintingStatus.type !== "minted") {
@@ -225,7 +220,7 @@ export const endorse = mutation({
     // Check if the endorsement already exists
     if (
       certification.mintingStatus.endorsements.some(
-        (endorsement) => endorsement.userId === args.userId,
+        (endorsement) => endorsement.userId === currentUserId,
       )
     ) {
       throw new ConvexError({ message: "Certification is already endorsed" });
@@ -238,7 +233,7 @@ export const endorse = mutation({
         endorsements: [
           ...certification.mintingStatus.endorsements,
           {
-            userId: args.userId,
+            userId: currentUserId,
             endorserAddress: identity.subject,
             comment: args.comment,
           },
