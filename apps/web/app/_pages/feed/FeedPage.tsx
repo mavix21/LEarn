@@ -73,7 +73,7 @@ export function FeedPage() {
               </TabsTrigger>
               <TabsTrigger
                 value="following"
-                disabled={!isAuthenticated}
+                disabled={true}
                 className="rounded-lg"
               >
                 Following

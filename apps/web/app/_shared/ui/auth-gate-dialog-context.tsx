@@ -63,6 +63,12 @@ const useAuthGateDialogMessages = () => {
             default: "Sign in to SkillBased to comment on a post.",
           }),
         },
+        search: {
+          title: t("search.title", { default: "Find your next connection" }),
+          description: t("search.description", {
+            default: "Search for professionals by name or wallet address.",
+          }),
+        },
         chat: {
           title: t("chat.title", { default: "Start chatting" }),
           description: t("chat.description", {

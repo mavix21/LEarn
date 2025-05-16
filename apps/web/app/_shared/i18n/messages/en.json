@@ -73,6 +73,10 @@
       "title": "Join the conversation 🗣️",
       "description": "Sign in to SkillBased to comment on a post."
     },
+    "search": {
+      "title": "Find your next connection 🔍",
+      "description": "Search for professionals by name or wallet address."
+    },
     "chat": {
       "title": "Start chatting 💬",
       "description": "Sign in to SkillBased to chat with others."

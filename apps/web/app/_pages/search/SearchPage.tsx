@@ -63,7 +63,7 @@ export function SearchPage() {
   };
 
   return (
-    <div className="bg-background min-h-screen">
+    <div className="bg-background h-full overflow-y-auto">
       <main className="container mx-auto px-4 py-8">
         <div className="mb-8 flex flex-col space-y-4">
           <h1 className="text-foreground text-3xl font-bold tracking-tight">

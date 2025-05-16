@@ -73,6 +73,10 @@
       "title": "Únete a la conversación �️",
       "description": "Inicia sesión en SkillBased para comentar en un post."
     },
+    "search": {
+      "title": "Encuentra tu próxima conexión 🔍",
+      "description": "Busca profesionales por nombre o wallet address."
+    },
     "chat": {
       "title": "Comienza a chatear 💬",
       "description": "Inicia sesión en SkillBased para chatear con otros."
