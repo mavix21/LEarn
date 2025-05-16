@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol"; // Still useful for potenti
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/Counters.sol"; // For safer token ID generation
 
-contract VerifiableCertificate is ERC721URIStorage, Ownable, ReentrancyGuard {
+contract SkillBased is ERC721URIStorage, Ownable, ReentrancyGuard {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds; // Use OpenZeppelin's Counter for safer ID increment
 
@@ -50,8 +50,8 @@ contract VerifiableCertificate is ERC721URIStorage, Ownable, ReentrancyGuard {
         nonReentrant // Protect against reentrancy attacks
         returns (uint256)
     {
-        require(recipient != address(0), "VCERT: Mint to the zero address");
-        require(bytes(tokenURI).length > 0, "VCERT: TokenURI cannot be empty");
+        require(recipient != address(0), "SKB: Mint to the zero address");
+        require(bytes(tokenURI).length > 0, "SKB: TokenURI cannot be empty");
 
         _tokenIds.increment();
         uint256 newItemId = _tokenIds.current();
@@ -75,9 +75,9 @@ contract VerifiableCertificate is ERC721URIStorage, Ownable, ReentrancyGuard {
         public
         nonReentrant
     {
-        require(ownerOf(tokenId) != msg.sender, "VCERT: Cannot endorse your own certificate.");
-        require(!_hasUserEndorsedTokenId[tokenId][msg.sender], "VCERT: Already endorsed this certificate.");
-        require(bytes(comment).length <= MAX_ENDORSEMENT_COMMENT_LENGTH, "VCERT: Endorsement comment too long.");
+        require(ownerOf(tokenId) != msg.sender, "SKB: Cannot endorse your own certificate.");
+        require(!_hasUserEndorsedTokenId[tokenId][msg.sender], "SKB: Already endorsed this certificate.");
+        require(bytes(comment).length <= MAX_ENDORSEMENT_COMMENT_LENGTH, "SKB: Endorsement comment too long.");
 
         _endorsersByTokenId[tokenId].push(msg.sender);
         _hasUserEndorsedTokenId[tokenId][msg.sender] = true;
@@ -118,7 +118,7 @@ contract VerifiableCertificate is ERC721URIStorage, Ownable, ReentrancyGuard {
     // --- Optional: Admin Functions (using Ownable) ---
     // Example: The owner might be able to set a new max comment length
     function setMaxEndorsementCommentLength(uint256 newMaxLength) public onlyOwner {
-        // require(newMaxLength > 0 && newMaxLength < 1024, "VCERT: Invalid length"); // Example validation
+        // require(newMaxLength > 0 && newMaxLength < 1024, "SKB: Invalid length"); // Example validation
         // MAX_ENDORSEMENT_COMMENT_LENGTH = newMaxLength; // Note: constants cannot be changed.
         // If you need this to be variable, declare it as a state variable instead of a constant.
         // For this example, we'll assume it's fixed at compile time.
@@ -138,6 +138,6 @@ contract VerifiableCertificate is ERC721URIStorage, Ownable, ReentrancyGuard {
     // ERC721URIStorage already provides tokenURI(uint256 tokenId)
 
     // To support burning by the token owner, you could import ERC721Burnable.sol
-    // and inherit from it: contract VerifiableCertificate is ERC721URIStorage, Ownable, ReentrancyGuard, ERC721Burnable {
+    // and inherit from it: contract SkillBased is ERC721URIStorage, Ownable, ReentrancyGuard, ERC721Burnable {
     // This would give owners a burn(tokenId) function.
 }
