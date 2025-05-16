@@ -27,6 +27,7 @@ export default defineSchema({
             userId: v.id("users"),
             endorserAddress: v.string(),
             comment: v.string(),
+            transactionHash: v.string(),
           }),
         ),
       }),

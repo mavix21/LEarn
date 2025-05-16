@@ -197,6 +197,7 @@ export const endorse = mutation({
   args: {
     id: v.id("certifications"),
     comment: v.string(),
+    transactionHash: v.string(),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
@@ -236,6 +237,7 @@ export const endorse = mutation({
             userId: currentUserId,
             endorserAddress: identity.subject,
             comment: args.comment,
+            transactionHash: args.transactionHash,
           },
         ],
       },

@@ -1,5 +1,6 @@
 "use client";
 
+import { use, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "convex/react";
 import { ConvexError } from "convex/values";
@@ -53,15 +54,26 @@ export default function EndorseForm({
   });
 
   const endorse = useMutation(api.certifications.endorse);
-  const { isPending, writeContract } = useWriteContract();
-
+  const { isPending, writeContract } = useWriteContract({
+    mutation: {
+      onSuccess: async (data) => {
+        try {
+          await endorse({
+            comment: form.getValues("comment"),
+            id: certificationId,
+            transactionHash: data,
+          });
+        } catch (error) {
+          console.error(error);
+          if (error instanceof ConvexError) {
+            toast.error(error.data.message);
+          }
+        }
+      },
+    },
+  });
   const onSubmit = async (data: FormValues) => {
     try {
-      await endorse({
-        comment: data.comment,
-        id: certificationId,
-      });
-
       writeContract({
         address: CERTIFICATION_CONTRACT_ADDRESS,
         abi,

@@ -226,27 +226,7 @@ export function CertificationCard({
           </div>
         </CardContent>
         <CardFooter className="row-span-1 row-start-5 flex flex-col items-end justify-center gap-4 border-t !pt-2">
-          {certification.mintingStatus.type === "not_minted" ? (
-            <div className="relative flex w-full justify-center">
-              <GlowEffect
-                colors={["#FF5733", "#33FF57", "#3357FF", "#F1C40F"]}
-                mode="colorShift"
-                blur="soft"
-                duration={3}
-                scale={0.9}
-              />
-              <Button
-                size="lg"
-                className="relative mx-auto w-[calc(100%-1rem)] bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:brightness-110"
-                onClick={handleMint}
-              >
-                <span className="flex items-center gap-2">
-                  <span>Mint</span>
-                  <Sparkles className="h-5 w-5 animate-pulse" />
-                </span>
-              </Button>
-            </div>
-          ) : (
+          {certification.mintingStatus.type === "minted" ? (
             <>
               {certification.userId !== session?.userId ? (
                 <div className="relative flex h-full w-full justify-between">
@@ -275,6 +255,36 @@ export function CertificationCard({
                   <Badge variant="outline" className="w-full">
                     Endorses: {certification.mintingStatus.endorsements.length}
                   </Badge>
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {certification.userId === session?.userId ? (
+                <div className="relative flex w-full justify-center">
+                  <GlowEffect
+                    colors={["#FF5733", "#33FF57", "#3357FF", "#F1C40F"]}
+                    mode="colorShift"
+                    blur="soft"
+                    duration={3}
+                    scale={0.9}
+                  />
+                  <Button
+                    size="lg"
+                    className="relative mx-auto w-[calc(100%-1rem)] bg-gradient-to-r from-pink-500 via-purple-500 to-rose-500 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:brightness-110"
+                    onClick={handleMint}
+                  >
+                    <span className="flex items-center gap-2">
+                      <span>Mint</span>
+                      <Sparkles className="h-5 w-5 animate-pulse" />
+                    </span>
+                  </Button>
+                </div>
+              ) : (
+                <div className="relative flex w-full justify-center">
+                  <Button disabled variant="ghost" className="w-full">
+                    Not Minted
+                  </Button>
                 </div>
               )}
             </>
