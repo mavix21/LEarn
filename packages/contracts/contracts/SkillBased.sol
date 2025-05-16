@@ -2,13 +2,13 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/access/Ownable.sol"; // Still useful for potential admin functions
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/Counters.sol"; // For safer token ID generation
+import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract SkillBased is ERC721URIStorage, Ownable, ReentrancyGuard {
     using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds; // Use OpenZeppelin's Counter for safer ID increment
+    Counters.Counter private _tokenIds;
 
     // --- Events ---
     event CertificateMinted(
@@ -36,7 +36,7 @@ contract SkillBased is ERC721URIStorage, Ownable, ReentrancyGuard {
     uint256 public constant MAX_ENDORSEMENT_COMMENT_LENGTH = 256;
 
     // --- Constructor ---
-    constructor(address initialOwner) ERC721("VerifiableCertificate", "VCERT") Ownable(initialOwner) {}
+    constructor(address initialOwner) ERC721("SkillBased", "SKB") Ownable(initialOwner) {}
 
     // --- Minting Function (Public) ---
     /**
