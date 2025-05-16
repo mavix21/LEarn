@@ -20,6 +20,7 @@ import { api } from "@/convex/_generated/api";
 import { tryCatch } from "@/src/lib/try-catch";
 
 import { CertificationsSection } from "./ui/CertificationsSection";
+import Hobbies from "./ui/Hobbies";
 import { Posts } from "./ui/Posts";
 import { ProfileHeader } from "./ui/ProfileHeader";
 import { SummarySection } from "./ui/SummarySection";
@@ -72,28 +73,7 @@ export async function ProfilePage({ userId }: { userId: string }) {
               <SummarySection preloadedUser={preloadedUser} />
 
               {/* Hobbies Section */}
-              <div className="mb-8">
-                <div className="mb-4 flex items-center justify-between">
-                  <h2 className="text-xl font-semibold">Hobbies</h2>
-                  <Button variant="ghost" size="sm" className="p-1">
-                    <Edit2 className="size-4" />
-                  </Button>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  <Badge>Dogs</Badge>
-                  <Badge>Football</Badge>
-                  <Badge>Basketball</Badge>
-                  <Badge>The Witcher</Badge>
-                  <Badge>Ice Skating</Badge>
-                  <Badge>Traveling</Badge>
-                  <Badge>Trains</Badge>
-                  <Badge>Rock Climbing</Badge>
-                  <Badge>Debate</Badge>
-                  <Badge>Auto Detailing</Badge>
-                  <Badge>Table Tennis</Badge>
-                </div>
-              </div>
+              <Hobbies preloadedUser={preloadedUser} />
             </TabsContent>
 
             <TabsContent value="talent" className="mt-0">

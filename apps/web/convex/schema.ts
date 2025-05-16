@@ -6,6 +6,11 @@ import { authTables } from "./authTables";
 export default defineSchema({
   ...authTables,
 
+  userProfiles: defineTable({
+    userId: v.id("users"),
+    hobbies: v.array(v.string()),
+  }),
+
   certifications: defineTable({
     userId: v.id("users"),
     name: v.string(),
@@ -116,12 +121,6 @@ export default defineSchema({
     .index("by_postId", ["postId"])
     .index("by_recipientId", ["recipientId"])
     .index("by_issuerId", ["issuerId"]),
-
-  user_topics: defineTable({
-    userId: v.id("users"),
-    topic: v.string(),
-    endorsements: v.optional(v.number()),
-  }).index("userId", ["userId"]),
 
   // Chat tables
   messages: defineTable({

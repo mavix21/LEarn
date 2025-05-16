@@ -17,9 +17,16 @@ export const createUser = mutation({
       return user._id;
     }
 
-    return await ctx.db.insert("users", {
+    const userId = await ctx.db.insert("users", {
       address: args.address,
     });
+
+    await ctx.db.insert("userProfiles", {
+      userId,
+      hobbies: [],
+    });
+
+    return userId;
   },
 });
 
@@ -68,16 +75,17 @@ export const getUserProfile = query({
     }
 
     const user = await ctx.db.get(args.userId);
-    const userTopics = await ctx.db
-      .query("user_topics")
-      .filter((q) => q.eq(q.field("userId"), args.userId))
-      .collect();
 
     if (!user) {
       throw new ConvexError({
         message: "User not found",
       });
     }
+
+    const userProfile = await ctx.db
+      .query("userProfiles")
+      .filter((q) => q.eq(q.field("userId"), args.userId))
+      .first();
 
     const coverImageUrl =
       (user.coverImageStorageId
@@ -94,11 +102,8 @@ export const getUserProfile = query({
       coverImageStorageId: user.coverImageStorageId,
       coverImageUrl,
       bio: user.bio ?? "",
+      hobbies: userProfile?.hobbies ?? [],
       isMe: user._id === id.subject,
-      topics: userTopics.map(({ endorsements, topic }) => ({
-        topic,
-        endorsements: endorsements ?? 0,
-      })),
     };
   },
 });
@@ -148,6 +153,33 @@ export const updateBio = mutation({
 
     await ctx.db.patch(id.subject as Id<"users">, {
       bio: args.bio,
+    });
+  },
+});
+
+export const updateHobbies = mutation({
+  args: {
+    hobbies: v.array(v.string()),
+  },
+  handler: async (ctx, args) => {
+    const id = await ctx.auth.getUserIdentity();
+    if (!id) {
+      throw new Error("Unauthorized");
+    }
+
+    const userProfile = await ctx.db
+      .query("userProfiles")
+      .filter((q) => q.eq(q.field("userId"), id.subject as Id<"users">))
+      .first();
+
+    if (!userProfile) {
+      throw new ConvexError({
+        message: "User profile not found",
+      });
+    }
+
+    await ctx.db.patch(userProfile._id, {
+      hobbies: args.hobbies,
     });
   },
 });
