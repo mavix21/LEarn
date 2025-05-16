@@ -4,11 +4,9 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract SkillBased is ERC721URIStorage, Ownable, ReentrancyGuard {
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
+    uint256 private _tokenIdCounter;
 
     // --- Events ---
     event CertificateMinted(
@@ -53,8 +51,8 @@ contract SkillBased is ERC721URIStorage, Ownable, ReentrancyGuard {
         require(recipient != address(0), "SKB: Mint to the zero address");
         require(bytes(tokenURI).length > 0, "SKB: TokenURI cannot be empty");
 
-        _tokenIds.increment();
-        uint256 newItemId = _tokenIds.current();
+        _tokenIdCounter++;
+        uint256 newItemId = _tokenIdCounter;
 
         _mint(recipient, newItemId);
         _setTokenURI(newItemId, tokenURI);
