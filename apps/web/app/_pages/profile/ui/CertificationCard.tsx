@@ -233,9 +233,22 @@ export function CertificationCard({
                   {certification.mintingStatus.endorsements.some(
                     (endorsement) => endorsement.userId === session?.userId,
                   ) ? (
-                    <Badge variant="outline" className="w-full">
-                      Endorsed
-                    </Badge>
+                    <a
+                      href={`https://basescan.org/tx/${
+                        certification.mintingStatus.endorsements.find(
+                          (endorsement) =>
+                            endorsement.userId === session?.userId,
+                        )?.transactionHash
+                      }`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block w-full"
+                    >
+                      <Button variant="link" className="w-full gap-2">
+                        Endorsed
+                        <ExternalLink className="h-3.5 w-3.5" />
+                      </Button>
+                    </a>
                   ) : (
                     <Dialog open={open} onOpenChange={setOpen}>
                       <DialogTrigger asChild>
