@@ -14,11 +14,26 @@ export async function uploadCertificateJSON(
     const upload = await pinata.upload.public
       .json({
         name,
-        issuingCompany,
-        issueDate,
-        credentialId,
-        credentialUrl,
-        imageUrl,
+        description: "Skill Based Certificate",
+        attributes: [
+          {
+            trait_type: "Issuing Company",
+            value: issuingCompany,
+          },
+          {
+            trait_type: "Issue Date",
+            value: issueDate,
+          },
+          {
+            trait_type: "Credential ID",
+            value: credentialId,
+          },
+          {
+            trait_type: "Credential URL",
+            value: credentialUrl,
+          },
+        ],
+        image: imageUrl,
       })
       .name(name);
 
