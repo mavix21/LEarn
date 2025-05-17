@@ -1,8 +1,8 @@
-# SkillBased
+# ✳️ SkillBased
 
 A professional social network where users can build their verifiable, onchain, professional profile.
 
-## Monorepo Structure
+## 📦 Monorepo Structure
 
 This repository is a pnpm monorepo. It consists of the following main parts:
 
@@ -11,7 +11,7 @@ This repository is a pnpm monorepo. It consists of the following main parts:
 - `packages/contracts`: This package contains the hardhat project for the smart contracts.
 - `tooling/`: This directory contains configuration files for common development tools like ESLint, Prettier, TypeScript, etc., ensuring consistent code quality and development experience across the monorepo.
 
-## ✨ Tech Stack
+## 🧰 Tech Stack
 
 - **Next.js 15 & Turbopack:** Modern, fast, and scalable React framework for the frontend.
 
