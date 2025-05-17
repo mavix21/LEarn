@@ -28,7 +28,6 @@ const PROTECTED_PATHS = [
   "/dashboard",
   "/settings",
   "/profile",
-  "/search",
   "/chat",
   // Add more protected routes as needed
 ];
