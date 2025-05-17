@@ -27,13 +27,13 @@ This repository is a pnpm monorepo. It consists of the following main parts:
 
 - **Rich Text Editing:** Includes a Tiptap-based rich text editor for content creation.
 
-- **File Uploads & IPFS:** Supports file uploads with `react-dropzone`, potentially using Pinata for decentralized storage on IPFS.
+- **File Uploads & IPFS:** Supports file uploads with `react-dropzone`, using Pinata for decentralized storage on IPFS.
 
 - **Internationalization (i18n):** Built with `next-intl` to support multiple languages.
 
 - **Robust Form Handling:** Uses `react-hook-form` and `zod` for creating and validating forms.
 
-- **Custom UI Library:** Leverages `@skill-based/ui` for a consistent look and feel, likely built with shadcn/ui components.
+- **Custom UI Library:** Leverages `@skill-based/ui` for a consistent look and feel, built with shadcn/ui components.
 
 - **Server State Management:** Uses `@tanstack/react-query` for managing server state and caching.
 
