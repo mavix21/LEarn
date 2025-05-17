@@ -1,6 +1,6 @@
 # ✳️ SkillBased
 
-A professional social network where users can build their verifiable, onchain, professional profile.
+A professional social network where users can build their verifiable profile, fully onchain.
 
 ## 📦 Monorepo Structure
 
