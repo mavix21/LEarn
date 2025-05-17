@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Authenticated } from "convex/react";
 import { User } from "lucide-react";
 
 import {
@@ -8,6 +8,8 @@ import {
 } from "@skill-based/ui/components/avatar";
 import { Card, CardContent } from "@skill-based/ui/components/card";
 import { Skeleton } from "@skill-based/ui/components/skeleton";
+
+import { AuthLink } from "@/app/_shared/ui/auth-link";
 
 import { FollowButton } from "./FollowButton";
 
@@ -22,7 +24,7 @@ export function SearchCard({ displayName, followingId }: UserProps) {
       <CardContent>
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link
+            <AuthLink
               href={`/profile/${followingId}`}
               className="flex items-center gap-3"
             >
@@ -40,9 +42,11 @@ export function SearchCard({ displayName, followingId }: UserProps) {
                   @{displayName}
                 </span>
               </div>
-            </Link>
+            </AuthLink>
           </div>
-          <FollowButton followingId={followingId} />
+          <Authenticated>
+            <FollowButton followingId={followingId} />
+          </Authenticated>
         </div>
       </CardContent>
     </Card>

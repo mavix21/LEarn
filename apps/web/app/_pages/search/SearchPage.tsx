@@ -29,7 +29,7 @@ export function SearchPage() {
   });
 
   // Filter people based on search query
-  const filteredPeople = paginatedUsers?.page?.filter((person) => {
+  const filteredPeople = paginatedUsers?.page.filter((person) => {
     const matchesSearch = person.displayName
       ?.toLowerCase()
       .includes(searchQuery.toLowerCase());
@@ -38,7 +38,7 @@ export function SearchPage() {
   });
 
   const totalPages = Math.ceil(
-    (paginatedUsers?.page?.length ?? 0) / ITEMS_PER_PAGE,
+    (paginatedUsers?.page.length ?? 0) / ITEMS_PER_PAGE,
   );
 
   const handlePageChange = (page: number) => {

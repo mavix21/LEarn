@@ -26,11 +26,6 @@ export const getFollowers = query({
     followingId: v.id("users"),
   },
   handler: async (ctx, args) => {
-    const id = await ctx.auth.getUserIdentity();
-    if (!id) {
-      throw new Error("Unauthorized");
-    }
-
     const followers = await ctx.db
       .query("follows")
       .filter((q) => q.eq(q.field("followingId"), args.followingId))
