@@ -132,14 +132,8 @@ export const getUsers = query({
     }),
   },
   handler: async (ctx, args) => {
-    const id = await ctx.auth.getUserIdentity();
-    if (!id) {
-      throw new Error("Unauthorized");
-    }
-
     return await ctx.db
       .query("users")
-      .filter((q) => q.neq(q.field("_id"), id.subject as Id<"users">))
       .order("desc")
       .paginate(args.paginationOpts);
   },
