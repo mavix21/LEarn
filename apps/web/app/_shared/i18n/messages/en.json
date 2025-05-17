@@ -81,6 +81,14 @@
       "title": "Start chatting 💬",
       "description": "Sign in to SkillBased to chat with others."
     },
+    "othersProfile": {
+      "title": "View others' profile 🔍",
+      "description": "Sign in to SkillBased to view others' profile and connect with them."
+    },
+    "comingSoon": {
+      "title": "Coming soon 🔜",
+      "description": "This feature is coming soon."
+    },
     "default": {
       "title": "Build your profile with SkillBased",
       "description": "Join SkillBased to create your professional identity, showcase your skills, and connect with others on-chain."

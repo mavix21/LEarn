@@ -81,9 +81,17 @@
       "title": "Comienza a chatear 💬",
       "description": "Inicia sesión en SkillBased para chatear con otros."
     },
+    "othersProfile": {
+      "title": "Ver perfil 🔍",
+      "description": "Inicia sesión en SkillBased para ver el perfil de otros y conectar con ellos."
+    },
     "default": {
       "title": "Crea tu perfil en SkillBased 📝",
       "description": "Únete a SkillBased para crear tu identidad profesional, mostrar tus habilidades y conectar con otros en la blockchain."
+    },
+    "comingSoon": {
+      "title": "Próximamente 🔜",
+      "description": "Esta funcionalidad está en desarrollo."
     }
   }
 }
