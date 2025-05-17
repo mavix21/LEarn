@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 import { AnimatedBackground } from "@skill-based/ui/components/animated-background";
 import { AnimatedBellIcon } from "@skill-based/ui/components/animated-bell";
 import { AnimatedHomeIcon } from "@skill-based/ui/components/animated-home";
+import { AnimatedMessageCircleMoreIcon } from "@skill-based/ui/components/animated-message-circle-more";
 import { AnimatedSearchIcon } from "@skill-based/ui/components/animated-search";
 import { AnimatedUserIcon } from "@skill-based/ui/components/animated-user";
 
@@ -50,13 +51,13 @@ export default function NavBar() {
       gate: false,
       label: "Search",
     },
-    // {
-    //   href: "/chat",
-    //   icon: AnimatedMessageCircleMoreIcon,
-    //   gate: true,
-    //   dialogKey: "chat",
-    //   label: "Chat",
-    // },
+    {
+      href: "/chat",
+      icon: AnimatedMessageCircleMoreIcon,
+      gate: true,
+      dialogKey: "chat",
+      label: "Chat",
+    },
   ] as const;
 
   // Handler for nav item clicks
@@ -113,16 +114,27 @@ export default function NavBar() {
             duration: 0.3,
           }}
         >
-          {navItems.map((item) => (
-            <Link
-              href={item.href}
-              key={item.href}
-              data-id={item.href}
-              className="text-muted-foreground hover:text-active-foreground p-1.5 transition-colors"
-            >
-              <item.icon size={26} />
-            </Link>
-          ))}
+          {navItems.map((item) =>
+            item.label !== "Chat" && item.label !== "Notifications" ? (
+              <Link
+                href={item.href}
+                key={item.href}
+                data-id={item.href}
+                className="text-muted-foreground hover:text-active-foreground p-1.5 transition-colors"
+              >
+                <item.icon size={26} />
+              </Link>
+            ) : (
+              <button
+                key={item.href}
+                onMouseDown={() => open({ key: "comingSoon" })}
+                data-id={item.href}
+                className="hover:text-active-foreground text-muted-foreground p-1.5 transition-colors"
+              >
+                <item.icon size={26} />
+              </button>
+            ),
+          )}
         </AnimatedBackground>
       </Authenticated>
     </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, use, useCallback, useMemo, useState } from "react";
+import { Unauthenticated } from "convex/react";
 import { useTranslations } from "next-intl";
 
 import {
@@ -75,6 +76,21 @@ const useAuthGateDialogMessages = () => {
             default: "Sign in to SkillBased to chat with others.",
           }),
         },
+        othersProfile: {
+          title: t("othersProfile.title", {
+            default: "View others' profile",
+          }),
+          description: t("othersProfile.description", {
+            default:
+              "Sign in to SkillBased to view others' profile and connect with them.",
+          }),
+        },
+        comingSoon: {
+          title: t("comingSoon.title", { default: "Coming soon" }),
+          description: t("comingSoon.description", {
+            default: "This feature is coming soon.",
+          }),
+        },
       }) as const,
     [t],
   );
@@ -107,7 +123,9 @@ function AuthGateDialog({
             <span className="mx-auto block max-w-[30ch] text-center">
               {description}
             </span>
-            <ConnectButton />
+            <Unauthenticated>
+              <ConnectButton />
+            </Unauthenticated>
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
